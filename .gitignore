@@ -143,9 +143,10 @@ publish/
 # NuGet Packages
 *.nupkg
 # The packages folder can be ignored because of Package Restore
-**/packages/*
+ **/packages/*
 # except build/, which is used as an MSBuild target.
-!**/packages/build/
+ !**/packages/build/
+ !**/packages/NUnit.3.0.1/
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/packages/repositories.config
 
