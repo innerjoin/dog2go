@@ -1,15 +1,26 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace dog2goTest
 {
-    [TestClass]
+    [TestFixture]
     public class Nunit_Sample
     {
-        [TestMethod]
-        public void TestMethod1()
+        [Test]
+        public void Nunit_JustAHappyTest()
         {
-            Assert.AreEqual(true, true);
+            Assert.That(true, Is.EqualTo(true));    
+        }
+
+        [Test]
+        public void Nunit_JustAnotherHappyTest()
+        {
+            Assert.That(false, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Nunit_JustASadTest()
+        {
+            Assert.That(true, Is.EqualTo(false));
         }
     }
 }
