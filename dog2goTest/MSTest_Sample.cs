@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
 
-namespace dog2go.Tests.Unit
+namespace dog2goTest
 {
     [TestFixture]
-    public class TestSample
+    public class MSTest_Sample
     {
         [Test]
         public void JustAHappyTest()

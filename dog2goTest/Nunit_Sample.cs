@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace dog2goTest
 {
     [TestClass]
-    public class UnitTest1
+    public class Nunit_Sample
     {
         [TestMethod]
         public void TestMethod1()
