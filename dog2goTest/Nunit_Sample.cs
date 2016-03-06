@@ -16,11 +16,5 @@ namespace dog2goTest
         {
             Assert.That(false, Is.EqualTo(false));
         }
-
-        [Test]
-        public void Nunit_JustASadTest()
-        {
-            Assert.That(true, Is.EqualTo(false));
-        }
     }
 }
