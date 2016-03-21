@@ -211,4 +211,10 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
-/dog2go
+
+/dog2go/dog2go.zip
+/dog2go/dog2go.SourceManifest.xml
+/dog2go/dog2go.SetParameters.xml
+/dog2go/dog2go.deploy.cmd
+/dog2go/dog2go.deploy-readme.txt
+/dog2go/Deployment/**
