@@ -190,6 +190,23 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AlexisPhaser\assets\baddie.png" />
+    <Content Include="AlexisPhaser\assets\diamond.png" />
+    <Content Include="AlexisPhaser\assets\dude.png" />
+    <Content Include="AlexisPhaser\assets\firstaid.png" />
+    <Content Include="AlexisPhaser\assets\platform.png" />
+    <Content Include="AlexisPhaser\assets\sky.png" />
+    <Content Include="AlexisPhaser\assets\star.png" />
+    <Content Include="AlexisPhaser\part1.html" />
+    <Content Include="AlexisPhaser\part2.html" />
+    <Content Include="AlexisPhaser\part3.html" />
+    <Content Include="AlexisPhaser\part4.html" />
+    <Content Include="AlexisPhaser\part5.html" />
+    <Content Include="AlexisPhaser\part6.html" />
+    <Content Include="AlexisPhaser\part7.html" />
+    <Content Include="AlexisPhaser\part8.html" />
+    <Content Include="AlexisPhaser\part9.html" />
+    <Content Include="AlexisPhaser\tutorial.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -270,6 +287,7 @@
     <Content Include="Scripts\jquery-2.2.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AlexisPhaser\js\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
