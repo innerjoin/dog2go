@@ -218,3 +218,4 @@ ModelManifest.xml
 /dog2go/dog2go.deploy.cmd
 /dog2go/dog2go.deploy-readme.txt
 /dog2go/Deployment/**
+*.map
