@@ -180,11 +180,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IChat.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -296,6 +298,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
+    <Content Include="Views\Game\Game.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AlexisPhaser\js\" />
@@ -306,16 +309,11 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="AlexisPhaserTSDD\app.ts" />
-    <None Include="Scripts\phaser\phaser.d.ts" />
-    <None Include="Scripts\phaser\p2.d.ts" />
-    <None Include="Scripts\phaser\pixi.d.ts" />
-    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Boot.ts" />
-    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\game.ts" />
-    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Level1.ts" />
-    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\MainMenu.ts" />
-    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Player.ts" />
-    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Preloader.ts" />
+    <TypeScriptCompile Include="Scripts\definitions\p2.d.ts" />
+    <TypeScriptCompile Include="Scripts\definitions\phaser.comments.d.ts" />
+    <TypeScriptCompile Include="Scripts\definitions\pixi.comments.d.ts" />
+    <TypeScriptCompile Include="Game\Logic\game.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -325,15 +323,14 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptModuleKind>None</TypeScriptModuleKind>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
-    <TypeScriptOutFile>
-    </TypeScriptOutFile>
+    <TypeScriptOutFile />
     <TypeScriptOutDir />
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
