@@ -309,6 +309,12 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Boot.ts" />
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\game.ts" />
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Level1.ts" />
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\MainMenu.ts" />
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Player.ts" />
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Preloader.ts" />
     <TypeScriptCompile Include="Scripts\definitions\p2.d.ts" />
     <TypeScriptCompile Include="Scripts\definitions\phaser.comments.d.ts" />
     <TypeScriptCompile Include="Scripts\definitions\pixi.comments.d.ts" />
