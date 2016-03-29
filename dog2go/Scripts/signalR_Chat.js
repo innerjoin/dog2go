@@ -1,6 +1,6 @@
 ﻿$(function () {
     // Declare a proxy to reference the hub. 
-    var chat = $.connection.SignalR_Chat;
+    var chat = $.connection.chatHub;
     // Create a function that the hub can call to broadcast messages.
     chat.client.broadcastMessage = function (name, message) {
         // Html encode display name and message. 
