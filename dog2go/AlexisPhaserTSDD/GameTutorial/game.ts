@@ -1,4 +1,4 @@
-﻿/// <reference path="../../Scripts/phaser/phaser.d.ts"/>
+﻿/// <reference path="../../Scripts/definitions/phaser.comments.d.ts"/>
 
 /// <reference path="Preloader.ts"/>
 

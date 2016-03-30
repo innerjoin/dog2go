@@ -200,6 +200,7 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SignalR_Chat.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -263,6 +264,7 @@
     <None Include="Properties\PublishProfiles\dog2gofs.pubxml" />
     <None Include="Properties\PublishProfiles\dog2goftp.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\signalR_Chat.js" />
     <Content Include="Scripts\jquery-2.2.1.js" />
     <Content Include="Scripts\jquery-2.2.1.min.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
@@ -330,6 +332,12 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Boot.ts" />
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\game.ts" />
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Level1.ts" />
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\MainMenu.ts" />
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Player.ts" />
+    <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Preloader.ts" />
     <TypeScriptCompile Include="Scripts\definitions\p2.d.ts" />
     <TypeScriptCompile Include="Scripts\definitions\phaser.comments.d.ts" />
     <TypeScriptCompile Include="Scripts\definitions\pixi.comments.d.ts" />
