@@ -2,6 +2,9 @@
 {
     public class StandardField : MoveDestinationField
     {
+        public StandardField(int fieldId) : base(fieldId)
+        {
 
+        }
     }
 }
