@@ -58,24 +58,27 @@ namespace dog2go.Backend.Model
             Identifier = identifier;
             ColorCode = colorCode;
             FieldId = fieldId;
+            GeneratePlayerFieldArea(fieldId);
+        }
 
-            int tempFieldId;
+        private void GeneratePlayerFieldArea(int fieldId)
+        {
             List<Meeple> meepleList = new List<Meeple>();
             List<KennelField> kennelFields = new List<KennelField>();
 
             for (var count = 0; count < NumberOfMeeple; count++)
             {
-                KennelField kennelField = new KennelField(count+1);
+                KennelField kennelField = new KennelField(count + 1);
                 meepleList.Add(new Meeple(kennelField, this.ColorCode));
                 kennelFields.Add(kennelField);
             }
 
             List<MoveDestinationField> fields = new List<MoveDestinationField>();
-            StandardField standardField = new StandardField(++fieldId) {Previous = null};
+            StandardField standardField = new StandardField(++fieldId) { Previous = null };
 
             for (var count = 1; count < NumberOfFieldsBeforeStart; count++)
             {
-                StandardField tempField = new StandardField(++fieldId) {Previous = standardField};
+                StandardField tempField = new StandardField(++fieldId) { Previous = standardField };
                 standardField.Next = tempField;
                 fields.Add(standardField);
                 standardField = tempField;
@@ -87,7 +90,7 @@ namespace dog2go.Backend.Model
 
             fields.Add(standardField);
 
-            EndField endField = new EndField(fieldId+NumberOfFieldsAfterStart+1) { Previous = startField };
+            EndField endField = new EndField(fieldId + NumberOfFieldsAfterStart + 1) { Previous = startField };
             startField.EndFieldEntry = endField;
             fields.Add(startField);
 
@@ -103,18 +106,16 @@ namespace dog2go.Backend.Model
 
             fields.Add(standardFieldAfter);
 
-            EndField tempEndField = null;
             ++fieldId;
             for (int count = 1; count < NumberOfFieldsBeforeStart; count++)
             {
-                tempEndField = new EndField(++fieldId) { Previous = endField };
+                EndField tempEndField = new EndField(++fieldId) { Previous = endField };
                 endField.Next = tempEndField;
                 fields.Add(endField);
                 endField = tempEndField;
             }
 
             fields.Add(endField);
-            FieldId = fieldId;
             Meeples = meepleList;
             KennelFields = kennelFields;
             Fields = fields;
