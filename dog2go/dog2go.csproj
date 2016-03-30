@@ -179,7 +179,23 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="ChatHub.cs" />
+    <Compile Include="Backend\Class\Card.cs" />
+    <Compile Include="Backend\Class\CardAttribute.cs" />
+    <Compile Include="Backend\Class\CardMove.cs" />
+    <Compile Include="Backend\Class\HandCard.cs" />
+    <Compile Include="Backend\Class\PlayRound.cs" />
+    <Compile Include="Backend\Class\StandardField.cs" />
+    <Compile Include="Backend\Class\GameTable.cs" />
+    <Compile Include="Backend\Class\EndField.cs" />
+    <Compile Include="Backend\Class\StartField.cs" />
+    <Compile Include="Backend\Class\KennelField.cs" />
+    <Compile Include="Backend\Class\MeepleMove.cs" />
+    <Compile Include="Backend\Class\MoveDestinationField.cs" />
+    <Compile Include="Backend\Class\Participation.cs" />
+    <Compile Include="Backend\Class\PlayerFieldArea.cs" />
+    <Compile Include="Backend\Class\Meeple.cs" />
+    <Compile Include="Backend\Hubs\ChatHub.cs" />
+    <Compile Include="Backend\Hubs\GameHub.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -191,7 +207,6 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="ChatHubtest.cs" />
     <Compile Include="Backend\Class\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -309,7 +324,6 @@
   <ItemGroup>
     <Folder Include="AlexisPhaser\js\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Backend\Hubs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
