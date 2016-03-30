@@ -1,6 +1,6 @@
 ﻿/// <reference path="Scripts/typings/jasmine/jasmine.d.ts"/>
+/// <reference path="../dog2go/Frontend/Classes/Services/game.ts" />
 /* <reference path="../dog2go/Game/Logic/file1.ts"/>*/
-/// <reference path="../dog2go/Game/Logic/game.ts"/>
 
 describe("A PlayerFieldArea", () => {
     it("can be tested", () => {
