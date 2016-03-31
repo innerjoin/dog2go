@@ -276,8 +276,6 @@
     <Content Include="Scripts\jasmine\console.js" />
     <Content Include="Scripts\jasmine\jasmine-html.js" />
     <Content Include="Scripts\jasmine\jasmine.js" />
-    <Content Include="Scripts\jquery-2.2.1.js" />
-    <Content Include="Scripts\jquery-2.2.1.min.js" />
     <Content Include="Tests\Frontend\person.test.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -316,7 +314,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Scripts\jquery-2.2.1.min.map" />
     <Content Include="Views\Game\Game.cshtml" />
   </ItemGroup>
   <ItemGroup />
