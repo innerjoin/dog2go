@@ -1,16 +1,11 @@
 /// <reference path="../../Scripts/definitions/phaser.comments.d.ts"/>
+/// <reference path="./AreaColor.ts"/>
+//import Color = require("./AreaColor");
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var AreaColor;
-(function (AreaColor) {
-    AreaColor[AreaColor["Red"] = 16711680] = "Red";
-    AreaColor[AreaColor["Blue"] = 255] = "Blue";
-    AreaColor[AreaColor["Green"] = 65280] = "Green";
-    AreaColor[AreaColor["Yellow"] = 15582739] = "Yellow";
-})(AreaColor || (AreaColor = {}));
 var MoveDestinationField = (function () {
     function MoveDestinationField(previous) {
         this.previous = previous;
@@ -44,6 +39,24 @@ var StartField = (function (_super) {
     };
     return StartField;
 })(MoveDestinationField);
+var Persontest = (function () {
+    function Persontest() {
+    }
+    Persontest.prototype.setFirstName = function (value) {
+        this.firstName = value;
+    };
+    Persontest.prototype.setLastName = function (value) {
+        this.lastName = value;
+    };
+    Persontest.prototype.getFullName = function (lastNameFirst) {
+        if (lastNameFirst === void 0) { lastNameFirst = false; }
+        if (lastNameFirst) {
+            return this.lastName + ", " + this.firstName;
+        }
+        return this.firstName + ", " + this.lastName;
+    };
+    return Persontest;
+})();
 var PlayerFieldArea = (function () {
     function PlayerFieldArea(color) {
         //kennelFields: MoveDestinationField[];
@@ -157,6 +170,7 @@ var GameArea = (function () {
     };
     return GameArea;
 })();
+//export = PlayerFieldArea;
 window.onload = function () {
     var gameArea = new GameArea();
 };

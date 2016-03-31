@@ -1,12 +1,6 @@
 ﻿/// <reference path="../../Scripts/definitions/phaser.comments.d.ts"/>
-
-enum AreaColor {
-    Red = 0xff0000,
-    Blue = 0x0000ff,
-    Green = 0x00ff00,
-    Yellow = 0xedc613
-}
-
+/// <reference path="./AreaColor.ts"/>
+//import Color = require("./AreaColor");
 
 class MoveDestinationField {
     identifier: number; 
@@ -45,6 +39,26 @@ class StartField extends MoveDestinationField {
     }
 }
 
+
+class Persontest {
+    private firstName: string;
+    private lastName: string;
+
+    setFirstName(value: string) {
+        this.firstName = value;
+    }
+
+    setLastName(value: string) {
+        this.lastName = value;
+    }
+
+    getFullName(lastNameFirst: boolean = false): string {
+        if (lastNameFirst) {
+            return this.lastName + ", " + this.firstName;
+        }
+        return this.firstName + ", " + this.lastName;
+    }
+}
 
 class PlayerFieldArea {
     constructor(color: AreaColor) {
@@ -168,6 +182,8 @@ class GameArea {
     }
     
 }
+
+//export = PlayerFieldArea;
 
 window.onload = () => {
     var gameArea = new GameArea();
