@@ -26,5 +26,12 @@ namespace dog2go.Controllers
 
             return View();
         }
+
+        public ActionResult Chat()
+        {
+            ViewBag.Message = "Chat page";
+
+            return View();
+        }
     }
 }

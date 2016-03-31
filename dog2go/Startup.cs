@@ -13,6 +13,7 @@ namespace dog2go
 
             ConfigureAuth(app);
 
+            
         }
     }
 }

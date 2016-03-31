@@ -91,6 +91,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -199,15 +202,32 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Backend\Hubs\ChatHub.cs" />
+    <Compile Include="Backend\Hubs\GameHub.cs" />
+    <Compile Include="Backend\Interfaces\IChat.cs" />
+    <Compile Include="Backend\Model\Card.cs" />
+    <Compile Include="Backend\Model\CardAttribute.cs" />
+    <Compile Include="Backend\Model\CardMove.cs" />
+    <Compile Include="Backend\Model\EndField.cs" />
+    <Compile Include="Backend\Model\GameTable.cs" />
+    <Compile Include="Backend\Model\HandCard.cs" />
+    <Compile Include="Backend\Model\KennelField.cs" />
+    <Compile Include="Backend\Model\Meeple.cs" />
+    <Compile Include="Backend\Model\MeepleMove.cs" />
+    <Compile Include="Backend\Model\MoveDestinationField.cs" />
+    <Compile Include="Backend\Model\Participation.cs" />
+    <Compile Include="Backend\Model\PlayerFieldArea.cs" />
+    <Compile Include="Backend\Model\PlayRound.cs" />
+    <Compile Include="Backend\Model\StandardField.cs" />
+    <Compile Include="Backend\Model\StartField.cs" />
+    <Compile Include="Backend\Model\User.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\SignalR_Chat.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IChat.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -246,31 +266,44 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\jasmine\jasmine.css" />
-    <Content Include="Content\jasmine\jasmine_favicon.png" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Frontend\Classes\Services\Chat.js" />
+    <Content Include="Frontend\Classes\Services\GameHub.js" />
+    <Content Include="Frontend\Library\SignalR\jquery.signalR-2.2.0.js" />
+    <Content Include="Frontend\Library\SignalR\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Frontend\Styles\bootstrap-theme.css" />
+    <Content Include="Frontend\Styles\bootstrap-theme.min.css" />
+    <Content Include="Frontend\Styles\bootstrap.css" />
+    <Content Include="Frontend\Styles\bootstrap.min.css" />
+    <Content Include="Frontend\Styles\Site.css" />
+    <Content Include="Frontend\Library\Bootstrap\bootstrap.js" />
+    <Content Include="Frontend\Library\Bootstrap\bootstrap.min.js" />
+    <Content Include="Frontend\Library\JQuery\jquery-2.2.1.min.map" />
+    <None Include="Frontend\Library\_references.js" />
+    <None Include="Frontend\Library\JQuery\jquery-1.10.2.intellisense.js" />
+    <Content Include="Frontend\Library\JQuery\jquery-2.2.1.js" />
+    <Content Include="Frontend\Library\JQuery\jquery-2.2.1.min.js" />
+    <None Include="Frontend\Library\JQuery\jquery.validate-vsdoc.js" />
+    <Content Include="Frontend\Library\JQuery\jquery.validate.js" />
+    <Content Include="Frontend\Library\JQuery\jquery.validate.min.js" />
+    <Content Include="Frontend\Library\JQuery\jquery.validate.unobtrusive.js" />
+    <Content Include="Frontend\Library\JQuery\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Frontend\Library\SignalR\modernizr-2.6.2.js" />
+    <Content Include="Frontend\Library\SignalR\modernizr-2.8.3.js" />
+    <Content Include="Frontend\Library\SignalR\respond.js" />
+    <Content Include="Frontend\Library\SignalR\respond.matchmedia.addListener.js" />
+    <Content Include="Frontend\Library\SignalR\respond.matchmedia.addListener.min.js" />
+    <Content Include="Frontend\Library\SignalR\respond.min.js" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Frontend\Styles\bootstrap-theme.css.map" />
+    <Content Include="Frontend\Styles\bootstrap-theme.min.css.map" />
+    <Content Include="Frontend\Styles\bootstrap.css.map" />
+    <Content Include="Frontend\Styles\bootstrap.min.css.map" />
     <None Include="Properties\PublishProfiles\dog2go.pubxml" />
     <None Include="Properties\PublishProfiles\dog2goAzure.pubxml" />
     <None Include="Properties\PublishProfiles\dog2gofs.pubxml" />
     <None Include="Properties\PublishProfiles\dog2goftp.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jasmine\boot.js" />
-    <Content Include="Scripts\jasmine\console.js" />
-    <Content Include="Scripts\jasmine\jasmine-html.js" />
-    <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="Scripts\signalR_Chat.js" />
     <Content Include="Scripts\jquery-2.2.1.js" />
     <Content Include="Scripts\jquery-2.2.1.min.js" />
@@ -299,14 +332,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
@@ -318,25 +344,32 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Game\Game.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Chat.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
     <Content Include="Views\Game\Game.cshtml" />
-    <Content Include="chutzpah.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AlexisPhaser\js\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Boot.ts" />
@@ -345,13 +378,11 @@
     <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\MainMenu.ts" />
     <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Player.ts" />
     <TypeScriptCompile Include="AlexisPhaserTSDD\GameTutorial\Preloader.ts" />
-    <TypeScriptCompile Include="Game\Logic\AreaColor.ts" />
     <TypeScriptCompile Include="Scripts\definitions\p2.d.ts" />
     <TypeScriptCompile Include="Scripts\definitions\phaser.comments.d.ts" />
     <TypeScriptCompile Include="Scripts\definitions\pixi.comments.d.ts" />
     <TypeScriptCompile Include="Game\Logic\game.ts" />
     <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
-    <TypeScriptCompile Include="Tests\Frontend\person.test.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
