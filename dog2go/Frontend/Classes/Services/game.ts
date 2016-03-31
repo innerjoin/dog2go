@@ -97,41 +97,70 @@ function addTestData(): PlayerFieldArea[] {
     return areas;
 }
 
-function addField(game: Phaser.Game, x: number, y: number, color: number): PIXI.Graphics {
-    let graphics = game.add.graphics(x, y);
-    graphics.beginFill(color, 1);
-    graphics.drawCircle(graphics.x, graphics.y, 20);
-    graphics.endFill();
-    return graphics;
-}
 
 
-class GameArea {
+
+
+
+class GameArea extends Phaser.State {
     constructor() {
+        super();
         const gameStates = {
             preload: this.preload,
             create: this.create
         };
         this.game = new Phaser.Game(720, 720, Phaser.AUTO, "content", gameStates);
+        this.game.state.add('GameArea', this, false);
+
+        this.game.state.start('GameArea');
     }
 
     game:Phaser.Game;
-    areas:PlayerFieldArea[] = [];
+    areas: PlayerFieldArea[] = [];
+    fields: Phaser.Graphics[] = [];
 
     /* load game assets here, but not objects */
     preload() {
         this.areas = addTestData();
+        this.fields = [];
+        this.addField = function (x: number, y: number, color: number): Phaser.Graphics {
+            let graphics = this.game.add.graphics(x, y);
+            graphics.beginFill(color, 1);
+            graphics.drawCircle(graphics.x, graphics.y, 20);
+            graphics.endFill();
+            this.fields.push(graphics);
+            return graphics;
+        }
+        this.game.load.image('meeple_blue', '../Frontend/Images/pawn_blue.png');
+
+    }
+    addField(x: number, y: number, color: number): Phaser.Graphics {
+        let graphics = this.game.add.graphics(x, y);
+        graphics.beginFill(color, 1);
+        graphics.drawCircle(graphics.x, graphics.y, 20);
+        graphics.endFill();
+        this.fields.push(graphics);
+        return graphics;
+    }
+    dropLimiter(item ) {
+        /*if (item.x > 150) {
+            item.x = 90;
+        }
+        if (item.y > 150) {
+            item.y = 90;
+        }*/
     }
 
     create() {
+        var cellSpan = 20;
         this.game.stage.backgroundColor = 0xddeeCC;
         let pos = 0;
         const xStart = [260, 20, 100, 340];
         const yStart = [20, 100, 340, 260];
-        const x1 = [-20, 0, 20, 0];
-        const y1 = [0, 20, 0, -20];
-        const x2 = [0, 20, 0, -20];
-        const y2 = [20, 0, -20, 0];
+        const x1 = [-cellSpan, 0, cellSpan, 0];
+        const y1 = [0, cellSpan, 0, -cellSpan];
+        const x2 = [0, cellSpan, 0, -cellSpan];
+        const y2 = [cellSpan, 0, -cellSpan, 0];
 
         for (let area of this.areas) {
             console.log(area);
@@ -149,11 +178,12 @@ class GameArea {
                     for (let j = 0; j < area.endFields.length; j++) {
                         ex += x2[pos];
                         ey += y2[pos];
-                        el.viewRepresentation = addField(this.game, ex, ey, color);
+                        el.viewRepresentation = this.addField(ex, ey, color);
                         finEl = finEl.next;
                     }
                 }
-                el.viewRepresentation = addField(this.game, x, y, color);
+                el.viewRepresentation = this.addField(x, y, color);
+                // Calculate Position for next field or something like that
                 if (i < 8 || i > 11) {
                     x += x1[pos];//x += 0; //left x += 0; //top x -= 20; //bottom x += 20;
                     y += y1[pos];//y += -20;  //left y += 20; //top y += 0; //bottom y += 20;
@@ -165,6 +195,15 @@ class GameArea {
             } //while (el.next);
             pos++;
         }
+
+        var meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.height - 45, 'meeple_blue');
+        meepleBlue.anchor.setTo(0.5, 0.5);
+        meepleBlue.scale.setTo(0.08, 0.08);
+        meepleBlue.inputEnabled = true;
+        meepleBlue.input.enableDrag();
+        meepleBlue.input.enableSnap(20, 20, true, true);
+        //meepleBlue.events.onDragStop.add(this.dropLimiter);
+        meepleBlue.events.onDragUpdate.add(this.dropLimiter);
     }
     
 }

@@ -214,6 +214,7 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Frontend\Classes\Services\Chat.js" />
+    <Content Include="Frontend\Images\pawn_blue.png" />
     <Content Include="Frontend\Library\SignalR\jquery.signalR-2.2.0.js" />
     <Content Include="Frontend\Library\SignalR\jquery.signalR-2.2.0.min.js" />
     <Content Include="Frontend\Styles\bootstrap-theme.css" />
