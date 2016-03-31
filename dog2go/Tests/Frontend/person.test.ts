@@ -1,4 +1,5 @@
-﻿/// <reference path="../../Game/Logic/game.ts"/>
+﻿/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts"/>
+/// <reference path="../../Frontend/Classes/Services/game.ts"/>
 
 describe("THE TEST", () => {
 

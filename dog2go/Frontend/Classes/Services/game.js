@@ -1,11 +1,16 @@
-/// <reference path="../../Scripts/definitions/phaser.comments.d.ts"/>
-/// <reference path="./AreaColor.ts"/>
-//import Color = require("./AreaColor");
+/// <reference path="../../Library/Phaser/phaser.comments.d.ts"/>
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var AreaColor;
+(function (AreaColor) {
+    AreaColor[AreaColor["Red"] = 16711680] = "Red";
+    AreaColor[AreaColor["Blue"] = 255] = "Blue";
+    AreaColor[AreaColor["Green"] = 65280] = "Green";
+    AreaColor[AreaColor["Yellow"] = 15582739] = "Yellow";
+})(AreaColor || (AreaColor = {}));
 var MoveDestinationField = (function () {
     function MoveDestinationField(previous) {
         this.previous = previous;
@@ -173,3 +178,4 @@ var GameArea = (function () {
 window.onload = function () {
     var gameArea = new GameArea();
 };
+//# sourceMappingURL=game.js.map

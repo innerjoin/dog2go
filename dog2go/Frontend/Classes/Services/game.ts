@@ -1,6 +1,11 @@
-/// <reference path="../../Scripts/definitions/phaser.comments.d.ts"/>
-/// <reference path="./AreaColor.ts"/>
-//import Color = require("./AreaColor");
+/// <reference path="../../Library/Phaser/phaser.comments.d.ts"/>
+
+enum AreaColor {
+    Red = 0xff0000,
+    Blue = 0x0000ff,
+    Green = 0x00ff00,
+    Yellow = 0xedc613
+}
 
 class MoveDestinationField {
     identifier: number; 
