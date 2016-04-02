@@ -32,4 +32,3 @@ describe("THE TEST", function () {
         expect(person.getFullName(true)).not.toBe("Joe, Smith");
     });
 });
-//# sourceMappingURL=person.test.js.map
