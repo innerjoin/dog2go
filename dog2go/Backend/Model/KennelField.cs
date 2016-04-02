@@ -2,6 +2,9 @@
 {
     public class KennelField : MoveDestinationField
     {
+        public KennelField(int fieldId) : base(fieldId)
+        {
 
+        }
     }
 }

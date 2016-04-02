@@ -109,14 +109,6 @@ var GameArea = (function (_super) {
     GameArea.prototype.preload = function () {
         this.areas = addTestData();
         this.fields = [];
-        this.addField = function (x, y, color) {
-            var graphics = this.game.add.graphics(x, y);
-            graphics.beginFill(color, 1);
-            graphics.drawCircle(graphics.x, graphics.y, 20);
-            graphics.endFill();
-            this.fields.push(graphics);
-            return graphics;
-        };
         this.game.load.image('meeple_blue', '../Frontend/Images/pawn_blue.png');
     };
     GameArea.prototype.addField = function (x, y, color) {
@@ -128,6 +120,22 @@ var GameArea = (function (_super) {
         return graphics;
     };
     GameArea.prototype.dropLimiter = function (item) {
+        var nearest;
+        var smalest = 99999999;
+        this.fields.forEach(function (field) {
+            var dist = Math.sqrt((item.x - field.x) ^ 2 + (item.y - field.y) ^ 2);
+            if (!(smalest < dist)) {
+                smalest = dist;
+                nearest = field;
+            }
+        });
+        if (nearest != null) {
+            item.x = nearest.x;
+            item.y = nearest.y;
+        }
+        /* this.fields.forEach((field) => {
+            var dist = Math.sqrt((item.x - field.x) ^ 2 + (item.y - field.y) ^ 2);
+        });*/
         /*if (item.x > 150) {
             item.x = 90;
         }
@@ -187,7 +195,7 @@ var GameArea = (function (_super) {
         meepleBlue.input.enableDrag();
         meepleBlue.input.enableSnap(20, 20, true, true);
         //meepleBlue.events.onDragStop.add(this.dropLimiter);
-        meepleBlue.events.onDragUpdate.add(this.dropLimiter);
+        meepleBlue.events.onDragUpdate.add(this.dropLimiter, this);
     };
     return GameArea;
 }(Phaser.State));

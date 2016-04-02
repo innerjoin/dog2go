@@ -2,6 +2,12 @@
 {
     public class StartField : MoveDestinationField
     {
-        public int ColorCode { get; set; }
+        public ColorCode ColorCode { get; set; }
+        public EndField EndFieldEntry { get; set; }
+
+        public StartField(int fieldId, ColorCode colorCode) : base(fieldId)
+        {
+            ColorCode = colorCode;
+        }
     }
 }

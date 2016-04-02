@@ -123,14 +123,7 @@ class GameArea extends Phaser.State {
     preload() {
         this.areas = addTestData();
         this.fields = [];
-        this.addField = function (x: number, y: number, color: number): Phaser.Graphics {
-            let graphics = this.game.add.graphics(x, y);
-            graphics.beginFill(color, 1);
-            graphics.drawCircle(graphics.x, graphics.y, 20);
-            graphics.endFill();
-            this.fields.push(graphics);
-            return graphics;
-        }
+        
         this.game.load.image('meeple_blue', '../Frontend/Images/pawn_blue.png');
 
     }
@@ -142,7 +135,25 @@ class GameArea extends Phaser.State {
         this.fields.push(graphics);
         return graphics;
     }
-    dropLimiter(item ) {
+    dropLimiter(item) {
+        var nearest: Phaser.Graphics;
+        var smalest: number = 99999999;
+        
+        this.fields.forEach((field) => {
+            var dist = Math.sqrt((item.x - field.x) ^ 2 + (item.y - field.y) ^ 2);
+            if (!(smalest < dist)) {
+                smalest = dist;
+                nearest = field;
+            }
+        });
+        if (nearest != null) {
+            item.x = nearest.x;
+            item.y = nearest.y;
+        }
+
+        /* this.fields.forEach((field) => {
+            var dist = Math.sqrt((item.x - field.x) ^ 2 + (item.y - field.y) ^ 2);
+        });*/
         /*if (item.x > 150) {
             item.x = 90;
         }
@@ -203,7 +214,7 @@ class GameArea extends Phaser.State {
         meepleBlue.input.enableDrag();
         meepleBlue.input.enableSnap(20, 20, true, true);
         //meepleBlue.events.onDragStop.add(this.dropLimiter);
-        meepleBlue.events.onDragUpdate.add(this.dropLimiter);
+        meepleBlue.events.onDragUpdate.add(this.dropLimiter, this);
     }
     
 }
