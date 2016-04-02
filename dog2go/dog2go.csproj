@@ -316,6 +316,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Game\Game.cshtml" />
+    <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
