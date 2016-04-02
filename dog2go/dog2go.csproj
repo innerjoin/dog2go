@@ -236,8 +236,8 @@
     <Compile Include="Tests\Backend\NunitSample.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\jasmine\jasmine.css" />
-    <Content Include="Content\jasmine\jasmine_favicon.png" />
+    <Content Include="Frontend\Styles\jasmine\jasmine.css" />
+    <Content Include="Frontend\Styles\jasmine\jasmine_favicon.png" />
     <Content Include="favicon.ico" />
     <Content Include="Frontend\Classes\Services\Chat.js" />
     <Content Include="Frontend\Classes\Services\GameHub.js" />
@@ -245,10 +245,10 @@
     <Content Include="Frontend\Library\Phaser\phaser.min.js" />
     <Content Include="Frontend\Library\SignalR\jquery.signalR-2.2.0.js" />
     <Content Include="Frontend\Library\SignalR\jquery.signalR-2.2.0.min.js" />
-    <Content Include="Frontend\Styles\bootstrap-theme.css" />
-    <Content Include="Frontend\Styles\bootstrap-theme.min.css" />
-    <Content Include="Frontend\Styles\bootstrap.css" />
-    <Content Include="Frontend\Styles\bootstrap.min.css" />
+    <Content Include="Frontend\Styles\bootstrap\bootstrap-theme.css" />
+    <Content Include="Frontend\Styles\bootstrap\bootstrap-theme.min.css" />
+    <Content Include="Frontend\Styles\bootstrap\bootstrap.css" />
+    <Content Include="Frontend\Styles\bootstrap\bootstrap.min.css" />
     <Content Include="Frontend\Styles\Site.css" />
     <Content Include="Frontend\Library\Bootstrap\bootstrap.js" />
     <Content Include="Frontend\Library\Bootstrap\bootstrap.min.js" />
@@ -272,10 +272,10 @@
     <None Include="Properties\PublishProfiles\dog2goAzure.pubxml" />
     <None Include="Properties\PublishProfiles\dog2gofs.pubxml" />
     <None Include="Properties\PublishProfiles\dog2goftp.pubxml" />
-    <Content Include="Scripts\jasmine\boot.js" />
-    <Content Include="Scripts\jasmine\console.js" />
-    <Content Include="Scripts\jasmine\jasmine-html.js" />
-    <Content Include="Scripts\jasmine\jasmine.js" />
+    <Content Include="Frontend\Library\jasmine\boot.js" />
+    <Content Include="Frontend\Library\jasmine\console.js" />
+    <Content Include="Frontend\Library\jasmine\jasmine-html.js" />
+    <Content Include="Frontend\Library\jasmine\jasmine.js" />
     <Content Include="Tests\Frontend\person.test.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -326,7 +326,7 @@
     <TypeScriptCompile Include="Frontend\Library\Phaser\p2.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\phaser.comments.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\pixi.comments.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
+    <TypeScriptCompile Include="Frontend\Library\jasmine\jasmine.d.ts" />
     <TypeScriptCompile Include="Tests\Frontend\person.test.ts" />
   </ItemGroup>
   <ItemGroup>

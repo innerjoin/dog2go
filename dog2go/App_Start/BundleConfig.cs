@@ -23,7 +23,7 @@ namespace dog2go
                       "~/Frontend/Library/Bootstrap/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Frontend/Styles/bootstrap.css",
+                      "~/Frontend/Styles/bootstrap/bootstrap.css",
                       "~/Frontend/Styles/site.css"));
         }
     }

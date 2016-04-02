@@ -1,4 +1,4 @@
-/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts"/>
+/// <reference path="../../Frontend/Library/jasmine/jasmine.d.ts"/>
 /// <reference path="../../Frontend/Classes/Services/game.ts"/>
 describe("THE TEST", function () {
     var person;
