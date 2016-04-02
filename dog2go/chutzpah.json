@@ -1,0 +1,20 @@
+﻿{
+  "Framework": "jasmine",
+  "Compile": {
+    "Mode": "External",
+    "Extensions": [ ".ts" ],
+    "ExtensionsWithNoOutput": [ ".d.ts" ]
+  },
+  "References": [
+    {
+      "Includes": [ "*/Frontend/Classes/**/*.ts", "*/Frontend/Library/Phaser/*.js" ],
+      "Excludes": [ "*/Game/**/*.d.ts" ]
+    }
+  ],
+  "Tests": [
+    {
+      "Includes": [ "*/Tests/Frontend/*.ts" ],
+      "Excludes": [ "*/Tests/**/*.d.ts" ]
+    }
+  ]
+}
