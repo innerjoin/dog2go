@@ -243,6 +243,7 @@
     <Content Include="Frontend\Classes\Services\GameHub.js" />
     <Content Include="Frontend\Library\Phaser\phaser.js" />
     <Content Include="Frontend\Library\Phaser\phaser.min.js" />
+    <Content Include="Frontend\Images\pawn_blue.png" />
     <Content Include="Frontend\Library\SignalR\jquery.signalR-2.2.0.js" />
     <Content Include="Frontend\Library\SignalR\jquery.signalR-2.2.0.min.js" />
     <Content Include="Frontend\Styles\bootstrap\bootstrap-theme.css" />
