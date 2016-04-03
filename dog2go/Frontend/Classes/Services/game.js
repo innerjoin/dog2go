@@ -26,14 +26,14 @@ var MoveDestinationField = (function () {
         this.next = next;
     };
     return MoveDestinationField;
-})();
+}());
 var EndField = (function (_super) {
     __extends(EndField, _super);
     function EndField(previous) {
         _super.call(this, previous);
     }
     return EndField;
-})(MoveDestinationField);
+}(MoveDestinationField));
 var StartField = (function (_super) {
     __extends(StartField, _super);
     function StartField(previous) {
@@ -43,7 +43,7 @@ var StartField = (function (_super) {
         this.endFieldEntry = next;
     };
     return StartField;
-})(MoveDestinationField);
+}(MoveDestinationField));
 var Persontest = (function () {
     function Persontest() {
     }
@@ -61,7 +61,7 @@ var Persontest = (function () {
         return this.firstName + ", " + this.lastName;
     };
     return Persontest;
-})();
+}());
 var PlayerFieldArea = (function () {
     function PlayerFieldArea(color) {
         //kennelFields: MoveDestinationField[];
@@ -99,7 +99,7 @@ var PlayerFieldArea = (function () {
         }
     };
     return PlayerFieldArea;
-})();
+}());
 function addTestData() {
     var areas = [];
     var colors = [AreaColor.Red, AreaColor.Blue, AreaColor.Yellow, AreaColor.Green];
@@ -164,6 +164,14 @@ var GameArea = (function (_super) {
     //goFullScreen() {
     //}
     GameArea.prototype.create = function () {
+        $.connection.hub.error(function (error) {
+            console.log('SignalR error: ' + error);
+        });
+        console.log('getting Da fields');
+        GameFieldService.getGameFieldData(function (areas) {
+            console.log('Yeaaaaa got the fields');
+            console.log(areas);
+        });
         var game = this.game;
         var cellSpan = 40;
         this.game.stage.backgroundColor = 0xddeeCC;
@@ -221,7 +229,7 @@ var GameArea = (function (_super) {
         //this.game.input.onTap.add(() => { this.game.scale.startFullScreen(true); }, this);
     };
     return GameArea;
-})(Phaser.State);
+}(Phaser.State));
 window.onload = function () {
     var gameArea = new GameArea();
 };

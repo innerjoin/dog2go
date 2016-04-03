@@ -324,11 +324,15 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Frontend\Classes\Hubs\GameHub.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\game.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Services\GameFieldsService.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\p2.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\phaser.comments.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\pixi.comments.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\jasmine\jasmine.d.ts" />
+    <TypeScriptCompile Include="Frontend\Library\JQuery\jquery.d.ts" />
+    <TypeScriptCompile Include="Frontend\Library\SignalR\signalr.d.ts" />
     <TypeScriptCompile Include="Tests\Frontend\person.test.ts" />
   </ItemGroup>
   <ItemGroup>

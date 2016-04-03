@@ -185,6 +185,16 @@ class GameArea extends Phaser.State {
     //}
 
     create() {
+        
+        $.connection.hub.error(error => {
+            console.log('SignalR error: ' + error);
+        });
+        
+        console.log('getting Da fields');
+        GameFieldService.getGameFieldData((areas: PlayerFieldArea[]) => {
+            console.log('Yeaaaaa got the fields');
+            console.log(areas);
+        });
         var game = this.game;
         var cellSpan = 40;
         this.game.stage.backgroundColor = 0xddeeCC;
