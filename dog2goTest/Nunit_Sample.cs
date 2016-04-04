@@ -3,7 +3,7 @@
 namespace dog2goTest
 {
     [TestFixture]
-    public class Nunit_Sample
+    public class NunitSample
     {
         [Test]
         public void Nunit_JustAHappyTest()

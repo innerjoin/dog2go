@@ -9,5 +9,6 @@ namespace dog2go.Backend.Class
     public class StartField : MoveDestinationField
     {
         public int ColorCode { get; set; }
+        public EndField EndFieldEntry { get; set; }
     }
 }

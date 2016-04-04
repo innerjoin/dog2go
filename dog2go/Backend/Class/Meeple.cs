@@ -9,7 +9,7 @@ namespace dog2go.Backend.Class
 {
     public class Meeple
     {
-        public int ColorCode { get; set; }
+        public ColorCode ColorCode { get; set; }
 
         public MoveDestinationField CurrentPosition { get; set; }
 

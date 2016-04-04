@@ -71,6 +71,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -247,6 +248,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\JavaScript\Game.js" />
     <Content Include="Scripts\JavaScript\Chat.js" />
     <Content Include="MoveShape\Default.html" />
     <Content Include="Scripts\bootstrap.js" />
