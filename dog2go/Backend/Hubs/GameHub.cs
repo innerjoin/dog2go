@@ -23,11 +23,12 @@ namespace dog2go.Backend.Hubs
             string tempString = resultString[4].Substring(0, resultString[4].Length - 2);*/
 
             int id = 0;
-            PlayerFieldArea areaTop = new PlayerFieldArea(++id) {Fields = new List<MoveDestinationField>()};
-            PlayerFieldArea areaLeft = new PlayerFieldArea(++id) {Fields = new List<MoveDestinationField>()};
-            PlayerFieldArea areaBottom = new PlayerFieldArea(++id) { Fields = new List<MoveDestinationField>() };
-            PlayerFieldArea areaRight = new PlayerFieldArea(++id) { Fields = new List<MoveDestinationField>() };
 
+            int fieldId = 0;
+            PlayerFieldArea areaTop = new PlayerFieldArea(++id, ColorCode.Blue, fieldId);
+            PlayerFieldArea areaLeft = new PlayerFieldArea(++id, ColorCode.Red, areaTop.FieldId);
+            PlayerFieldArea areaBottom = new PlayerFieldArea(++id, ColorCode.Green, areaLeft.FieldId);
+            PlayerFieldArea areaRight = new PlayerFieldArea(++id, ColorCode.Yellow, areaBottom.FieldId);
             // Connection between PlayFieldAreas
             areaTop.Next = areaLeft;
             areaTop.Previous = areaRight;
