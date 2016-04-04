@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Caching;
-using dog2go.Backend.Class;
+using dog2go.Backend.Model;
 using Microsoft.AspNet.SignalR;
 
 namespace dog2go.Backend.Hubs
