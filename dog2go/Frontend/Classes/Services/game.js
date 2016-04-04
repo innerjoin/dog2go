@@ -26,14 +26,14 @@ var MoveDestinationField = (function () {
         this.next = next;
     };
     return MoveDestinationField;
-}());
+})();
 var EndField = (function (_super) {
     __extends(EndField, _super);
     function EndField(previous) {
         _super.call(this, previous);
     }
     return EndField;
-}(MoveDestinationField));
+})(MoveDestinationField);
 var StartField = (function (_super) {
     __extends(StartField, _super);
     function StartField(previous) {
@@ -43,7 +43,7 @@ var StartField = (function (_super) {
         this.endFieldEntry = next;
     };
     return StartField;
-}(MoveDestinationField));
+})(MoveDestinationField);
 var Persontest = (function () {
     function Persontest() {
     }
@@ -61,11 +61,11 @@ var Persontest = (function () {
         return this.firstName + ", " + this.lastName;
     };
     return Persontest;
-}());
+})();
 var PlayerFieldArea = (function () {
     function PlayerFieldArea(color) {
         //kennelFields: MoveDestinationField[];
-        this.gameFields = [];
+        this.Fields = [];
         this.endFields = [];
         this.color = color;
         this.createFields();
@@ -77,17 +77,17 @@ var PlayerFieldArea = (function () {
         // create the 4 fields before the start field
         for (i = 0; i < 4; i++) {
             field = new MoveDestinationField(prev);
-            this.gameFields.push(field);
+            this.Fields.push(field);
             prev = field;
         }
         // create the start field itself
         var startField = new StartField(prev);
-        this.gameFields.push(startField);
+        this.Fields.push(startField);
         // create the 11 fields after the start field
         prev = startField;
         for (i = 0; i < 11; i++) {
             field = new MoveDestinationField(prev);
-            this.gameFields.push(field);
+            this.Fields.push(field);
             prev = field;
         }
         // create the 4 end fields 
@@ -99,7 +99,7 @@ var PlayerFieldArea = (function () {
         }
     };
     return PlayerFieldArea;
-}());
+})();
 function addTestData() {
     var areas = [];
     var colors = [AreaColor.Red, AreaColor.Blue, AreaColor.Yellow, AreaColor.Green];
@@ -115,6 +115,7 @@ var GameArea = (function (_super) {
         _super.call(this);
         this.areas = [];
         this.fields = [];
+        this.gameFieldService = GameFieldService.getInstance(this.buildFields.bind(this));
         var gameStates = {
             preload: this.preload,
             create: this.create
@@ -128,6 +129,72 @@ var GameArea = (function (_super) {
         this.areas = addTestData();
         this.fields = [];
         this.game.load.image('meeple_blue', '../Frontend/Images/pawn_blue.png');
+    };
+    GameArea.getFieldById = function (id, fields) {
+        console.log('Geeting fild:', id);
+        for (var _i = 0; _i < fields.length; _i++) {
+            var field = fields[_i];
+            if (id == field.Identifier) {
+                return field;
+            }
+        }
+        console.log('No Field Found by ID in Area', id, fields);
+    };
+    GameArea.prototype.buildFields = function (areasPar) {
+        var game = this.game;
+        var cellSpan = 40;
+        this.game.stage.backgroundColor = 0xddeeCC;
+        var pos = 0;
+        var xStart = [520, 40, 200, 680];
+        var yStart = [40, 200, 680, 520];
+        var x1 = [-cellSpan, 0, cellSpan, 0];
+        var y1 = [0, cellSpan, 0, -cellSpan];
+        var x2 = [0, cellSpan, 0, -cellSpan];
+        var y2 = [cellSpan, 0, -cellSpan, 0];
+        //let area = this.areas[2];
+        for (var _i = 0; _i < areasPar.length; _i++) {
+            var area = areasPar[_i];
+            var el = area.Fields[0];
+            var x = xStart[pos];
+            var y = yStart[pos];
+            for (var i = 0; i < area.Fields.length; i++) {
+                var color = 0xeeeeee;
+                if (el instanceof StartField) {
+                    color = area.color;
+                    var ex = x;
+                    var ey = y;
+                    var finEl = el.endFieldEntry;
+                    for (var j = 0; j < area.endFields.length; j++) {
+                        ex += x2[pos];
+                        ey += y2[pos];
+                        el.viewRepresentation = this.addField(game, ex, ey, color);
+                        finEl = GameArea.getFieldById(finEl.NextIdentifier, area.Fields); //finEl.next;
+                    }
+                }
+                if (el !== undefined) {
+                    el.viewRepresentation = this.addField(game, x, y, color);
+                }
+                // Calculate Position for next field 
+                if (i < 8 || i > 11) {
+                    x += x1[pos];
+                    y += y1[pos];
+                }
+                else {
+                    x += x2[pos];
+                    y += y2[pos];
+                }
+                el = GameArea.getFieldById(el.NextIdentifier, area.Fields);
+            }
+            pos++;
+        }
+        var meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
+        meepleBlue.anchor.setTo(0.5, 0.5);
+        meepleBlue.scale.setTo(0.08, 0.08);
+        meepleBlue.inputEnabled = true;
+        meepleBlue.input.enableDrag();
+        meepleBlue.input.enableSnap(40, 40, false, true);
+        console.log("meeples parent is: ", meepleBlue.parent);
+        meepleBlue.events.onDragStop.add(this.dropLimiter, this);
     };
     GameArea.prototype.addField = function (game, x, y, color) {
         var graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
@@ -164,72 +231,35 @@ var GameArea = (function (_super) {
     //goFullScreen() {
     //}
     GameArea.prototype.create = function () {
-        $.connection.hub.error(function (error) {
-            console.log('SignalR error: ' + error);
-        });
-        console.log('getting Da fields');
-        GameFieldService.getGameFieldData(function (areas) {
+        this.gameFieldService.getGameFieldData();
+        /*$(function() {
+            var gameHub = $.connection.gameHub;
+            gameHub.client.doSomeShit = function() {
+                console.log("doSomeShit: SHIT SHIT");
+            }
+            gameHub.client.createGameTable = function(areas) { //(areas) => {
+                console.log("GameFieldService: Called createGameTable!", areas);
+                //callback(areas);
+            }
+
+            $.connection.hub.start().done(() => {
+                console.log("GameFieldService: Connection etablished");
+                gameHub.server.sendGameTable();
+            });
+            $.connection.hub.error(error => {
+                console.log('SignalR error: ' + error);
+            });
+        });*/
+        /*GameFieldService.getGameFieldData((areas: PlayerFieldArea[]) => {
             console.log('Yeaaaaa got the fields');
             console.log(areas);
-        });
-        var game = this.game;
-        var cellSpan = 40;
-        this.game.stage.backgroundColor = 0xddeeCC;
-        var pos = 0;
-        var xStart = [520, 40, 200, 680];
-        var yStart = [40, 200, 680, 520];
-        var x1 = [-cellSpan, 0, cellSpan, 0];
-        var y1 = [0, cellSpan, 0, -cellSpan];
-        var x2 = [0, cellSpan, 0, -cellSpan];
-        var y2 = [cellSpan, 0, -cellSpan, 0];
-        var area = this.areas[2];
-        for (var _i = 0, _a = this.areas; _i < _a.length; _i++) {
-            var area_1 = _a[_i];
-            var el = area_1.gameFields[0];
-            var x = xStart[pos];
-            var y = yStart[pos];
-            for (var i = 0; i < area_1.gameFields.length; i++) {
-                var color = 0xeeeeee;
-                if (el instanceof StartField) {
-                    color = area_1.color;
-                    var ex = x;
-                    var ey = y;
-                    var finEl = el.endFieldEntry;
-                    for (var j = 0; j < area_1.endFields.length; j++) {
-                        ex += x2[pos];
-                        ey += y2[pos];
-                        el.viewRepresentation = this.addField(game, ex, ey, color);
-                        finEl = finEl.next;
-                    }
-                }
-                el.viewRepresentation = this.addField(game, x, y, color);
-                // Calculate Position for next field 
-                if (i < 8 || i > 11) {
-                    x += x1[pos];
-                    y += y1[pos];
-                }
-                else {
-                    x += x2[pos];
-                    y += y2[pos];
-                }
-                el = el.next;
-            }
-            pos++;
-        }
-        var meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
-        meepleBlue.anchor.setTo(0.5, 0.5);
-        meepleBlue.scale.setTo(0.08, 0.08);
-        meepleBlue.inputEnabled = true;
-        meepleBlue.input.enableDrag();
-        meepleBlue.input.enableSnap(40, 40, false, true);
-        console.log("meeples parent is: ", meepleBlue.parent);
-        meepleBlue.events.onDragStop.add(this.dropLimiter, this);
+        });*/
         // would allow to go to fullscreen on desktop systems
         //this.game.scale.onFullScreenInit.add(GameArea.prototype.onGoFullScreen, this);        
         //this.game.input.onTap.add(() => { this.game.scale.startFullScreen(true); }, this);
     };
     return GameArea;
-}(Phaser.State));
+})(Phaser.State);
 window.onload = function () {
     var gameArea = new GameArea();
 };

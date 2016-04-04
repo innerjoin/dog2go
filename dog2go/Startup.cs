@@ -12,16 +12,16 @@ namespace dog2go
     {
         public void Configuration(IAppBuilder app)
         {
-//#if DEBUG
+#if DEBUG
             Console.WriteLine("Hello this is Debug Mode!");
             var hubConfiguration = new HubConfiguration();
             hubConfiguration.EnableDetailedErrors = true;
             app.MapSignalR(hubConfiguration);
-//#else
+#else
             Console.WriteLine("Hello this is Release Mode!");
             // Any connection or hub wire up and configuration should go here
             //app.MapSignalR();
-//#endif
+#endif
             ConfigureAuth(app);
 
             

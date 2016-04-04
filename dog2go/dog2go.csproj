@@ -144,6 +144,14 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="TypeLite, Version=1.8.0.0, Culture=neutral, PublicKeyToken=8cd4b9c9ac23d744, processorArchitecture=MSIL">
+      <HintPath>..\packages\TypeLite.1.8.0\lib\net4\TypeLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TypeLite.Net4, Version=1.8.0.0, Culture=neutral, PublicKeyToken=8cd4b9c9ac23d744, processorArchitecture=MSIL">
+      <HintPath>..\packages\TypeLite.1.8.0\lib\net4\TypeLite.Net4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
@@ -229,6 +237,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Demo.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -277,6 +286,10 @@
     <Content Include="Frontend\Library\jasmine\console.js" />
     <Content Include="Frontend\Library\jasmine\jasmine-html.js" />
     <Content Include="Frontend\Library\jasmine\jasmine.js" />
+    <Content Include="Scripts\TypeLite.Net4.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TypeLite.Net4.d.ts</LastGenOutput>
+    </Content>
     <Content Include="Tests\Frontend\person.test.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -317,14 +330,19 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Game\Game.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="Scripts\Manager.ttinclude" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Frontend\Classes\Hubs\GameHub.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Hubs\ChatHub.d.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Hubs\GameHub.d.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Hubs\Hub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\game.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\GameFieldsService.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\p2.d.ts" />
@@ -333,10 +351,19 @@
     <TypeScriptCompile Include="Frontend\Library\jasmine\jasmine.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\JQuery\jquery.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\SignalR\signalr.d.ts" />
+    <TypeScriptCompile Include="Scripts\Enums.d.ts">
+      <DependentUpon>TypeLite.Net4.tt</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Scripts\TypeLite.Net4.d.ts">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TypeLite.Net4.tt</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Tests\Frontend\person.test.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <PropertyGroup>
@@ -377,7 +404,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>21028</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
