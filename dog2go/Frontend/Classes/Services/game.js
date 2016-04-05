@@ -115,6 +115,8 @@ var GameArea = (function (_super) {
         _super.call(this);
         this.areas = [];
         this.fields = [];
+        var chat = new ChatController();
+        this.gameFieldService = GameFieldService.getInstance(this.buildFields.bind(this));
         var gameStates = {
             preload: this.preload,
             create: this.create
@@ -128,6 +130,28 @@ var GameArea = (function (_super) {
         this.areas = addTestData();
         this.fields = [];
         this.game.load.image('meeple_blue', '../Frontend/Images/pawn_blue.png');
+    };
+    GameArea.getFieldById = function (id, fields) {
+        console.log('Geeting fild:', id);
+        for (var _i = 0; _i < fields.length; _i++) {
+            var field = fields[_i];
+            if (id == field.identifier) {
+                return field;
+            }
+        }
+        console.log('No Field Found by ID in Area', id, fields);
+    };
+    GameArea.prototype.buildFields = function (areasPar) {
+        var game = this.game;
+        var cellSpan = 40;
+        this.game.stage.backgroundColor = 0xddeeCC;
+        var pos = 0;
+        var xStart = [520, 40, 200, 680];
+        var yStart = [40, 200, 680, 520];
+        var x1 = [-cellSpan, 0, cellSpan, 0];
+        var y1 = [0, cellSpan, 0, -cellSpan];
+        var x2 = [0, cellSpan, 0, -cellSpan];
+        var y2 = [cellSpan, 0, -cellSpan, 0];
     };
     GameArea.prototype.addField = function (game, x, y, color) {
         var graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
@@ -164,6 +188,7 @@ var GameArea = (function (_super) {
     //goFullScreen() {
     //}
     GameArea.prototype.create = function () {
+        this.gameFieldService.getGameFieldData();
         var game = this.game;
         var cellSpan = 40;
         this.game.stage.backgroundColor = 0xddeeCC;
@@ -225,3 +250,4 @@ var GameArea = (function (_super) {
 window.onload = function () {
     var gameArea = new GameArea();
 };
+//# sourceMappingURL=game.js.map

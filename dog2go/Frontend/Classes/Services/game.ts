@@ -11,6 +11,11 @@ class MoveDestinationField {
     identifier: number; 
     previous: MoveDestinationField;
     next: MoveDestinationField;
+
+    NextIdentifier : number;
+ 
+    PreviousIdentifier:number;
+    
     viewRepresentation;
 
     constructor(previous: MoveDestinationField) {
@@ -124,6 +129,8 @@ function addTestData(): PlayerFieldArea[] {
 class GameArea extends Phaser.State {
     constructor() {
         super();
+        var chat = new ChatController();
+        this.gameFieldService = GameFieldService.getInstance(this.buildFields.bind(this));
         const gameStates = {
             preload: this.preload,
             create: this.create
@@ -134,6 +141,7 @@ class GameArea extends Phaser.State {
         this.game.state.start('GameArea');
     }
 
+    gameFieldService: GameFieldService;
     game:Phaser.Game;
     areas: PlayerFieldArea[] = [];
     fields: Phaser.Graphics[] = [];
@@ -146,7 +154,32 @@ class GameArea extends Phaser.State {
         this.game.load.image('meeple_blue', '../Frontend/Images/pawn_blue.png');
 
     }
-    addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
+
+    public static getFieldById(id: number, fields: MoveDestinationField[]) {
+        console.log('Geeting fild:', id);
+        for (var field of fields) {
+            if (id == field.identifier) {
+                return field;
+            }
+        }
+        console.log('No Field Found by ID in Area', id, fields);
+    }
+
+    public buildFields(areasPar : PlayerFieldArea[]) {
+        var game = this.game;
+        var cellSpan = 40;
+        this.game.stage.backgroundColor = 0xddeeCC;
+        let pos = 0;
+        const xStart = [520, 40, 200, 680];
+        const yStart = [40, 200, 680, 520];
+        const x1 = [-cellSpan, 0, cellSpan, 0];
+        const y1 = [0, cellSpan, 0, -cellSpan];
+        const x2 = [0, cellSpan, 0, -cellSpan];
+        const y2 = [cellSpan, 0, -cellSpan, 0];
+        
+    }
+
+    private addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
         let graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
         graphics.beginFill(color, 1);
         graphics.drawCircle(0, 0, 20); //draw a circle relative to it's parent (in this case, the graphics object)
@@ -154,7 +187,7 @@ class GameArea extends Phaser.State {
         this.fields.push(graphics);
         return graphics;
     }
-    dropLimiter(item: Phaser.Sprite) {
+    public dropLimiter(item: Phaser.Sprite) {
         var nearest: Phaser.Graphics;
         var smallest: number = 99999999;
         var pos = item.world;
@@ -184,7 +217,9 @@ class GameArea extends Phaser.State {
 
     //}
 
-    create() {
+    public create() {
+        this.gameFieldService.getGameFieldData();
+        
         var game = this.game;
         var cellSpan = 40;
         this.game.stage.backgroundColor = 0xddeeCC;
@@ -199,9 +234,9 @@ class GameArea extends Phaser.State {
         let area = this.areas[2];
         for (let area of this.areas) {
             let el = area.gameFields[0];
-            let x = xStart[pos]; 
-            let y = yStart[pos]; 
-            for(let i = 0; i < area.gameFields.length; i++) {
+            let x = xStart[pos];
+            let y = yStart[pos];
+            for (let i = 0; i < area.gameFields.length; i++) {
                 var color = 0xeeeeee;
                 if (el instanceof StartField) {
                     color = area.color;
@@ -225,7 +260,7 @@ class GameArea extends Phaser.State {
                     y += y2[pos];
                 }
                 el = el.next;
-            } 
+            }
             pos++;
         }
 
