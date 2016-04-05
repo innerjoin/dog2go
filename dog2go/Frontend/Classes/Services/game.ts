@@ -129,6 +129,7 @@ function addTestData(): PlayerFieldArea[] {
 class GameArea extends Phaser.State {
     constructor() {
         super();
+        var chat = new ChatController();
         this.gameFieldService = GameFieldService.getInstance(this.buildFields.bind(this));
         const gameStates = {
             preload: this.preload,
@@ -177,7 +178,7 @@ class GameArea extends Phaser.State {
         const y2 = [cellSpan, 0, -cellSpan, 0];
 
         //let area = this.areas[2];
-        for (let area of areasPar) {
+        /*for (let area of areasPar) {
             let el = area.Fields[0];
             let x = xStart[pos];
             let y = yStart[pos];
@@ -210,7 +211,7 @@ class GameArea extends Phaser.State {
                 el = GameArea.getFieldById(el.NextIdentifier, area.Fields);
             }
             pos++;
-        }
+        }*/
 
         var meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
         meepleBlue.anchor.setTo(0.5, 0.5);
@@ -262,28 +263,6 @@ class GameArea extends Phaser.State {
 
     public create() {
         this.gameFieldService.getGameFieldData();
-        /*$(function() {
-            var gameHub = $.connection.gameHub;
-            gameHub.client.doSomeShit = function() {
-                console.log("doSomeShit: SHIT SHIT");
-            }
-            gameHub.client.createGameTable = function(areas) { //(areas) => {
-                console.log("GameFieldService: Called createGameTable!", areas);
-                //callback(areas);
-            }
-
-            $.connection.hub.start().done(() => {
-                console.log("GameFieldService: Connection etablished");
-                gameHub.server.sendGameTable();
-            });
-            $.connection.hub.error(error => {
-                console.log('SignalR error: ' + error);
-            });
-        });*/
-        /*GameFieldService.getGameFieldData((areas: PlayerFieldArea[]) => {
-            console.log('Yeaaaaa got the fields');
-            console.log(areas);
-        });*/
         
 
         // would allow to go to fullscreen on desktop systems

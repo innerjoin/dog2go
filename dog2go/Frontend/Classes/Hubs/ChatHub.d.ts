@@ -1,8 +1,14 @@
-﻿interface IGameHubClient {
-    createGameTable(areas: PlayerFieldArea[]);
+﻿interface IChatHub extends HubProxy {
+    client: IChatHubClient;
+    server: IChatHubServer;
+}
+
+
+interface IChatHubClient {
+    broadcastMessage(name:string, message:string);
     doSomeShit();
 }
 
-interface IGameHubServer {
-    sendGameTable(): void;
+interface IChatHubServer {
+    sendTo(name:string, message:string): void;
 }

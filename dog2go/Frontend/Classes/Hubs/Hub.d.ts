@@ -1,8 +1,8 @@
 ﻿interface SignalR {
-    gameHub: HubProxy;
+    gameHub: IGameHub;
+    chatHub: IChatHub;
 }
 
 interface HubProxy {
-    client: IGameHubClient;
-    server: IGameHubServer;
+    
 }
