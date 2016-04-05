@@ -145,11 +145,11 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="TypeLite, Version=1.8.0.0, Culture=neutral, PublicKeyToken=8cd4b9c9ac23d744, processorArchitecture=MSIL">
-      <HintPath>..\packages\TypeLite.1.8.0\lib\net4\TypeLite.dll</HintPath>
+      <HintPath>..\packages\TypeLite.Lib.1.8.0\lib\net4\TypeLite.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TypeLite.Net4, Version=1.8.0.0, Culture=neutral, PublicKeyToken=8cd4b9c9ac23d744, processorArchitecture=MSIL">
-      <HintPath>..\packages\TypeLite.1.8.0\lib\net4\TypeLite.Net4.dll</HintPath>
+      <HintPath>..\packages\TypeLite.Lib.1.8.0\lib\net4\TypeLite.Net4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
