@@ -340,7 +340,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\chat.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\ChatHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\GameHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\Hub.d.ts" />
