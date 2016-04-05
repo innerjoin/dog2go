@@ -9,8 +9,8 @@ enum AreaColor {
 
 class MoveDestinationField {
     identifier: number; 
-    private previous: MoveDestinationField;
-    private next: MoveDestinationField;
+    previous: MoveDestinationField;
+    next: MoveDestinationField;
 
     NextIdentifier : number;
  
@@ -78,7 +78,7 @@ class PlayerFieldArea {
 
     color: AreaColor;
     //kennelFields: MoveDestinationField[];
-    Fields: MoveDestinationField[] = [];
+    gameFields: MoveDestinationField[] = [];
     endFields: EndField[] = [];
 
     private createFields() {
@@ -88,17 +88,17 @@ class PlayerFieldArea {
         // create the 4 fields before the start field
         for (i = 0; i < 4; i++) {
             field = new MoveDestinationField(prev);
-            this.Fields.push(field);
+            this.gameFields.push(field);
             prev = field;
         }
         // create the start field itself
         let startField = new StartField(prev);
-        this.Fields.push(startField);
+        this.gameFields.push(startField);
         // create the 11 fields after the start field
         prev = startField;
         for (i = 0; i < 11; i++) {
             field = new MoveDestinationField(prev);
-            this.Fields.push(field);
+            this.gameFields.push(field);
             prev = field;
         }
         // create the 4 end fields 
@@ -158,7 +158,7 @@ class GameArea extends Phaser.State {
     public static getFieldById(id: number, fields: MoveDestinationField[]) {
         console.log('Geeting fild:', id);
         for (var field of fields) {
-            if (id == field.Identifier) {
+            if (id == field.identifier) {
                 return field;
             }
         }
@@ -176,51 +176,7 @@ class GameArea extends Phaser.State {
         const y1 = [0, cellSpan, 0, -cellSpan];
         const x2 = [0, cellSpan, 0, -cellSpan];
         const y2 = [cellSpan, 0, -cellSpan, 0];
-
-        //let area = this.areas[2];
-        /*for (let area of areasPar) {
-            let el = area.Fields[0];
-            let x = xStart[pos];
-            let y = yStart[pos];
-            for (let i = 0; i < area.Fields.length; i++) {
-                var color = 0xeeeeee;
-                if (el instanceof StartField) {
-                    color = area.color;
-                    let ex = x;
-                    let ey = y;
-                    let finEl = el.endFieldEntry;
-                    for (let j = 0; j < area.endFields.length; j++) {
-                        ex += x2[pos];
-                        ey += y2[pos];
-                        el.viewRepresentation = this.addField(game, ex, ey, color);
-                        finEl = GameArea.getFieldById(finEl.NextIdentifier, area.Fields); //finEl.next;
-                    }
-                }
-                if (el !== undefined) {
-                    el.viewRepresentation = this.addField(game, x, y, color);
-                }
-                // Calculate Position for next field 
-                if (i < 8 || i > 11) {
-                    x += x1[pos];
-                    y += y1[pos];
-                } else {
-                    x += x2[pos];
-                    y += y2[pos];
-                }
-
-                el = GameArea.getFieldById(el.NextIdentifier, area.Fields);
-            }
-            pos++;
-        }*/
-
-        var meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
-        meepleBlue.anchor.setTo(0.5, 0.5);
-        meepleBlue.scale.setTo(0.08, 0.08);
-        meepleBlue.inputEnabled = true;
-        meepleBlue.input.enableDrag();
-        meepleBlue.input.enableSnap(40, 40, false, true);
-        console.log("meeples parent is: ", meepleBlue.parent);
-        meepleBlue.events.onDragStop.add(this.dropLimiter, this);
+        
     }
 
     private addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
@@ -264,6 +220,58 @@ class GameArea extends Phaser.State {
     public create() {
         this.gameFieldService.getGameFieldData();
         
+        var game = this.game;
+        var cellSpan = 40;
+        this.game.stage.backgroundColor = 0xddeeCC;
+        let pos = 0;
+        const xStart = [520, 40, 200, 680];
+        const yStart = [40, 200, 680, 520];
+        const x1 = [-cellSpan, 0, cellSpan, 0];
+        const y1 = [0, cellSpan, 0, -cellSpan];
+        const x2 = [0, cellSpan, 0, -cellSpan];
+        const y2 = [cellSpan, 0, -cellSpan, 0];
+
+        let area = this.areas[2];
+        for (let area of this.areas) {
+            let el = area.gameFields[0];
+            let x = xStart[pos];
+            let y = yStart[pos];
+            for (let i = 0; i < area.gameFields.length; i++) {
+                var color = 0xeeeeee;
+                if (el instanceof StartField) {
+                    color = area.color;
+                    let ex = x;
+                    let ey = y;
+                    let finEl = el.endFieldEntry;
+                    for (let j = 0; j < area.endFields.length; j++) {
+                        ex += x2[pos];
+                        ey += y2[pos];
+                        el.viewRepresentation = this.addField(game, ex, ey, color);
+                        finEl = finEl.next;
+                    }
+                }
+                el.viewRepresentation = this.addField(game, x, y, color);
+                // Calculate Position for next field 
+                if (i < 8 || i > 11) {
+                    x += x1[pos];
+                    y += y1[pos];
+                } else {
+                    x += x2[pos];
+                    y += y2[pos];
+                }
+                el = el.next;
+            }
+            pos++;
+        }
+
+        var meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
+        meepleBlue.anchor.setTo(0.5, 0.5);
+        meepleBlue.scale.setTo(0.08, 0.08);
+        meepleBlue.inputEnabled = true;
+        meepleBlue.input.enableDrag();
+        meepleBlue.input.enableSnap(40, 40, false, true);
+        console.log("meeples parent is: ", meepleBlue.parent);
+        meepleBlue.events.onDragStop.add(this.dropLimiter, this);
 
         // would allow to go to fullscreen on desktop systems
         //this.game.scale.onFullScreenInit.add(GameArea.prototype.onGoFullScreen, this);        
