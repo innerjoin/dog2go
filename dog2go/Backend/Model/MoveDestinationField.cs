@@ -45,5 +45,7 @@ namespace dog2go.Backend.Model
         {
             Identifier = fieldId;
         }
+
+        public virtual string FieldType => this.GetType().ToString();
     }
 }

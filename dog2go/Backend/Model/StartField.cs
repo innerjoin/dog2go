@@ -9,5 +9,7 @@
         {
             ColorCode = colorCode;
         }
+
+        public override string FieldType => this.GetType().ToString();
     }
 }

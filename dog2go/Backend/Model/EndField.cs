@@ -6,5 +6,7 @@ namespace dog2go.Backend.Model
         {
             
         }
+
+        public override string FieldType => this.GetType().ToString();
     }
 }

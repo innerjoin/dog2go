@@ -1,4 +1,6 @@
-﻿namespace dog2go.Backend.Model
+﻿using System;
+
+namespace dog2go.Backend.Model
 {
     public class StandardField : MoveDestinationField
     {
@@ -6,5 +8,7 @@
         {
 
         }
+
+        public override string FieldType => this.GetType().ToString();
     }
 }
