@@ -12,15 +12,11 @@ namespace dog2go.Backend.Hubs
 {
     public class GameHub : Hub
     {
+        private readonly List<GameTable>  _tableList = new List<GameTable>();
+
         public void SendGameTable()
         {
             List<PlayerFieldArea> areas = new List<PlayerFieldArea>();
-
-            //Use Guid for Identifier
-            /*Guid g = Guid.NewGuid();
-            string guid = g.ToString();
-            string[] resultString = guid.Split(new string[] { "-"}, StringSplitOptions.None);
-            string tempString = resultString[4].Substring(0, resultString[4].Length - 2);*/
 
             int id = 0;
 
@@ -44,8 +40,13 @@ namespace dog2go.Backend.Hubs
             areas.Add(areaBottom);
             areas.Add(areaRight);
             
-            Clients.All.createGameTable(areas);
+            
+            GameTable table = new GameTable(areas, _tableList.Count());
+            _tableList.Add(table);
+            Clients.All.createGameTable(table);
         }
+
+         
 
         public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
         {
