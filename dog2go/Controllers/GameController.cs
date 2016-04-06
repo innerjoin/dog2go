@@ -12,5 +12,10 @@ namespace dog2go.Controllers
         {
             return View();
         }
+
+        public ActionResult view()
+        {
+            return View();
+        }
     }
 }

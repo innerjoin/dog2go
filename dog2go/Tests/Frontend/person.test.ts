@@ -1,5 +1,6 @@
 ﻿/// <reference path="../../Frontend/Library/jasmine/jasmine.d.ts"/>
-/// <reference path="../../Frontend/Classes/Services/game.ts"/>
+/// <reference path="../../Frontend/Classes/Controllers/GameArea.ts"/>
+/// <chutzpah_reference path="../../signalr/hubs"/>
 
 describe("THE TEST", () => {
 

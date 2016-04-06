@@ -1,11 +1,13 @@
-﻿class ChatController {
-    private chatService : ChatService;
+﻿import Service = require("../Services/ChatService");
+
+export class ChatController {
+    private chatService: Service.ChatService;
     constructor() {
-        this.chatService = ChatService.getInstance(this.putMessage);
-        $('#sendmessage').click(function () {
+        this.chatService = Service.ChatService.getInstance(this.putMessage);
+        $('#sendmessage').click(() => {
             this.chatService.sendMessage($('#displayname').val(), $('#message').val());
             $('#message').val('').focus();
-        }.bind(this));
+        });
 
         $('#displayname').val('EveryBody heisst Hans');//(prompt('Enter your name:', ''));
         // Set initial focus to message input box.  

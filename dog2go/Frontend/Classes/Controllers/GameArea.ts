@@ -1,135 +1,11 @@
 /// <reference path="../../Library/Phaser/phaser.comments.d.ts"/>
-
-enum AreaColor {
-    Red = 0xff0000,
-    Blue = 0x0000ff,
-    Green = 0x00ff00,
-    Yellow = 0xedc613
-}
-
-class MoveDestinationField {
-    identifier: number; 
-    previous: MoveDestinationField;
-    next: MoveDestinationField;
-
-    NextIdentifier : number;
- 
-    PreviousIdentifier:number;
-    
-    viewRepresentation;
-
-    constructor(previous: MoveDestinationField) {
-        this.previous = previous;
-        let self = this;
-        if (previous instanceof StartField && self instanceof EndField) {
-            previous.setEndFieldEntry(self);
-        } else if (previous != null) {
-            previous.setNext(self);
-        } 
-    }
-
-    private setNext(next: MoveDestinationField) {
-        this.next = next;
-    }
-}
-
-class EndField extends MoveDestinationField {
-    constructor(previous: MoveDestinationField) {
-        super(previous);
-    }
-}
-
-class StartField extends MoveDestinationField {
-    constructor(previous: MoveDestinationField) {
-        super(previous);
-    }
-    endFieldEntry: EndField;
-    setEndFieldEntry(next: EndField) {
-        this.endFieldEntry = next;
-    }
-}
-
-
-class Persontest {
-    private firstName: string;
-    private lastName: string;
-
-    setFirstName(value: string) {
-        this.firstName = value;
-    }
-
-    setLastName(value: string) {
-        this.lastName = value;
-}
-
-    getFullName(lastNameFirst: boolean = false): string {
-        if (lastNameFirst) {
-            return this.lastName + ", " + this.firstName;
-        }
-        return this.firstName + ", " + this.lastName;
-    }
-}
-
-class PlayerFieldArea {
-    constructor(color: AreaColor) {
-        this.color = color;
-        this.createFields();
-    }
-
-    color: AreaColor;
-    //kennelFields: MoveDestinationField[];
-    gameFields: MoveDestinationField[] = [];
-    endFields: EndField[] = [];
-
-    private createFields() {
-        let prev = null;
-        let field: MoveDestinationField;
-        let i: number;
-        // create the 4 fields before the start field
-        for (i = 0; i < 4; i++) {
-            field = new MoveDestinationField(prev);
-            this.gameFields.push(field);
-            prev = field;
-        }
-        // create the start field itself
-        let startField = new StartField(prev);
-        this.gameFields.push(startField);
-        // create the 11 fields after the start field
-        prev = startField;
-        for (i = 0; i < 11; i++) {
-            field = new MoveDestinationField(prev);
-            this.gameFields.push(field);
-            prev = field;
-        }
-        // create the 4 end fields 
-        prev = startField;
-        for (i = 0; i < 4; i++) {
-            field = new EndField(prev);
-            this.endFields.push(field);
-            prev = field;
-        }
-    }
-}
-
-function addTestData(): PlayerFieldArea[] {
-    let areas: PlayerFieldArea[] = [];
-    const colors: AreaColor[] = [AreaColor.Red, AreaColor.Blue, AreaColor.Yellow, AreaColor.Green];
-    for (let i = 0; i < 4; i++) {
-        const area = new PlayerFieldArea(colors[i]);
-        areas.push(area);
-    }
-    return areas;
-}
-
-
-
-
+ import ChatController = require("../Controllers/ChatController");
 
 
 class GameArea extends Phaser.State {
     constructor() {
         super();
-        var chat = new ChatController();
+        var chat = new ChatController.ChatController();
         this.gameFieldService = GameFieldService.getInstance(this.buildFields.bind(this));
         const gameStates = {
             preload: this.preload,
@@ -145,10 +21,21 @@ class GameArea extends Phaser.State {
     game:Phaser.Game;
     areas: PlayerFieldArea[] = [];
     fields: Phaser.Graphics[] = [];
+    
+    // Remove this function when GameAreaData comes from server!
+    static addTestData(): PlayerFieldArea[] {
+        let areas: PlayerFieldArea[] = [];
+        const colors: AreaColor[] = [AreaColor.Red, AreaColor.Blue, AreaColor.Yellow, AreaColor.Green];
+        for (let i = 0; i < 4; i++) {
+            const area = new PlayerFieldArea(colors[i]);
+            areas.push(area);
+        }
+        return areas;
+    }
 
     /* load game assets here, but not objects */
     preload() {
-        this.areas = addTestData();
+        this.areas = GameArea.addTestData();
         this.fields = [];
         
         this.game.load.image('meeple_blue', '../Frontend/Images/pawn_blue.png');
@@ -166,23 +53,13 @@ class GameArea extends Phaser.State {
     }
 
     public buildFields(areasPar : PlayerFieldArea[]) {
-        var game = this.game;
-        var cellSpan = 40;
-        this.game.stage.backgroundColor = 0xddeeCC;
-        let pos = 0;
-        const xStart = [520, 40, 200, 680];
-        const yStart = [40, 200, 680, 520];
-        const x1 = [-cellSpan, 0, cellSpan, 0];
-        const y1 = [0, cellSpan, 0, -cellSpan];
-        const x2 = [0, cellSpan, 0, -cellSpan];
-        const y2 = [cellSpan, 0, -cellSpan, 0];
-        
+        // Source of Create() when good data comes from server
     }
 
     private addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
         let graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
         graphics.beginFill(color, 1);
-        graphics.drawCircle(0, 0, 20); //draw a circle relative to it's parent (in this case, the graphics object)
+        graphics.drawCircle(0, 0, 30); //draw a circle relative to it's parent (in this case, the graphics object)
         graphics.endFill();
         this.fields.push(graphics);
         return graphics;
