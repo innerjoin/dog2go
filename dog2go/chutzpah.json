@@ -7,8 +7,13 @@
   },
   "References": [
     {
-      "Includes": [ "*/Frontend/Classes/**/*.ts", "*/Frontend/Library/Phaser/*.js" ],
-      "Excludes": [ "*/Game/**/*.d.ts" ]
+      "Includes": [
+       "*/Frontend/Library/JQuery/jquery-2.2.1.js",
+       "*/Frontend/Library/Phaser/phaser.js",
+        "*/Frontend/Styles/*.js",
+        "*/signalr/hubs"
+       
+      ]
     }
   ],
   "Tests": [
