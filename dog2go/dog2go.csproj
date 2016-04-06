@@ -100,6 +100,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -210,6 +211,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Backend\Hubs\CardHub.cs" />
     <Compile Include="Backend\Hubs\ChatHub.cs" />
     <Compile Include="Backend\Hubs\GameHub.cs" />
     <Compile Include="Backend\Interfaces\IChat.cs" />

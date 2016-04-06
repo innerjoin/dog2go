@@ -4,18 +4,23 @@
     {
         public string Name { get; set; }
         public AttributeEnum Attribute { get; set; }
+
+        public CardAttribute(AttributeEnum attributeEnum)
+        {
+            this.Attribute = attributeEnum;
+        }
     }
 
     public enum AttributeEnum
     {
-        OneField =1,
-        TwoFields =2,
-        ThreeFields =3,
-        FourFields =4,
+        OneField = 1,
+        TwoFields = 2,
+        ThreeFields = 3,
+        FourFields = 4,
         FourFieldsBack = -4,
-        FiveFields =5,
+        FiveFields = 5,
         SixFields = 6,
-        SevenFields =7,
+        SevenFields = 7,
         EightFields = 8,
         NineFields = 9,
         TenFields = 10,
