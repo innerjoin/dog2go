@@ -5,7 +5,7 @@ using dog2go.Backend.Model;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
-namespace dog2go
+namespace dog2go.Backend.Hubs
 {
     [HubName("chatHub")]
     public class ChatHub : Hub
