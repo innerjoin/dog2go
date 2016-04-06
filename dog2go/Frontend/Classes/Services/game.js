@@ -156,7 +156,7 @@ var GameArea = (function (_super) {
     GameArea.prototype.addField = function (game, x, y, color) {
         var graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
         graphics.beginFill(color, 1);
-        graphics.drawCircle(0, 0, 20); //draw a circle relative to it's parent (in this case, the graphics object)
+        graphics.drawCircle(0, 0, 30); //draw a circle relative to it's parent (in this case, the graphics object)
         graphics.endFill();
         this.fields.push(graphics);
         return graphics;
