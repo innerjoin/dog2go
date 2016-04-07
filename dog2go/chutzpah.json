@@ -8,10 +8,7 @@
   "References": [
     {
       "Includes": [
-       "*/Frontend/Library/JQuery/jquery-2.2.1.js",
-       "*/Frontend/Library/Phaser/phaser.js",
-        "*/Frontend/Styles/*.js",
-        "*/signalr/hubs"
+       "*/Frontend/Classes/**/*.ts"
        
       ]
     }

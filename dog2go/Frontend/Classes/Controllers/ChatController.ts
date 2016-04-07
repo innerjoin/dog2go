@@ -1,9 +1,9 @@
-﻿import Service = require("../Services/ChatService");
+﻿/// <reference path="../Services/ChatService.ts"/>
 
-export class ChatController {
-    private chatService: Service.ChatService;
+class ChatController {
+    private chatService: ChatService;
     constructor() {
-        this.chatService = Service.ChatService.getInstance(this.putMessage);
+        this.chatService = ChatService.getInstance(this.putMessage);
         $('#sendmessage').click(() => {
             this.chatService.sendMessage($('#displayname').val(), $('#message').val());
             $('#message').val('').focus();

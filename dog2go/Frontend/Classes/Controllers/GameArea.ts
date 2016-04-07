@@ -1,27 +1,26 @@
 /// <reference path="../../Library/Phaser/phaser.comments.d.ts"/>
- import ChatController = require("../Controllers/ChatController");
 
-
-class GameArea extends Phaser.State {
+class GameArea {
     constructor() {
-        super();
-        var chat = new ChatController.ChatController();
+       
+        var chat = new ChatController();
         this.gameFieldService = GameFieldService.getInstance(this.buildFields.bind(this));
         const gameStates = {
-            preload: this.preload,
-            create: this.create
+            preload: this.preload.bind(this),
+            create: this.create.bind(this)
         };
         this.game = new Phaser.Game(720, 720, Phaser.AUTO, "content", gameStates);
-        this.game.state.add('GameArea', this, false);
 
-        this.game.state.start('GameArea');
     }
 
     gameFieldService: GameFieldService;
     game:Phaser.Game;
     areas: PlayerFieldArea[] = [];
     fields: Phaser.Graphics[] = [];
-    
+
+    public buildFields(areasPar: PlayerFieldArea[]) {
+        // Source of Create() when good data comes from server
+    }
     // Remove this function when GameAreaData comes from server!
     static addTestData(): PlayerFieldArea[] {
         let areas: PlayerFieldArea[] = [];
@@ -52,11 +51,8 @@ class GameArea extends Phaser.State {
         console.log('No Field Found by ID in Area', id, fields);
     }
 
-    public buildFields(areasPar : PlayerFieldArea[]) {
-        // Source of Create() when good data comes from server
-    }
 
-    private addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
+    public addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
         let graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
         graphics.beginFill(color, 1);
         graphics.drawCircle(0, 0, 30); //draw a circle relative to it's parent (in this case, the graphics object)
@@ -157,6 +153,7 @@ class GameArea extends Phaser.State {
     
 }
 
-window.onload = () => {
-    var gameArea = new GameArea();
-};
+/*window.onload = () => {
+    console.log('GameArea Loaded');
+    //var gameArea = new GameArea();
+};*/

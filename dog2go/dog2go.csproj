@@ -245,6 +245,7 @@
     <Compile Include="Tests\Backend\NunitSample.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Frontend\Classes\appConf.js" />
     <Content Include="Frontend\Styles\jasmine\jasmine.css" />
     <Content Include="Frontend\Styles\jasmine\jasmine_favicon.png" />
     <Content Include="favicon.ico" />
@@ -405,7 +406,7 @@
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptModuleKind>None</TypeScriptModuleKind>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptOutFile />
     <TypeScriptOutDir />

@@ -1,27 +1,17 @@
-﻿/// <reference path="../Library/JQuery/jquery.d.ts"/>
-
-var base_path = '../Frontend/';
+﻿var base_path = '../Frontend/';
 var library = base_path + 'Library/';
 var controllers = base_path + 'Classes/Controllers/';
 var services = base_path + 'Classes/Services/';
 
-var scriptArray = [
+var script_arr = [
     library + 'Phaser/phaser.js',
     library + 'SignalR/jquery.signalR-2.2.0.min.js',
     '/signalr/hubs',
-    services + 'ChatService.js',
-    controllers + 'ChatController.js',
-    controllers + 'testController.js',
-    services + 'GameFieldsService.js',
-    services + 'buildUpTypes.js',
-    controllers + 'GameArea.js'
-    
+    //controllers + 'GameArea.js'
 ];
 
-
-var jq: any = $;
 // Function to load multiple scripts
-jq.getMultiScripts = function (arr, path) {
+$.getMultiScripts = function (arr, path) {
     var _arr = $.map(arr, function (scr) {
         return $.getScript((path || "") + scr);
     });
@@ -33,12 +23,8 @@ jq.getMultiScripts = function (arr, path) {
     return $.when.apply($, _arr);
 }
 
-jq.getMultiScripts(scriptArray).done(function () {
+$.getMultiScripts(script_arr).done(function () {
     console.log('Loaded Phaser', Phaser);
-    var ts: TestController = new TestController();
-    var cc: ChatController = new ChatController();
-    var game: GameArea = new GameArea();
-    //console.log('Loaded GameArea: ', game);
 }).fail((error) => {
     console.error('Load Error occured:', error);
 }).always(() => {

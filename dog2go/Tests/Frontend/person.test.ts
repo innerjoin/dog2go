@@ -1,9 +1,9 @@
 ﻿/// <reference path="../../Frontend/Library/jasmine/jasmine.d.ts"/>
-/// <reference path="../../Frontend/Classes/Controllers/GameArea.ts"/>
-/// <chutzpah_reference path="../../signalr/hubs"/>
+/// <reference path="../../Frontend/Classes/Services/buildUpTypes.ts"/>
+/// <chutzpah_reference path="../../Frontend/Classes/Services/buildUpTypes.js"/>
 
 describe("THE TEST", () => {
-
+    
     var person: Persontest;
 
     beforeEach(() => {
