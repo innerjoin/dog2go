@@ -7,8 +7,10 @@
   },
   "References": [
     {
-      "Includes": [ "*/Frontend/Classes/**/*.ts", "*/Frontend/Library/Phaser/*.js" ],
-      "Excludes": [ "*/Game/**/*.d.ts" ]
+      "Includes": [
+       "*/Frontend/Classes/**/*.ts"
+       
+      ]
     }
   ],
   "Tests": [

@@ -1,6 +1,4 @@
-/// <reference path="../../Library/Phaser/phaser.comments.d.ts"/>
-
-enum AreaColor {
+﻿enum AreaColor {
     Red = 0xff0000,
     Blue = 0x0000ff,
     Green = 0x00ff00,
@@ -12,9 +10,9 @@ class MoveDestinationField {
     previous: MoveDestinationField;
     next: MoveDestinationField;
 
-    NextIdentifier : number;
+        NextIdentifier: number;
  
-    PreviousIdentifier:number;
+        PreviousIdentifier: number;
     
     viewRepresentation;
 
@@ -108,58 +106,6 @@ class PlayerFieldArea {
             this.endFields.push(field);
             prev = field;
         }
-    }
-}
-
-function addTestData(): PlayerFieldArea[] {
-    let areas: PlayerFieldArea[] = [];
-    const colors: AreaColor[] = [AreaColor.Red, AreaColor.Blue, AreaColor.Yellow, AreaColor.Green];
-    for (let i = 0; i < 4; i++) {
-        const area = new PlayerFieldArea(colors[i]);
-        areas.push(area);
-    }
-    return areas;
-}
-
-
-
-
-
-
-class GameArea extends Phaser.State {
-    constructor() {
-        super();
-        var chat = new ChatController();
-        this.gameFieldService = GameFieldService.getInstance(this.buildFields.bind(this));
-        const gameStates = {
-            preload: this.preload,
-            create: this.create
-        };
-        this.game = new Phaser.Game(720, 720, Phaser.AUTO, "content", gameStates);
-        this.game.state.add('GameArea', this, false);
-
-        this.game.state.start('GameArea');
-    }
-
-    gameFieldService: GameFieldService;
-    game:Phaser.Game;
-    areas: PlayerFieldArea[] = [];
-    fields: Phaser.Graphics[] = [];
-
-    /* load game assets here, but not objects */
-    preload() {
-        this.areas = addTestData();
-        this.fields = [];
-        
-        this.game.load.image('meeple_blue', '../Frontend/Images/pawn_blue.png');
-
-    }
-
-    public static getFieldById(id: number, fields: MoveDestinationField[]) {
-        console.log('Geeting fild:', id);
-        for (var field of fields) {
-            if (id == field.identifier) {
-                return field;
             }
         }
         console.log('No Field Found by ID in Area', id, fields);

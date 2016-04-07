@@ -1,11 +1,13 @@
-﻿class ChatController {
-    private chatService : ChatService;
+﻿/// <reference path="../Services/ChatService.ts"/>
+
+class ChatController {
+    private chatService: ChatService;
     constructor() {
         this.chatService = ChatService.getInstance(this.putMessage);
-        $('#sendmessage').click(function () {
+        $('#sendmessage').click(() => {
             this.chatService.sendMessage($('#displayname').val(), $('#message').val());
             $('#message').val('').focus();
-        }.bind(this));
+        });
 
         $('#displayname').val('EveryBody heisst Hans');//(prompt('Enter your name:', ''));
         // Set initial focus to message input box.  

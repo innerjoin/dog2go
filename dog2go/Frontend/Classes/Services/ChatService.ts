@@ -1,5 +1,4 @@
-﻿
-class ChatService {
+﻿class ChatService {
     private static instance: ChatService = null;
     constructor(callback: (name: string, message: string) => any) {
         if (ChatService.instance) {
@@ -38,5 +37,3 @@ class ChatService {
         });
     }
 }
-//GameFieldService.setup();
-

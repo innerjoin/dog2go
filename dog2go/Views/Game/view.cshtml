@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+
+        <h1>the real dog2go game</h1>
+        <div id="content"></div>    
+        <div id="chatContainer">
+            <input type="text" id="message" />
+            <input type="button" id="sendmessage" value="Send" />
+            <input type="hidden" id="displayname" />
+            <ul id="chatBox"></ul>
+        </div>
+
+        <!--Reference the jQuery library. -->
+        <!--Reference the SignalR library. -->
+        @*
+            <script src="~/Frontend/Library/SignalR/jquery.signalR-2.2.0.js"></script>
+        <script src="~/signalr/hubs"></script>*@
+
+        <script src="~/Frontend/Library/JQuery/jquery-2.2.1.js"></script>
+        <script src="~/Frontend/Classes/AppConfig.js"></script>
+
+    </div>
+</body>
+</html>
