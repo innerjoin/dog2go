@@ -35,8 +35,6 @@ jq.getMultiScripts = function (arr, path) {
 
 jq.getMultiScripts(scriptArray).done(function () {
     console.log('Loaded Phaser', Phaser);
-    var ts: TestController = new TestController();
-    var cc: ChatController = new ChatController();
     var game: GameArea = new GameArea();
     //console.log('Loaded GameArea: ', game);
 }).fail((error) => {
