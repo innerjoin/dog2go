@@ -245,7 +245,6 @@
     <Compile Include="Tests\Backend\NunitSample.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Frontend\Classes\appConf.js" />
     <Content Include="Frontend\Styles\jasmine\jasmine.css" />
     <Content Include="Frontend\Styles\jasmine\jasmine_favicon.png" />
     <Content Include="favicon.ico" />
