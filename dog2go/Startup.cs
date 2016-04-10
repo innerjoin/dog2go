@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Web.Services.Description;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Owin;
@@ -14,13 +12,10 @@ namespace dog2go
         {
 #if DEBUG
             Console.WriteLine("Hello this is Debug Mode!");
-            var hubConfiguration = new HubConfiguration();
-            hubConfiguration.EnableDetailedErrors = true;
-            app.MapSignalR(hubConfiguration);
+            app.MapSignalR(new HubConfiguration { EnableDetailedErrors = true });
 #else
             Console.WriteLine("Hello this is Release Mode!");
-            // Any connection or hub wire up and configuration should go here
-            //app.MapSignalR();
+            app.MapSignalR();
 #endif
             ConfigureAuth(app);
 
