@@ -1,7 +1,10 @@
 ﻿
+import BuildUpTypes = require("buildUpTypes");
+import PlayerFieldArea = BuildUpTypes.PlayerFieldArea;
+
 class GameFieldService {
     private static instance: GameFieldService = null;
-    constructor(callback: (ev: PlayerFieldArea[]) => any) {
+    constructor(callback: (ev: BuildUpTypes.PlayerFieldArea[]) => any) {
         if (GameFieldService.instance) {
             throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance() instead of new.");
         }

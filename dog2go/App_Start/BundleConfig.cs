@@ -8,6 +8,8 @@ namespace dog2go
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/bundles/require").Include(
+            "~/Frontend/Library/requirejs/require.js"));
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Frontend/Library/JQuery/jquery-{version}.js"));
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

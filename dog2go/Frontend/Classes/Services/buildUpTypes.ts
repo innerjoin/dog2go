@@ -1,24 +1,23 @@
-﻿enum AreaColor {
+﻿export enum AreaColor {
     Red = 0xff0000,
     Blue = 0x0000ff,
     Green = 0x00ff00,
     Yellow = 0xedc613
 }
 
-class MoveDestinationField {
+export class MoveDestinationField {
     identifier: number;
     previous: MoveDestinationField;
     next: MoveDestinationField;
 
-    NextIdentifier: number;
-
-    PreviousIdentifier: number;
+    nextIdentifier: number;
+    previousIdentifier: number;
 
     viewRepresentation;
 
     constructor(previous: MoveDestinationField) {
         this.previous = previous;
-        let self = this;
+        const self = this;
         if (previous instanceof StartField && self instanceof EndField) {
             previous.setEndFieldEntry(self);
         } else if (previous != null) {
@@ -31,13 +30,19 @@ class MoveDestinationField {
     }
 }
 
-class EndField extends MoveDestinationField {
+export class KennelField extends MoveDestinationField {
+    constructor() {
+        super(null);
+    }
+}
+
+export class EndField extends MoveDestinationField {
     constructor(previous: MoveDestinationField) {
         super(previous);
     }
 }
 
-class StartField extends MoveDestinationField {
+export class StartField extends MoveDestinationField {
     constructor(previous: MoveDestinationField) {
         super(previous);
     }
@@ -48,7 +53,7 @@ class StartField extends MoveDestinationField {
 }
 
 
-class Persontest {
+export class Persontest {
     private firstName: string;
     private lastName: string;
 
@@ -68,14 +73,14 @@ class Persontest {
     }
 }
 
-class PlayerFieldArea {
+export class PlayerFieldArea {
     constructor(color: AreaColor) {
         this.color = color;
         this.createFields();
     }
 
     color: AreaColor;
-    //kennelFields: MoveDestinationField[];
+    kennelFields: KennelField[] = [];
     gameFields: MoveDestinationField[] = [];
     endFields: EndField[] = [];
 
@@ -90,7 +95,7 @@ class PlayerFieldArea {
             prev = field;
         }
         // create the start field itself
-        let startField = new StartField(prev);
+        const startField = new StartField(prev);
         this.gameFields.push(startField);
         // create the 11 fields after the start field
         prev = startField;
@@ -105,6 +110,11 @@ class PlayerFieldArea {
             field = new EndField(prev);
             this.endFields.push(field);
             prev = field;
+        }
+
+        // create the 4 kennel fields
+        for (i = 0; i < 4; i++) {
+            this.kennelFields.push(new KennelField());
         }
     }
 }

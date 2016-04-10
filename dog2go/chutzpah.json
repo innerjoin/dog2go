@@ -1,5 +1,9 @@
 ﻿{
   "Framework": "jasmine",
+  "TestHarnessLocationMode": "SettingsFileAdjacent",
+  "TestHarnessReferenceMode": "AMD",
+  "TypeScriptModuleKind": "AMD",
+  "AMDBaseUrl": "Frontend",
   "Compile": {
     "Mode": "External",
     "Extensions": [ ".ts" ],
@@ -8,8 +12,8 @@
   "References": [
     {
       "Includes": [
-       "*/Frontend/Classes/**/*.ts"
-       
+       "*/Frontend/Classes/**/*.ts",
+       "*/Frontend/Library/requirejs/require.js"
       ]
     }
   ],

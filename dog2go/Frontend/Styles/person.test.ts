@@ -1,9 +1,14 @@
-﻿/// <reference path="../../Frontend/Library/jasmine/jasmine.d.ts"/>
+﻿///<chutzpah_reference path="../../Frontend/Library/requirejs/require.js" />
+/// <reference path="../../Frontend/Library/jasmine/jasmine.d.ts"/>
 /// <reference path="../../Frontend/Classes/Controllers/GameArea.ts"/>
+import BuildUpTypes = require("../Classes/Services/buildUpTypes");
+import Persontest = BuildUpTypes.Persontest;
+import PlayerFieldArea = BuildUpTypes.PlayerFieldArea;
+import AreaColor = BuildUpTypes.AreaColor;
 
 describe("THE TEST", () => {
 
-    var person: Persontest;
+    var person: BuildUpTypes.Persontest;
 
     beforeEach(() => {
         person = new Persontest();

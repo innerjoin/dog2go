@@ -1,32 +1,57 @@
-/// <reference path="../../Library/Phaser/phaser.comments.d.ts"/>
 
-class GameArea {
+import _phaser = require("phaser");
+import Coordinates = require("./FieldCoordinates");
+import FieldCoordinatesData = Coordinates.FieldCoordinatesData;
+import AreaCoordinates = Coordinates.AreaCoordinates;
+import BuildUpTypes = require("../Services/buildUpTypes");
+import PlayerFieldArea = BuildUpTypes.PlayerFieldArea;
+import FieldArea = BuildUpTypes.PlayerFieldArea;
+import Area = BuildUpTypes.PlayerFieldArea;
+import AreaColor = BuildUpTypes.AreaColor;
+import Color = BuildUpTypes.AreaColor;
+import AreaColor1 = BuildUpTypes.AreaColor;
+import Color1 = BuildUpTypes.AreaColor;
+import AreaColor2 = BuildUpTypes.AreaColor;
+import PlayerFieldArea1 = BuildUpTypes.PlayerFieldArea;
+import MoveDestinationField = BuildUpTypes.MoveDestinationField;
+import DestinationField = BuildUpTypes.MoveDestinationField;
+import KennelField = BuildUpTypes.KennelField;
+import StartField = BuildUpTypes.StartField;
+
+//import GameFieldsService = require("../Services/GameFieldsService");
+//import GameFieldService = GameFieldsService.GameFieldService;
+
+export class GameArea {
+
     constructor() {
-       
-        var chat = new ChatController();
-        this.gameFieldService = GameFieldService.getInstance(this.buildFields.bind(this));
+        console.log(_phaser);
+        //var chat = new ChatController();
+        //this.gameFieldService = GameFieldsService.GameFieldService.getInstance(this.buildFields.bind(this));
         const gameStates = {
             preload: this.preload.bind(this),
             create: this.create.bind(this)
         };
+        
         this.game = new Phaser.Game(720, 720, Phaser.AUTO, "content", gameStates);
-
+        var fc = new Coordinates.FieldCoordinates();
+        this.pos = fc.FOUR_PlAYERS;
     }
 
-    gameFieldService: GameFieldService;
-    game:Phaser.Game;
-    areas: PlayerFieldArea[] = [];
+    pos: FieldCoordinatesData;
+    //gameFieldService: GameFieldService;
+    game: Phaser.Game;
+    areas: BuildUpTypes.PlayerFieldArea[] = [];
     fields: Phaser.Graphics[] = [];
 
     public buildFields(areasPar: PlayerFieldArea[]) {
         // Source of Create() when good data comes from server
     }
     // Remove this function when GameAreaData comes from server!
-    static addTestData(): PlayerFieldArea[] {
-        let areas: PlayerFieldArea[] = [];
-        const colors: AreaColor[] = [AreaColor.Red, AreaColor.Blue, AreaColor.Yellow, AreaColor.Green];
+    static addTestData(): FieldArea[] {
+        const areas: Area[] = [];
+        const colors: AreaColor[] = [Color.Red, AreaColor1.Blue, Color1.Yellow, AreaColor2.Green];
         for (let i = 0; i < 4; i++) {
-            const area = new PlayerFieldArea(colors[i]);
+            const area = new PlayerFieldArea1(colors[i]);
             areas.push(area);
         }
         return areas;
@@ -41,28 +66,56 @@ class GameArea {
 
     }
 
-    public static getFieldById(id: number, fields: MoveDestinationField[]) {
-        console.log('Geeting fild:', id);
-        for (var field of fields) {
-            if (id == field.identifier) {
+    static getFieldById(id: number, fields: MoveDestinationField[]): DestinationField {
+        for (let field of fields) {
+            if (id === field.identifier) {
                 return field;
             }
         }
-        console.log('No Field Found by ID in Area', id, fields);
+        return null;
     }
 
+    addKennelFields(kennelFields: KennelField[], areaPos: AreaCoordinates, color: number) {
+        const kennelX = areaPos.x - 4 * areaPos.xOffset;
+        console.log(areaPos.x + " - " + 4 + " * " + areaPos.xOffset + " = " + kennelX);
+        const kennelY = areaPos.y - 4 * areaPos.yOffset;
+        console.log(areaPos.y + " - " + 4 + " * " + areaPos.yOffset + " = " + kennelY);
+        console.log(kennelFields);
+        for (let i = 0; i < kennelFields.length; i++) {
+            let xx = 0;
+            let yy = 0;
+            console.log("i % 4 = ", i % 4);
+            switch (i % 4) {
+                case 1:
+                    xx = areaPos.xOffset;
+                    yy = areaPos.yOffset;
+                    break;
+                case 2:
+                    xx = areaPos.xAltOffset;
+                    yy = areaPos.yAltOffset;
+                    break;
+                case 3:
+                    xx = areaPos.xOffset + areaPos.xAltOffset;
+                    yy = areaPos.yOffset + areaPos.yAltOffset;
+                    break;
+            }
+            console.log("kennelX + xx = ", kennelX + xx);
+            console.log("kennelY + yy = ", kennelY + yy);
+            kennelFields[i].viewRepresentation = this.addField(this.game, kennelX + xx, kennelY + yy, color);
+        }
+    }
 
-    public addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
-        let graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
+    addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
+        const graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
         graphics.beginFill(color, 1);
         graphics.drawCircle(0, 0, 30); //draw a circle relative to it's parent (in this case, the graphics object)
         graphics.endFill();
         this.fields.push(graphics);
         return graphics;
     }
-    public dropLimiter(item: Phaser.Sprite) {
+    dropLimiter(item: Phaser.Sprite) {
         var nearest: Phaser.Graphics;
-        var smallest: number = 99999999;
+        var smallest = Number.MAX_VALUE;
         var pos = item.world;
         this.fields.forEach((field) => {
             var fieldPos = field.world;
@@ -72,8 +125,7 @@ class GameArea {
                 nearest = field;
             }
         });
-        if (nearest != null) {
-            
+        if (nearest != null) {          
             item.x = nearest.x;
             item.y = nearest.y;
         }
@@ -91,53 +143,75 @@ class GameArea {
     //}
 
     public create() {
-        this.gameFieldService.getGameFieldData();
+        //this.gameFieldService.getGameFieldData();
         
         var game = this.game;
-        var cellSpan = 40;
         this.game.stage.backgroundColor = 0xddeeCC;
         let pos = 0;
-        const xStart = [520, 40, 200, 680];
-        const yStart = [40, 200, 680, 520];
-        const x1 = [-cellSpan, 0, cellSpan, 0];
-        const y1 = [0, cellSpan, 0, -cellSpan];
-        const x2 = [0, cellSpan, 0, -cellSpan];
-        const y2 = [cellSpan, 0, -cellSpan, 0];
 
-        let area = this.areas[2];
         for (let area of this.areas) {
             let el = area.gameFields[0];
-            let x = xStart[pos];
-            let y = yStart[pos];
+            const areaPos = this.pos.getAreaCoordinates(pos);
+            //area.kennelFields = this.addKennelFields(area.kennelFields);
+
+            //const kennelX = x - 4 * xOffset;
+            //console.log(x + " - " + 4 + " * " + xOffset + " = " + kennelX);
+            //const kennelY = y - 4 * yOffset;
+            //console.log(y + " - " + 4 + " * " + yOffset + " = " + kennelY);
+            //console.log(area.kennelFields);
+            //for (let i = 0; i < area.kennelFields.length; i++) {
+            //    let xx = 0;
+            //    let yy = 0;
+            //    console.log("i % 4 = ", i % 4);
+            //    switch (i % 4) {
+            //    case 1:
+            //        xx = xOffset;
+            //        yy = yOffset;
+            //        break;
+            //    case 2:
+            //        xx = xAltOffset;
+            //        yy = yAltOffset;
+            //        break;
+            //    case 3:
+            //        xx = xOffset + xAltOffset;
+            //        yy = yOffset + yAltOffset;
+            //        break;
+            //    }
+            //    console.log("kennelX + xx = ", kennelX + xx);
+            //    console.log("kennelY + yy = ", kennelY + yy);
+            //    area.kennelFields[i].viewRepresentation = this.addField(this.game, kennelX + xx, kennelY + yy, area.color);
+            //}
+
+            this.addKennelFields(area.kennelFields, areaPos, area.color);
+
             for (let i = 0; i < area.gameFields.length; i++) {
                 var color = 0xeeeeee;
                 if (el instanceof StartField) {
                     color = area.color;
-                    let ex = x;
-                    let ey = y;
+                    let ex = areaPos.x;
+                    let ey = areaPos.y;
                     let finEl = el.endFieldEntry;
                     for (let j = 0; j < area.endFields.length; j++) {
-                        ex += x2[pos];
-                        ey += y2[pos];
+                        ex += areaPos.xAltOffset;
+                        ey += areaPos.yAltOffset;
                         el.viewRepresentation = this.addField(game, ex, ey, color);
                         finEl = finEl.next;
                     }
                 }
-                el.viewRepresentation = this.addField(game, x, y, color);
+                el.viewRepresentation = this.addField(game, areaPos.x, areaPos.y, color);
                 // Calculate Position for next field 
                 if (i < 8 || i > 11) {
-                    x += x1[pos];
-                    y += y1[pos];
+                    areaPos.x += areaPos.xOffset;
+                    areaPos.y += areaPos.yOffset;
                 } else {
-                    x += x2[pos];
-                    y += y2[pos];
+                    areaPos.x += areaPos.xAltOffset;
+                    areaPos.y += areaPos.yAltOffset;
                 }
                 el = el.next;
             }
             pos++;
         }
-
-        var meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
+        const meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
         meepleBlue.anchor.setTo(0.5, 0.5);
         meepleBlue.scale.setTo(0.08, 0.08);
         meepleBlue.inputEnabled = true;

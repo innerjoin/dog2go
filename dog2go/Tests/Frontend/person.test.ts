@@ -1,10 +1,14 @@
 ﻿/// <reference path="../../Frontend/Library/jasmine/jasmine.d.ts"/>
 /// <reference path="../../Frontend/Classes/Services/buildUpTypes.ts"/>
 /// <chutzpah_reference path="../../Frontend/Classes/Services/buildUpTypes.js"/>
+import BuildUpTypes = require("../../Frontend/Classes/Services/buildUpTypes");
+import Persontest = BuildUpTypes.Persontest;
+import AreaColor = BuildUpTypes.AreaColor;
+import PlayerFieldArea = BuildUpTypes.PlayerFieldArea;
 
 describe("THE TEST", () => {
     
-    var person: Persontest;
+    var person: BuildUpTypes.Persontest;
 
     beforeEach(() => {
         person = new Persontest();
@@ -16,11 +20,7 @@ describe("THE TEST", () => {
         expect(person.getFullName()).toBe("Joe, Smith");
     });
 
-    it("loads game", () => {
-        //var p = new Persontest();
-        //p.setFirstName("Lukas");
-        //p.setLastName("Steiger");
-        //expect(p.getFullName()).toBe("Lukas, Steiger");
+    it("coloring works", () => {
         var col = AreaColor.Red;
         var area = new PlayerFieldArea(col);
         expect(area.color).toBe(col);
