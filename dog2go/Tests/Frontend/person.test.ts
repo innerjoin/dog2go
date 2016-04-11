@@ -23,7 +23,7 @@ describe("THE TEST", () => {
     it("coloring works", () => {
         var col = AreaColor.Red;
         var area = new PlayerFieldArea(col);
-        expect(area.color).toBe(col);
+        expect(area.color).toBe(AreaColor.Red);
     });
 
     it("loads area color", () => {

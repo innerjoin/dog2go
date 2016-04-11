@@ -15,7 +15,7 @@ define(["require", "exports", "../../Frontend/Classes/Services/buildUpTypes"], f
         it("coloring works", function () {
             var col = AreaColor.Red;
             var area = new PlayerFieldArea(col);
-            expect(area.color).toBe(col);
+            expect(area.color).toBe(AreaColor.Red);
         });
         it("loads area color", function () {
             expect(AreaColor.Red).toBe(0xff0000);
