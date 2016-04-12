@@ -1,7 +1,4 @@
-﻿/// <reference path="../../Frontend/Library/jasmine/jasmine.d.ts"/>
-/// <reference path="../../Frontend/Classes/Services/buildUpTypes.ts"/>
-/// <chutzpah_reference path="../../Frontend/Classes/Services/buildUpTypes.js"/>
-import BuildUpTypes = require("../../Frontend/Classes/Services/buildUpTypes");
+﻿import BuildUpTypes = require("../../Frontend/Classes/Services/buildUpTypes");
 import Persontest = BuildUpTypes.Persontest;
 import AreaColor = BuildUpTypes.AreaColor;
 import PlayerFieldArea = BuildUpTypes.PlayerFieldArea;

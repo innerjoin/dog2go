@@ -379,6 +379,7 @@
       <DependentUpon>TypeLite.Net4.tt</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Frontend\Library\requirejs\require.d.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\GameArea.test.ts" />
     <TypeScriptCompile Include="Tests\Frontend\person.test.ts" />
   </ItemGroup>
   <ItemGroup>

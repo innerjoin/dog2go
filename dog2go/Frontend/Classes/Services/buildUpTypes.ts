@@ -13,7 +13,7 @@ export class MoveDestinationField {
     nextIdentifier: number;
     previousIdentifier: number;
 
-    viewRepresentation;
+    viewRepresentation: Phaser.Graphics;
 
     constructor(previous: MoveDestinationField) {
         this.previous = previous;

@@ -11,6 +11,9 @@
   },
   "References": [
     { "Path": "Frontend/Library/requirejs/require.js" },
+    { "Path": "Frontend/Library/Phaser/phaser.js" },
+    { "Path": "Frontend/Library/Phaser/phaser.comments.d.ts", "IncludeInTestHarness": false },
+    { "Path": "Frontend/Library/Phaser/pixi.comments.d.ts", "IncludeInTestHarness": false },
     { "Path": "Frontend/Library/requirejs/require.d.ts", "IncludeInTestHarness": false },
     { "Path": "Frontend/Library/jasmine/jasmine.d.ts", "IncludeInTestHarness": false },
     { "Path": "Frontend/Classes", "IncludeInTestHarness": false },
