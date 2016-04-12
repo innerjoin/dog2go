@@ -1,4 +1,4 @@
-import _ = require("phaser");
+import _phaser = require("phaser");
 import Coordinates = require("./FieldCoordinates");
 import BuildUpTypes = require("../Services/buildUpTypes");
 import FieldCoordinatesData = Coordinates.FieldCoordinatesData;
@@ -21,7 +21,7 @@ export class GameArea {
             preload: this.preload.bind(this),
             create: this.create.bind(this)
         };
-        
+        console.log(_phaser);
         this.game = new Phaser.Game(720, 720, Phaser.AUTO, "content", gameStates);
         const fc = new Coordinates.FieldCoordinates();
         this.pos = fc.FOUR_PlAYERS;
@@ -67,14 +67,10 @@ export class GameArea {
 
     addKennelFields(game: Phaser.Game, kennelFields: KennelField[], areaPos: AreaCoordinates, color: number) {
         const kennelX = areaPos.x - 4 * areaPos.xOffset;
-        console.log(areaPos.x + " - " + 4 + " * " + areaPos.xOffset + " = " + kennelX);
         const kennelY = areaPos.y - 4 * areaPos.yOffset;
-        console.log(areaPos.y + " - " + 4 + " * " + areaPos.yOffset + " = " + kennelY);
-        console.log(kennelFields);
         for (let i = 0; i < kennelFields.length; i++) {
             let xx = 0;
             let yy = 0;
-            console.log("i % 4 = ", i % 4);
             switch (i % 4) {
                 case 1:
                     xx = areaPos.xOffset;
@@ -89,8 +85,6 @@ export class GameArea {
                     yy = areaPos.yOffset + areaPos.yAltOffset;
                     break;
             }
-            console.log("kennelX + xx = ", kennelX + xx);
-            console.log("kennelY + yy = ", kennelY + yy);
             kennelFields[i].viewRepresentation = this.addField(game, kennelX + xx, kennelY + yy, color);
         }
     }
