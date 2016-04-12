@@ -1,4 +1,4 @@
-﻿import _ = require("phaser");
+﻿import _phaser = require("phaser");
 import Area = require("../../Frontend/Classes/Controllers/GameArea");
 import BuildUpTypes = require("../../Frontend/Classes/Services/buildUpTypes");
 import Coordinates = require("../../Frontend/Classes/Controllers/FieldCoordinates");
@@ -11,6 +11,8 @@ describe("GameArea", () => {
     beforeEach(() => {
         timerCallback = jasmine.createSpy("timerCallback");
         jasmine.clock().install();
+
+        console.log(_phaser);
         //game = new Phaser.Game(200, 200, Phaser.AUTO, el);
         
         game = new Phaser.Game();
