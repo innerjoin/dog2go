@@ -13,7 +13,7 @@ export class MoveDestinationField {
     nextIdentifier: number;
     previousIdentifier: number;
 
-    viewRepresentation;
+    viewRepresentation: Phaser.Graphics;
 
     constructor(previous: MoveDestinationField) {
         this.previous = previous;
@@ -49,27 +49,6 @@ export class StartField extends MoveDestinationField {
     endFieldEntry: EndField;
     setEndFieldEntry(next: EndField) {
         this.endFieldEntry = next;
-    }
-}
-
-
-export class Persontest {
-    private firstName: string;
-    private lastName: string;
-
-    setFirstName(value: string) {
-        this.firstName = value;
-    }
-
-    setLastName(value: string) {
-        this.lastName = value;
-    }
-
-    getFullName(lastNameFirst: boolean = false): string {
-        if (lastNameFirst) {
-            return this.lastName + ", " + this.firstName;
-        }
-        return this.firstName + ", " + this.lastName;
     }
 }
 
