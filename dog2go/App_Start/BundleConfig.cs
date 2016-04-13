@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace dog2go
 {
@@ -9,7 +8,7 @@ namespace dog2go
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/require").Include(
-            "~/Frontend/Library/requirejs/require.js"));
+                        "~/Frontend/Library/requirejs/require.js"));
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Frontend/Library/JQuery/jquery-{version}.js"));
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

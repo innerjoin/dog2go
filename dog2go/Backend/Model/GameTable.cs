@@ -10,10 +10,10 @@ namespace dog2go.Backend.Model
         public int Identifier { get; set; }
 
         public DateTime Start { get; set; }
-
+        public string Cookie { get; set; }
         public DateTime Stop { get; set; }
         public List<PlayerFieldArea> PlayerFieldAreas;
-
+        public List<Participation> Participations; 
         public GameTable(List<PlayerFieldArea> areas, int id)
         {
             PlayerFieldAreas = areas;

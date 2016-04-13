@@ -17,7 +17,7 @@ namespace dog2go.Backend.Model
         public int PreviousIdentifier => _previousIdentifier;
         public int NextIdentifier => _nextIdentifier;
         public int Identifier { get; }
-        public int FieldId { get; }
+        public int FieldId { get; private set; }
         private PlayerFieldArea _previous;
         private PlayerFieldArea _next;
         public ColorCode ColorCode { get; set; }
@@ -34,8 +34,8 @@ namespace dog2go.Backend.Model
                 _previous = value;
                 if (value == null) return;
                 _previousIdentifier = value.Identifier;
-                value.Fields.Last().Next = this.Fields.First();
-                this.Fields.First().Previous = value.Fields.Last();
+                value.Fields.Last(field => field.FieldType.Contains("StandardField")).Next = this.Fields.First(field => field.FieldType.Contains("StandardField"));
+                this.Fields.First(field => field.FieldType.Contains("StandardField")).Previous = value.Fields.Last(field => field.FieldType.Contains("StandardField"));
             }
         }
 
@@ -48,8 +48,8 @@ namespace dog2go.Backend.Model
                 _next = value;
                 if (value == null) return;
                 _nextIdentifier = value.Identifier;
-                value.Fields.First().Previous = this.Fields.Last();
-                this.Fields.Last().Next = value.Fields.First();
+                value.Fields.First(field => field.FieldType.Contains("StandardField")).Previous = this.Fields.Last(field => field.FieldType.Contains("StandardField"));
+                this.Fields.Last(field => field.FieldType.Contains("StandardField")).Next = value.Fields.First(field => field.FieldType.Contains("StandardField"));
             }
         }
 
@@ -119,6 +119,7 @@ namespace dog2go.Backend.Model
             Meeples = meepleList;
             KennelFields = kennelFields;
             Fields = fields;
+            FieldId = fieldId;
         }
     }
 }

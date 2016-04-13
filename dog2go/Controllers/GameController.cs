@@ -8,12 +8,8 @@ namespace dog2go.Controllers
 {
     public class GameController : Controller
     {
-        public ActionResult Game()
-        {
-            return View();
-        }
 
-        public ActionResult view()
+        public ActionResult Play()
         {
             return View();
         }

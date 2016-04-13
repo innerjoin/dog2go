@@ -5,13 +5,21 @@ namespace dog2go.Backend.Model
     {
         private int _previousIdentifier;
         private int _nextIdentifier;
+        private Meeple _currentMeeple;
         private MoveDestinationField _previous;
         private MoveDestinationField _next;
         public int PreviousIdentifier => _previousIdentifier;
         public int NextIdentifier => _nextIdentifier;
         public int Identifier { get; }
         // generate identifier on run time (UUID)
-        public Meeple CurrentMeeple { get; set; }
+        public Meeple CurrentMeeple {
+            get { return _currentMeeple; }
+            set
+            {
+                _currentMeeple = value;
+                _currentMeeple.CurrentPosition = this;
+            }
+        }
 
         [IgnoreDataMember]
         public MoveDestinationField Previous
