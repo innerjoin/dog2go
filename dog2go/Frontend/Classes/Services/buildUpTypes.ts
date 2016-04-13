@@ -52,27 +52,6 @@ export class StartField extends MoveDestinationField {
     }
 }
 
-
-export class Persontest {
-    private firstName: string;
-    private lastName: string;
-
-    setFirstName(value: string) {
-        this.firstName = value;
-    }
-
-    setLastName(value: string) {
-        this.lastName = value;
-    }
-
-    getFullName(lastNameFirst: boolean = false): string {
-        if (lastNameFirst) {
-            return this.lastName + ", " + this.firstName;
-        }
-        return this.firstName + ", " + this.lastName;
-    }
-}
-
 export class PlayerFieldArea {
     constructor(color: AreaColor) {
         this.color = color;

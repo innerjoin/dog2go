@@ -296,7 +296,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TypeLite.Net4.d.ts</LastGenOutput>
     </Content>
-    <Content Include="Tests\Frontend\person.test.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -369,7 +368,6 @@
     <TypeScriptCompile Include="Frontend\Library\JQuery\jquery.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\SignalR\signalr.d.ts" />
     <Content Include="Frontend\main.js" />
-    <TypeScriptCompile Include="Frontend\Styles\person.test.ts" />
     <TypeScriptCompile Include="Scripts\Enums.d.ts">
       <DependentUpon>TypeLite.Net4.tt</DependentUpon>
     </TypeScriptCompile>
@@ -380,7 +378,7 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="Frontend\Library\requirejs\require.d.ts" />
     <TypeScriptCompile Include="Tests\Frontend\GameArea.test.ts" />
-    <TypeScriptCompile Include="Tests\Frontend\person.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\buildUpTypes.test.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
