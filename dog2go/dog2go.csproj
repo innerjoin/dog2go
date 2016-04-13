@@ -286,10 +286,6 @@
     <Content Include="Frontend\Library\jasmine\jasmine.js" />
     <Content Include="Frontend\Library\requirejs\r.js" />
     <Content Include="Frontend\Library\requirejs\require.js" />
-    <Content Include="Scripts\TypeLite.Net4.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TypeLite.Net4.d.ts</LastGenOutput>
-    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -307,7 +303,6 @@
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Scripts\Manager.ttinclude" />
     <Content Include="Views\Game\Play.cshtml" />
   </ItemGroup>
   <ItemGroup />
@@ -335,14 +330,6 @@
     <TypeScriptCompile Include="Frontend\Library\JQuery\jquery.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\SignalR\signalr.d.ts" />
     <Content Include="Frontend\requirejs.config.js" />
-    <TypeScriptCompile Include="Scripts\Enums.d.ts">
-      <DependentUpon>TypeLite.Net4.tt</DependentUpon>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Scripts\TypeLite.Net4.d.ts">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TypeLite.Net4.tt</DependentUpon>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="Frontend\Library\requirejs\require.d.ts" />
     <TypeScriptCompile Include="Tests\Frontend\GameArea.test.ts" />
     <TypeScriptCompile Include="Tests\Frontend\buildUpTypes.test.ts" />
