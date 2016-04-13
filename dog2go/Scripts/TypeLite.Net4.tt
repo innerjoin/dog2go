@@ -12,6 +12,7 @@
 
 <# var ts = TypeScript.Definitions()
 		.For<dog2go.Backend.Model.PlayerFieldArea>()
+		.For<dog2go.Backend.Model.GameTable>()
 		.For<ColorCode>()
 		.WithReference("Enums.d.ts");
 #>

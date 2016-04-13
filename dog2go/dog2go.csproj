@@ -341,6 +341,7 @@
     <Content Include="Views\Game\view.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Frontend\Classes\Model\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup />
@@ -353,14 +354,18 @@
     <TypeScriptCompile Include="Frontend\Classes\AppConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\FieldCoordinates.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Controllers\GameMaster.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Controllers\SessionController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\testController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\ChatHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\GameHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\Hub.d.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Hubs\SessionHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\buildUpTypes.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\ChatService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameArea.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\GameFieldsService.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Services\SessionService.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\p2.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\phaser.comments.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\pixi.comments.d.ts" />
@@ -368,14 +373,6 @@
     <TypeScriptCompile Include="Frontend\Library\JQuery\jquery.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\SignalR\signalr.d.ts" />
     <Content Include="Frontend\main.js" />
-    <TypeScriptCompile Include="Scripts\Enums.d.ts">
-      <DependentUpon>TypeLite.Net4.tt</DependentUpon>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Scripts\TypeLite.Net4.d.ts">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TypeLite.Net4.tt</DependentUpon>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="Frontend\Library\requirejs\require.d.ts" />
     <TypeScriptCompile Include="Tests\Frontend\GameArea.test.ts" />
     <TypeScriptCompile Include="Tests\Frontend\buildUpTypes.test.ts" />
