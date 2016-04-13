@@ -1,5 +1,4 @@
-﻿using dog2go.Models;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace dog2go.Tests.Backend
 {

@@ -17,8 +17,6 @@ namespace dog2go
             Console.WriteLine("Hello this is Release Mode!");
             app.MapSignalR();
 #endif
-            ConfigureAuth(app);
-
             
         }
     }
