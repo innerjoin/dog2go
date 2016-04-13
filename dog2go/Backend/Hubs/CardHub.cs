@@ -34,7 +34,19 @@ namespace dog2go.Backend.Hubs
             }
         }
 
-        private List<Card> MakeInitDeck()
+        public Card GetCard()
+        {
+            int index = 0;
+            Card card = Deck[index];
+            Deck.RemoveAt(index);
+            if (Deck.Count <= 1)
+            {
+                MakeInitDeck();
+            }
+            return card;
+        }
+
+        public List<Card> MakeInitDeck()
         {
             //make Jokercards
             for (int i = 0; i < 6; i++)
@@ -62,6 +74,7 @@ namespace dog2go.Backend.Hubs
             //make all other cards
             for (int i = 0; i < 8; i++)
             {
+                Deck.Add(new Card("cardChangePlace", 1, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ChangePlace) }));
                 Deck.Add(new Card("card2", 2, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.TwoFields) }));
                 Deck.Add(new Card("card3", 3, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ThreeFields) }));
                 Deck.Add(new Card("card4", 4, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.FourFieldsBack), new CardAttribute(AttributeEnum.FourFields) }));
@@ -74,7 +87,6 @@ namespace dog2go.Backend.Hubs
                 Deck.Add(new Card("card11", 11, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ElevenFields), new CardAttribute(AttributeEnum.OneField), new CardAttribute(AttributeEnum.LeaveKennel) }));
                 Deck.Add(new Card("card12", 12, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.TwelveFields) }));
                 Deck.Add(new Card("card13", 13, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ThirteenFields), new CardAttribute(AttributeEnum.LeaveKennel) }));
-                Deck.Add(new Card("cardChangePlace", 0, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ChangePlace) }));
             }
             Shuffle();
             return Deck;
