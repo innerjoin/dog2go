@@ -252,8 +252,6 @@
     <Content Include="Frontend\Styles\jasmine\jasmine.css" />
     <Content Include="Frontend\Styles\jasmine\jasmine_favicon.png" />
     <Content Include="favicon.ico" />
-    <Content Include="Frontend\Classes\Services\Chat.js" />
-    <Content Include="Frontend\Classes\Services\GameHub.js" />
     <Content Include="Frontend\Library\Phaser\phaser.js" />
     <Content Include="Frontend\Library\Phaser\phaser.min.js" />
     <Content Include="Frontend\Images\pawn_blue.png" />
@@ -351,7 +349,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Frontend\Classes\AppConfig.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\GameStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\FieldCoordinates.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameMaster.ts" />
@@ -372,7 +370,15 @@
     <TypeScriptCompile Include="Frontend\Library\jasmine\jasmine.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\JQuery\jquery.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\SignalR\signalr.d.ts" />
-    <Content Include="Frontend\main.js" />
+    <Content Include="Frontend\requirejs.config.js" />
+    <TypeScriptCompile Include="Scripts\Enums.d.ts">
+      <DependentUpon>TypeLite.Net4.tt</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Scripts\TypeLite.Net4.d.ts">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TypeLite.Net4.tt</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Frontend\Library\requirejs\require.d.ts" />
     <TypeScriptCompile Include="Tests\Frontend\GameArea.test.ts" />
     <TypeScriptCompile Include="Tests\Frontend\buildUpTypes.test.ts" />
