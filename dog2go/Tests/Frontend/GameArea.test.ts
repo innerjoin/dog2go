@@ -7,22 +7,12 @@ import FieldCoordinatesData = Coordinates.FieldCoordinatesData;
 describe("GameArea", () => {
     var timerCallback: jasmine.Spy;
     var game: Phaser.Game;
-    //var el = new HTMLElement();
     beforeEach(() => {
         timerCallback = jasmine.createSpy("timerCallback");
         jasmine.clock().install();
 
         console.log(_phaser);
-        //game = new Phaser.Game(200, 200, Phaser.AUTO, el);
-        
         game = new Phaser.Game();
-        ///setTimeout(() => {
-        //    expect(game.width).toBe(800);
-        //    expect(game.height).toBe(600);
-        //    expect(game).not.toBe(null);
-        //    expect(game.add).not.toBe(null);
-        //    expect(game.add.graphics).not.toBe(null);
-        ///}, 0);
     });
 
     afterEach(() => {
@@ -44,10 +34,8 @@ describe("GameArea", () => {
         var ac = new Coordinates.AreaCoordinates(1, fc);
         setTimeout(() => {
             area.addKennelFields(game, data, ac, 0xFF00CC);
-            //timerCallback();
         }, 0);
         jasmine.clock().tick(0);
-        //expect(timerCallback).toHaveBeenCalled();
         var pos0 = data[0].viewRepresentation.position;
         var pos1 = data[1].viewRepresentation.position;
         var pos2 = data[2].viewRepresentation.position;
