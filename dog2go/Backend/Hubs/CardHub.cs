@@ -18,28 +18,40 @@ namespace dog2go.Backend.Hubs
         public void ChooseCardExchange(HandCard card);
         public void ChooseMove(MeepleMove move);*/
 
-        static List<Card> _deck = new List<Card>();
+        private static readonly List<Card> Deck = new List<Card>();
 
-        private static Random _rng = new Random();
+        private static readonly Random Rng = new Random();
         public static void Shuffle()
         {
-            int n = _deck.Count;
+            int n = Deck.Count;
             while (n > 1)
             {
                 n--;
-                int k = _rng.Next(n + 1);
-                Card card = _deck[k];
-                _deck[k] = _deck[n];
-                _deck[n] = card;
+                int k = Rng.Next(n + 1);
+                Card card = Deck[k];
+                Deck[k] = Deck[n];
+                Deck[n] = card;
             }
         }
 
-        private List<Card> makeInitDeck()
+        public Card GetCard()
+        {
+            int index = 0;
+            Card card = Deck[index];
+            Deck.RemoveAt(index);
+            if (Deck.Count <= 1)
+            {
+                MakeInitDeck();
+            }
+            return card;
+        }
+
+        public List<Card> MakeInitDeck()
         {
             //make Jokercards
             for (int i = 0; i < 6; i++)
             {
-                _deck.Add(new Card("cardJocker", 0, null, new List<CardAttribute>()
+                Deck.Add(new Card("cardJocker", 0, null, new List<CardAttribute>()
                 {
                     new CardAttribute(AttributeEnum.OneField),
                     new CardAttribute(AttributeEnum.TwoFields),
@@ -62,22 +74,22 @@ namespace dog2go.Backend.Hubs
             //make all other cards
             for (int i = 0; i < 8; i++)
             {
-                _deck.Add(new Card("card2", 2, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.TwoFields) }));
-                _deck.Add(new Card("card3", 3, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ThreeFields) }));
-                _deck.Add(new Card("card4", 4, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.FourFieldsBack), new CardAttribute(AttributeEnum.FourFields) }));
-                _deck.Add(new Card("card5", 5, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.FiveFields) }));
-                _deck.Add(new Card("card6", 6, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.SixFields) }));
-                _deck.Add(new Card("card7", 7, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.SevenFields) }));
-                _deck.Add(new Card("card8", 8, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.EightFields) }));
-                _deck.Add(new Card("card9", 9, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.NineFields) }));
-                _deck.Add(new Card("card10", 10, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.TenFields) }));
-                _deck.Add(new Card("card11", 11, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ElevenFields), new CardAttribute(AttributeEnum.OneField), new CardAttribute(AttributeEnum.LeaveKennel) }));
-                _deck.Add(new Card("card12", 12, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.TwelveFields) }));
-                _deck.Add(new Card("card13", 13, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ThirteenFields), new CardAttribute(AttributeEnum.LeaveKennel) }));
-                _deck.Add(new Card("cardChangePlace", 0, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ChangePlace) }));
+                Deck.Add(new Card("cardChangePlace", 1, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ChangePlace) }));
+                Deck.Add(new Card("card2", 2, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.TwoFields) }));
+                Deck.Add(new Card("card3", 3, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ThreeFields) }));
+                Deck.Add(new Card("card4", 4, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.FourFieldsBack), new CardAttribute(AttributeEnum.FourFields) }));
+                Deck.Add(new Card("card5", 5, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.FiveFields) }));
+                Deck.Add(new Card("card6", 6, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.SixFields) }));
+                Deck.Add(new Card("card7", 7, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.SevenFields) }));
+                Deck.Add(new Card("card8", 8, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.EightFields) }));
+                Deck.Add(new Card("card9", 9, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.NineFields) }));
+                Deck.Add(new Card("card10", 10, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.TenFields) }));
+                Deck.Add(new Card("card11", 11, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ElevenFields), new CardAttribute(AttributeEnum.OneField), new CardAttribute(AttributeEnum.LeaveKennel) }));
+                Deck.Add(new Card("card12", 12, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.TwelveFields) }));
+                Deck.Add(new Card("card13", 13, null, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ThirteenFields), new CardAttribute(AttributeEnum.LeaveKennel) }));
             }
             Shuffle();
-            return _deck;
+            return Deck;
         }
     }
 }
