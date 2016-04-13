@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.UI;
 using dog2go.Backend.Model;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -10,10 +12,16 @@ namespace dog2go.Backend.Hubs
     [HubName("chatHub")]
     public class ChatHub : Hub
     {
+
+
         public void SendTo(string name, string message)
         {
             // Call the broadcastMessage method to update clients.
-            Clients.All.broadcastMessage(name, message);   
+            //var gameHubContext = GlobalHost.ConnectionManager.GetHubContext<GameHub>();
+            //_repository.Add(name, message);
+            //gameHubContext.Clients.Group(name +"_group").addChatMessage();
+            Clients.All.sendMessage(name, message);
+
         }
 
         public async Task JoinRoom(string roomName)
@@ -54,4 +62,6 @@ namespace dog2go.Backend.Hubs
             return "";
         }
     }
+
+   
 }

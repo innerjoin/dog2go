@@ -4,7 +4,9 @@
     {
         public ColorCode ColorCode { get; set; }
 
-        public MoveDestinationField CurrentPosition { get; set; }
+        public MoveDestinationField CurrentPosition;
+
+        public bool IsStartFieldBlocked { get; set; }
 
         public Meeple(KennelField kennelField)
         {

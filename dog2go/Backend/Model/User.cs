@@ -2,10 +2,19 @@
 {
     public class User
     {
-        public int Identifier { get; set; }
+        public string Identifier { get; set; }
 
         public string Nickname { get; set; }
-
         public string GroupName { get; set; }
+        public string Cookie { get; set; }
+        public User(string name)
+        {
+            Nickname = name;
+        }
+        public User(string name, string connectionId)
+        {
+            Nickname = name;
+            Identifier = connectionId;
+        }
     }
 }

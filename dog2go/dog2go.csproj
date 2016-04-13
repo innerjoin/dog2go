@@ -214,7 +214,6 @@
     <Compile Include="Backend\Hubs\CardHub.cs" />
     <Compile Include="Backend\Hubs\ChatHub.cs" />
     <Compile Include="Backend\Hubs\GameHub.cs" />
-    <Compile Include="Backend\Interfaces\IChat.cs" />
     <Compile Include="Backend\Model\Card.cs" />
     <Compile Include="Backend\Model\CardAttribute.cs" />
     <Compile Include="Backend\Model\CardMove.cs" />
@@ -231,6 +230,7 @@
     <Compile Include="Backend\Model\StandardField.cs" />
     <Compile Include="Backend\Model\StartField.cs" />
     <Compile Include="Backend\Model\User.cs" />
+    <Compile Include="Backend\Repos\UserRepository.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -244,7 +244,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Tests\Backend\NunitSample.cs" />
+    <Compile Include="Tests\Backend\NunitGameHubTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Frontend\Styles\jasmine\jasmine.css" />
@@ -332,7 +332,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Game\Game.cshtml" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -340,6 +339,7 @@
     <Content Include="Views\Game\view.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Backend\Interfaces\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup />
