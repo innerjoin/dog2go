@@ -1,13 +1,13 @@
-﻿body {
+﻿/*body {
     padding-top: 50px;
     padding-bottom: 20px;
-}
+}*/
 
 /* Set padding to keep content from hitting the edges */
-.body-content {
+/*.body-content {
     padding-left: 15px;
     padding-right: 15px;
-}
+}*/
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -21,4 +21,52 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+html, body {
+    height: 100%;
+}
+
+#gameContainer {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #FF00CC;
+}
+
+#gameContainer > #gameContent {
+    display: flex;
+    flex-flow: row wrap;
+    float: left;
+    width: 65%;
+    height: 100%;
+}
+
+#gameContainer > #sideContainer {
+    float: left;
+    width: 35%;
+    height: 100%;
+    background-color: #aaBB00;
+}
+
+#sideContainer > #cardContainer {
+    float: left;
+    width: 100%;
+    height: 60%;
+    background-color: #aa0000;
+}
+
+#sideContainer > #chatContainer {
+    float: left;
+    width: 100%;
+    height: 40%;
+    background-color: #0000aa;
+    overflow: auto;
+}
+
+footer {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
 }
