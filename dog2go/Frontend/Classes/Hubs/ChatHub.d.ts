@@ -3,12 +3,11 @@
     server: IChatHubServer;
 }
 
-
 interface IChatHubClient {
-    broadcastMessage(name:string, message:string);
+    broadcastMessage(name:string, message: IMessage);
     doSomeShit();
 }
 
 interface IChatHubServer {
-    sendTo(name:string, message:string): void;
+    sendMessage(message: IMessage): void;
 }

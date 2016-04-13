@@ -1,4 +1,5 @@
 ﻿///<reference path="../Services/buildUpTypes.ts"/>
+interface HubProxy{}
 
 interface IGameHub extends HubProxy {
     client: IGameHubClient;

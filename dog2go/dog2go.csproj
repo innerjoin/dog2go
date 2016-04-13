@@ -145,14 +145,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="TypeLite, Version=1.8.0.0, Culture=neutral, PublicKeyToken=8cd4b9c9ac23d744, processorArchitecture=MSIL">
-      <HintPath>..\packages\TypeLite.Lib.1.8.0\lib\net4\TypeLite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="TypeLite.Net4, Version=1.8.0.0, Culture=neutral, PublicKeyToken=8cd4b9c9ac23d744, processorArchitecture=MSIL">
-      <HintPath>..\packages\TypeLite.Lib.1.8.0\lib\net4\TypeLite.Net4.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
@@ -316,13 +308,19 @@
     <TypeScriptCompile Include="Frontend\Classes\GameStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\FieldCoordinates.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Controllers\GameMaster.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Controllers\SessionController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\ChatHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\GameHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\Hub.d.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Hubs\SessionHub.d.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Model\ChatModel.d.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Model\ChatModel.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\buildUpTypes.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\ChatService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameArea.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\GameFieldsService.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Services\SessionService.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\p2.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\phaser.comments.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\pixi.comments.d.ts" />
