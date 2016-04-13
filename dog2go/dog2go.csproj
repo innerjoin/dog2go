@@ -229,9 +229,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Views\Extensions\RequireJsHelpers.cs" />
@@ -300,7 +297,6 @@
     <Content Include="Views\Game\view.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Frontend\Classes\Model\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup />
@@ -320,6 +316,8 @@
     <TypeScriptCompile Include="Frontend\Classes\Hubs\GameHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\Hub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\SessionHub.d.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Model\ChatModel.d.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Model\ChatModel.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\buildUpTypes.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\ChatService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameArea.ts" />

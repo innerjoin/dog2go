@@ -7,6 +7,10 @@ namespace dog2go.Backend.Model
 {
     public class Message
     {
+        public Message()
+        {
+        }
+
         public string Msg;
         public User User;
         public string Group;
