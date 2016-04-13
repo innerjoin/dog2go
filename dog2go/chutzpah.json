@@ -11,7 +11,7 @@
   },
   "References": [
     { "Path": "Frontend/Library/requirejs/require.js" },
-    { "Path": "Frontend/main.js" },
+    { "Path": "Frontend/requirejs.config.js" },
     { "Path": "Frontend/Library/Phaser/phaser.comments.d.ts", "IncludeInTestHarness": false },
     { "Path": "Frontend/Library/Phaser/pixi.comments.d.ts", "IncludeInTestHarness": false },
     { "Path": "Frontend/Library/requirejs/require.d.ts", "IncludeInTestHarness": false },

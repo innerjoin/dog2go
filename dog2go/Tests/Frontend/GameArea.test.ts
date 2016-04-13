@@ -7,22 +7,12 @@ import FieldCoordinatesData = Coordinates.FieldCoordinatesData;
 describe("GameArea", () => {
     var timerCallback: jasmine.Spy;
     var game: Phaser.Game;
-    //var el = new HTMLElement();
     beforeEach(() => {
         timerCallback = jasmine.createSpy("timerCallback");
         jasmine.clock().install();
 
         console.log(_phaser);
-        //game = new Phaser.Game(200, 200, Phaser.AUTO, el);
-        
         game = new Phaser.Game();
-        ///setTimeout(() => {
-        //    expect(game.width).toBe(800);
-        //    expect(game.height).toBe(600);
-        //    expect(game).not.toBe(null);
-        //    expect(game.add).not.toBe(null);
-        //    expect(game.add.graphics).not.toBe(null);
-        ///}, 0);
     });
 
     afterEach(() => {
@@ -41,24 +31,23 @@ describe("GameArea", () => {
         var xStart = [380, 20, 140, 500];
         var yStart = [20, 140, 500, 380];
         var fc = new FieldCoordinatesData(span, xStart, yStart);
-        var ac = new Coordinates.AreaCoordinates(1, fc);
+        var ac = new Coordinates.AreaCoordinates(0, fc);
         setTimeout(() => {
             area.addKennelFields(game, data, ac, 0xFF00CC);
-            //timerCallback();
         }, 0);
         jasmine.clock().tick(0);
-        //expect(timerCallback).toHaveBeenCalled();
         var pos0 = data[0].viewRepresentation.position;
         var pos1 = data[1].viewRepresentation.position;
         var pos2 = data[2].viewRepresentation.position;
         var pos3 = data[3].viewRepresentation.position;
-        expect(pos0.x).toEqual(20);
+        console.log(pos0, pos1, pos2, pos3);
+        expect(pos0.x).toEqual(50);
         expect(pos0.y).toEqual(20);
         expect(pos1.x).toEqual(20);
-        expect(pos1.y).toEqual(50);
+        expect(pos1.y).toEqual(20);
         expect(pos2.x).toEqual(50);
-        expect(pos2.y).toEqual(20);
-        expect(pos3.x).toEqual(50);
+        expect(pos2.y).toEqual(50);
+        expect(pos3.x).toEqual(20);
         expect(pos3.y).toEqual(50);
     }, 10000);
 });

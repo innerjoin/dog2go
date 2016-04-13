@@ -66,8 +66,8 @@ export class GameArea {
     }
 
     addKennelFields(game: Phaser.Game, kennelFields: KennelField[], areaPos: AreaCoordinates, color: number) {
-        const kennelX = areaPos.x - 4 * areaPos.xOffset;
-        const kennelY = areaPos.y - 4 * areaPos.yOffset;
+        const kennelX = areaPos.x + 11 * areaPos.xOffset;
+        const kennelY = areaPos.y + 11 * areaPos.yOffset;
         for (let i = 0; i < kennelFields.length; i++) {
             let xx = 0;
             let yy = 0;
