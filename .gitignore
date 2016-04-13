@@ -219,3 +219,7 @@ ModelManifest.xml
 /dog2go/dog2go.deploy-readme.txt
 /dog2go/Deployment/**
 *.map
+
+# Own ignores for .js Files from ts
+/dog2go/Frontend/Classes/*.js
+/dog2go/Frontend/Classes/*/*.js

@@ -1,6 +1,8 @@
 ﻿/// <reference path="../Services/ChatService.ts"/>
+import Service = require("../Services/ChatService");
+import ChatService = Service.ChatService;
 
-class ChatController {
+export class ChatController {
     private chatService: ChatService;
     constructor() {
         this.chatService = ChatService.getInstance(this.putMessage);

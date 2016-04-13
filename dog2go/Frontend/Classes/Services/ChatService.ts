@@ -1,4 +1,5 @@
-﻿class ChatService {
+﻿
+export class ChatService {
     private static instance: ChatService = null;
     constructor(callback: (name: string, message: string) => any) {
         if (ChatService.instance) {
@@ -8,12 +9,6 @@
 
         chatHub.client.broadcastMessage = function (name: string, message: string) {
             callback(name, message);
-            // Html encode display name and message. 
-            /*var encodedName = $('<div />').text(name).html();
-            var encodedMsg = $('<div />').text(message).html();
-            // Add the message to the page. 
-            $('#chatBox').append('<li><strong>' + encodedName
-                + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');*/
         };
         
         ChatService.instance = this;
