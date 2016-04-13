@@ -1,17 +1,23 @@
 ﻿{
   "Framework": "jasmine",
+  "TestHarnessLocationMode": "SettingsFileAdjacent",
+  "TestHarnessReferenceMode": "AMD",
+  "TypeScriptModuleKind": "AMD",
+  "AMDBaseUrl": "Frontend",
   "Compile": {
     "Mode": "External",
     "Extensions": [ ".ts" ],
     "ExtensionsWithNoOutput": [ ".d.ts" ]
   },
   "References": [
-    {
-      "Includes": [
-       "*/Frontend/Classes/**/*.ts"
-       
-      ]
-    }
+    { "Path": "Frontend/Library/requirejs/require.js" },
+    { "Path": "Frontend/requirejs.config.js" },
+    { "Path": "Frontend/Library/Phaser/phaser.comments.d.ts", "IncludeInTestHarness": false },
+    { "Path": "Frontend/Library/Phaser/pixi.comments.d.ts", "IncludeInTestHarness": false },
+    { "Path": "Frontend/Library/requirejs/require.d.ts", "IncludeInTestHarness": false },
+    { "Path": "Frontend/Library/jasmine/jasmine.d.ts", "IncludeInTestHarness": false },
+    { "Path": "Frontend/Classes", "IncludeInTestHarness": false },
+    { "Path": "Frontend/Library", "IncludeInTestHarness": false }
   ],
   "Tests": [
     {
