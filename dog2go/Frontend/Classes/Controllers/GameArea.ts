@@ -22,7 +22,7 @@ export class GameArea {
             create: this.create.bind(this)
         };
         console.log(_phaser);
-        this.game = new Phaser.Game(720, 720, Phaser.AUTO, "content", gameStates);
+        this.game = new Phaser.Game(720, 720, Phaser.AUTO, "gameContent", gameStates);
         const fc = new Coordinates.FieldCoordinates();
         this.pos = fc.FOUR_PlAYERS;
     }
@@ -53,7 +53,29 @@ export class GameArea {
         this.fields = [];
         
         this.game.load.image("meeple_blue", "../Frontend/Images/pawn_blue.png");
+        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.game.scale.refresh();
+        if (!this.game.device.desktop) {
+            this.game.scale.forceOrientation(true, false);
+            this.game.scale.setResizeCallback(this.gameResized, this);
+            this.game.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
+            this.game.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
+        }
+        //this.game.scale.updatela
+    }
 
+    gameResized(width, height) {
+        //  This could be handy if you need to do any extra processing if the game resizes.
+        //  A resize could happen if for example swapping orientation on a device or resizing the browser window.
+        //  Note that this callback is only really useful if you use a ScaleMode of RESIZE and place it inside your main game state.
+    }
+
+    enterIncorrectOrientation() {
+        alert("incorrect");
+    }
+
+    leaveIncorrectOrientation() {
+        alert("correct");
     }
 
     static getFieldById(id: number, fields: MoveDestinationField[]): MoveDestinationField {

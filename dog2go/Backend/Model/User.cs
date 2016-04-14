@@ -2,6 +2,8 @@
 {
     public class User
     {
+
+        public User() { }
         public string Identifier { get; set; }
 
         public string Nickname { get; set; }
