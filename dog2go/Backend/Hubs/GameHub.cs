@@ -399,7 +399,7 @@ namespace dog2go.Backend.Hubs
         {
             if (fieldCount < 0)
             {
-                for (var i = 0; i >= fieldCount; i--)
+                for (var i = 0; i > fieldCount; i--)
                 {
                     startCountField = startCountField.Previous;
                     StartField startField = startCountField as StartField;
@@ -409,7 +409,7 @@ namespace dog2go.Backend.Hubs
                     }
                 }
 
-                return true;
+                return false;
             }
 
             else

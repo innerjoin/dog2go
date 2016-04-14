@@ -14,9 +14,9 @@ namespace dog2go
         public void Configuration(IAppBuilder app)
         {
             GlobalHost.DependencyResolver.Register(typeof(ChatHub), () => new ChatHub(ChatMessageRepository.Instance));
+            GlobalHost.DependencyResolver.Register(typeof(GameHub), () => new GameHub(UserRepository.Instance));
 #if DEBUG
             Console.WriteLine("Hello this is Debug Mode!");
-            GlobalHost.DependencyResolver.Register(typeof(GameHub), () => new GameHub(UserRepository.Instance));
             app.MapSignalR(new HubConfiguration { EnableDetailedErrors = true });
 #else
             Console.WriteLine("Hello this is Release Mode!");

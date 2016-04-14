@@ -216,7 +216,7 @@
     <Compile Include="Backend\Model\Card.cs" />
     <Compile Include="Backend\Model\CardAttribute.cs" />
     <Compile Include="Backend\Model\CardMove.cs" />
-    <Compile Include="Backend\Model\ChatMessageRepository.cs" />
+    <Compile Include="Backend\Repos\ChatMessageRepository.cs" />
     <Compile Include="Backend\Model\EndField.cs" />
     <Compile Include="Backend\Model\GameTable.cs" />
     <Compile Include="Backend\Model\HandCard.cs" />
@@ -239,6 +239,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tests\Backend\NunitHubConnectionTest.cs" />
     <Compile Include="Views\Extensions\RequireJsHelpers.cs" />
     <Compile Include="Tests\Backend\NunitGameHubTest.cs" />
   </ItemGroup>
