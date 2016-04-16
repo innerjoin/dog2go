@@ -297,6 +297,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Game\Play.cshtml" />
+    <Content Include="Views\Game\Login.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />

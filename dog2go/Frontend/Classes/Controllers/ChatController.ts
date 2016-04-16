@@ -11,7 +11,7 @@ export class ChatController {
             $('#message').val('').focus();
         });
 
-        $('#displayname').val(prompt('Enter your name:', ''));
+        //$('#displayname').val(prompt('Enter your name:', ''));
         // Set initial focus to message input box.  
         $('#message').focus();
     }

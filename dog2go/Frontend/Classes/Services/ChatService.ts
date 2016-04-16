@@ -32,6 +32,7 @@ export class ChatService {
         var msg: Message = new Message();
         msg.Msg = message;
         msg.User.Nickname = name;
+        msg.Group = "testGroup";
         $.connection.hub.start().done(() => {
             chatHub.server.sendMessage(msg);
         });
