@@ -1,28 +1,9 @@
-﻿/*body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}*/
-
-/* Set padding to keep content from hitting the edges */
-/*.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}*/
-
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
-}
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
+﻿/* scale form input width */
+input, select, textarea {
     max-width: 280px;
 }
 
+/* ensure body height */
 html, body {
     height: 100%;
 }
@@ -32,41 +13,191 @@ html, body {
     display: flex;
     width: 100%;
     height: 100%;
-    background-color: #FF00CC;
+    background-image: url("../Images/wood-min.jpg");
 }
 
-#gameContainer > #gameContent {
-    display: flex;
-    flex-flow: row wrap;
-    float: left;
-    width: 65%;
-    height: 100%;
-}
+    #gameContainer > #gameContent {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70%;
+        height: 100%;
+    }
 
-#gameContainer > #sideContainer {
-    float: left;
-    width: 35%;
-    height: 100%;
-    background-color: #aaBB00;
-}
+        #gameContainer > #gameContent > canvas {
+            display: flex !important;
+            align-self: center;
+        }
+
+    #gameContainer > #sideContainer {
+        float: left;
+        width: 30%;
+        height: 100%;
+        /*background-color: #aaBB00;*/
+    }
 
 #sideContainer > #cardContainer {
     float: left;
     width: 100%;
     height: 60%;
-    background-color: #aa0000;
+    color: #ff00cc;
+    font-size: 2em;
 }
 
 #sideContainer > #chatContainer {
     float: left;
     width: 100%;
     height: 40%;
-    background-color: #0000aa;
+    border: 1px solid gray;
     overflow: auto;
+    background: slategray;
+    background: rgba(00, 00, 00, .7);
+    display: flex;
+    justify-content: flex-start;
 }
+
+    #sideContainer > #chatContainer ul {
+        color: white;
+    }
+
+    #sideContainer > #chatContainer > .input-group {
+        align-self: flex-end;
+        padding: 6px;
+        width: 100%;
+    }
+
+    #sideContainer > #chatContainer > .input-group > input[type=text] {
+        max-width: 70%;
+    }
 
 footer {
     position: fixed;
     bottom: 0px;
-    right: 0px;
+    right: 10px;
+}
+
+input.semi-transparent-input {
+    background-color: rgba(0,0,0,0.8) !important;
+    border: none !important;
+    color: white;
+}
+
+input.semi-transparent-button {
+    background-color: rgba(99,99,99,0.8) !important;
+    border: 1px solid white !important;
+    color: white;
+}
+
+/* Navigation Menu - Background */
+.navigation {
+    /* critical sizing and position styles */
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    /* non-critical appearance styles */
+    list-style: none;
+    background: #111;
+}
+
+/* Navigation Menu - List items */
+.nav-item {
+    /* non-critical appearance styles */
+    right: 0;
+    float: right;
+    clear: both;
+    width: 200px;
+    border-top: 1px solid #111;
+    border-bottom: 1px solid #000;
+}
+
+.nav-item a {
+    display: block;
+    padding: 1em;
+    background: linear-gradient(135deg, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
+    color: white;
+    font-size: 1.2em;
+    text-decoration: none;
+    transition: color 0.5s, background 0.6s;
+}
+
+.nav-item a:hover {
+    color: #00ced1;
+    background: linear-gradient(135deg, rgba(0,0,0,0) 0%,rgba(00,99,91,0.65) 100%);
+}
+
+/* Site Wrapper - Everything that isn't navigation */
+.site-wrap {
+    height: 100%;
+    min-width: 100%;
+    background-color: #dddddd; /* must have a background or else the navigation will show through */
+    position: relative;
+    top: 0;
+    bottom: 100%;
+    right: 0;
+    z-index: 1;
+    padding: 1px;
+    background-image: radial-gradient(ellipse at center, #ffffff 0%, #eeeeee 100%);
+}
+
+/* Nav Trigger */
+.nav-trigger {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+}
+
+label[for="nav-trigger"] {
+    position: fixed;
+    right: 15px;
+    top: 15px;
+    z-index: 2;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' x='0px' y='0px' width='30px' height='30px' viewBox='0 0 30 30' style='stroke:white' enable-background='new 0 0 30 30' xml:space='preserve'><rect width='30' height='6'/><rect y='24' width='30' height='6'/><rect y='12' width='30' height='6'/></svg>");
+    background-size: contain;
+}
+
+label:hover {
+    fill: #00ced1;
+}
+
+.nav-trigger + label, .site-wrap {
+    transition: right 0.2s;
+}
+
+.nav-trigger:checked + label {
+    right: 215px;
+}
+
+.nav-trigger:checked ~ .site-wrap {
+    right: 200px;
+    box-shadow: 0 0 5px 5px #000000;
+    box-shadow: 0 0 5px 5px rgba(0,0,0,0.5);
+}
+
+body {
+    /* Important: removes horizontal scroll bar when menu is open */
+    overflow-x: hidden;
+}
+
+/* Micro reset */
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, Arial, sans-serif;
 }

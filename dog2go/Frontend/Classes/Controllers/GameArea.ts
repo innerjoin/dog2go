@@ -22,7 +22,7 @@ export class GameArea {
             create: this.create.bind(this)
         };
         console.log(_phaser);
-        this.game = new Phaser.Game(720, 720, Phaser.AUTO, "gameContent", gameStates);
+        this.game = new Phaser.Game(700, 700, Phaser.AUTO, "gameContent", gameStates, true);
         const fc = new Coordinates.FieldCoordinates();
         this.pos = fc.FOUR_PlAYERS;
     }
@@ -114,6 +114,7 @@ export class GameArea {
     addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
         const graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
         graphics.beginFill(color, 1);
+        graphics.lineStyle(2, 0x222222, 1);
         graphics.drawCircle(0, 0, 30); //draw a circle relative to it's parent (in this case, the graphics object)
         graphics.endFill();
         this.fields.push(graphics);
@@ -153,7 +154,6 @@ export class GameArea {
         //this.gameFieldService.getGameFieldData();
         
         var game = this.game;
-        this.game.stage.backgroundColor = 0xddeeCC;
         let pos = 0;
 
         for (let area of this.areas) {
