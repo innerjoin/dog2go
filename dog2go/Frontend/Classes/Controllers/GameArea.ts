@@ -181,7 +181,7 @@ export class GameArea {
         meepleBlue.scale.setTo(0.4, 0.4);
         meepleBlue.inputEnabled = true;
         meepleBlue.input.enableDrag();
-        meepleBlue.input.enableSnap(40, 40, false, true);
+        meepleBlue.input.enableSnap(120, 120, false, true);
         meepleBlue.events.onDragStop.add(this.dropLimiter, this);
     }    
 }
