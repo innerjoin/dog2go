@@ -28,9 +28,13 @@ namespace dog2go.Controllers
         [HttpPost]
         public ActionResult Login(User user)
         {
-            GameHub gameHub = new GameHub(UserRepository.Instance);
-            gameHub.Login(user.Nickname, null);
-            return Redirect("Game/Play");
+            if (ModelState.IsValid)
+            {
+                //GameHub gameHub = new GameHub(UserRepository.Instance);
+                //gameHub.Login(user.Nickname, null);
+                return Redirect("Game/Play");
+            }
+            return View(user);
         }
     }
 }

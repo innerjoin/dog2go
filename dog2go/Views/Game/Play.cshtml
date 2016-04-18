@@ -3,13 +3,16 @@
 <div id="gameContainer">
     <div id="gameContent"></div>
     <div id="sideContainer">
-        <div id="cardContainer">add cards here</div>
         <div id="chatContainer">
-            <input type="text" id="message" />
-            <input type="button" id="sendmessage" value="Send" />
-            <input type="hidden" id="displayname" />
             <ul id="chatBox"></ul>
+            <div class="input-group">
+                <input class="form-control semi-transparent-input" type="text" id="message"/>
+                <input type="submit" value="send" class="btn inline semi-transparent-button" id="sendmessage">
+                
+            </div>
+            <input type="hidden" id="displayname" />
         </div>
+        <div id="cardContainer">@*TODO: add cards here*@</div>
     </div>
 </div>
 
