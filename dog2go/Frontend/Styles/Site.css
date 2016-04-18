@@ -8,6 +8,43 @@ html, body {
     height: 100%;
 }
 
+div.pageOverlay {
+    -ms-opacity: 0.8;
+    opacity: 0.8;
+    background: #000;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    position: fixed;
+}
+
+#gamePageOverlay {
+    -ms-opacity: 0.8;
+    opacity: 0.8;
+    background: #000;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+    #gamePageOverlay > .pageOverlayContent {
+        z-index: 11;
+        -ms-opacity: 1;
+        opacity: 1;
+        color: white;
+        padding: 5em;
+        align-self: center;
+        text-align: center;
+    }
+
 #gameContainer {
     position: relative;
     display: flex;
@@ -20,7 +57,7 @@ html, body {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 70%;
+        width: 58%;
         height: 100%;
     }
 
@@ -31,7 +68,7 @@ html, body {
 
     #gameContainer > #sideContainer {
         float: left;
-        width: 30%;
+        width: 42%;
         height: 100%;
         /*background-color: #aaBB00;*/
     }
@@ -39,7 +76,7 @@ html, body {
 #sideContainer > #cardContainer {
     float: left;
     width: 100%;
-    height: 60%;
+    height: 50%;
     color: #ff00cc;
     font-size: 2em;
 }
@@ -47,7 +84,7 @@ html, body {
 #sideContainer > #chatContainer {
     float: left;
     width: 100%;
-    height: 40%;
+    height: 50%;
     border: 1px solid gray;
     overflow: auto;
     background: slategray;
@@ -66,23 +103,31 @@ html, body {
         width: 100%;
     }
 
-    #sideContainer > #chatContainer > .input-group > input[type=text] {
-        max-width: 70%;
-    }
+        #sideContainer > #chatContainer > .input-group > input[type=text] {
+            max-width: 70%;
+        }
+
+#cardContainer > img {
+    max-width: 33%;
+    max-height: 50%;
+}
 
 footer {
+    z-index: 3;
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
     right: 10px;
 }
 
 input.semi-transparent-input {
+    background-color: #000000 !important;
     background-color: rgba(0,0,0,0.8) !important;
     border: none !important;
     color: white;
 }
 
 input.semi-transparent-button {
+    background-color: #636363 !important;
     background-color: rgba(99,99,99,0.8) !important;
     border: 1px solid white !important;
     color: white;
@@ -115,24 +160,32 @@ input.semi-transparent-button {
     border-bottom: 1px solid #000;
 }
 
-.nav-item a {
-    display: block;
-    padding: 1em;
-    background: linear-gradient(135deg, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
-    color: white;
-    font-size: 1.2em;
-    text-decoration: none;
-    transition: color 0.5s, background 0.6s;
-}
+    .nav-item a {
+        display: block;
+        padding: 1em;
+        background: linear-gradient(135deg, rgba(0,0,0,0) 0,rgba(0,0,0,0.65) 100%);
+        color: white;
+        font-size: 1.2em;
+        text-decoration: none;
+        -webkit-transition: color 0.5s, background 0.6s;
+        -moz-transition: color 0.5s, background 0.6s;
+        -ms-transition: color 0.5s, background 0.6s;
+        -o-transition: color 0.5s, background 0.6s;
+        transition: color 0.5s, background 0.6s;
+    }
 
-.nav-item a:hover {
-    color: #00ced1;
-    background: linear-gradient(135deg, rgba(0,0,0,0) 0%,rgba(00,99,91,0.65) 100%);
-}
+        .nav-item a:hover {
+            color: #00ced1;
+            background: linear-gradient(135deg, rgba(0,0,0,0) 0,rgba(00,99,91,0.65) 100%);
+        }
 
 /* Site Wrapper - Everything that isn't navigation */
 .site-wrap {
     height: 100%;
+    -moz-min-width: 100%;
+    -ms-min-width: 100%;
+    -o-min-width: 100%;
+    -webkit-min-width: 100%;
     min-width: 100%;
     background-color: #dddddd; /* must have a background or else the navigation will show through */
     position: relative;
@@ -141,7 +194,7 @@ input.semi-transparent-button {
     right: 0;
     z-index: 1;
     padding: 1px;
-    background-image: radial-gradient(ellipse at center, #ffffff 0%, #eeeeee 100%);
+    background-image: radial-gradient(ellipse at center, #ffffff 0, #eeeeee 100%);
 }
 
 /* Nav Trigger */
@@ -159,6 +212,7 @@ label[for="nav-trigger"] {
     width: 30px;
     cursor: pointer;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' x='0px' y='0px' width='30px' height='30px' viewBox='0 0 30 30' style='stroke:white' enable-background='new 0 0 30 30' xml:space='preserve'><rect width='30' height='6'/><rect y='24' width='30' height='6'/><rect y='12' width='30' height='6'/></svg>");
+    -ms-background-size: contain;
     background-size: contain;
 }
 
@@ -167,6 +221,10 @@ label:hover {
 }
 
 .nav-trigger + label, .site-wrap {
+    -webkit-transition: right 0.2s;
+    -moz-transition: right 0.2s;
+    -ms-transition: right 0.2s;
+    -o-transition: right 0.2s;
     transition: right 0.2s;
 }
 
@@ -176,6 +234,8 @@ label:hover {
 
 .nav-trigger:checked ~ .site-wrap {
     right: 200px;
+    -webkit-box-shadow: 0 0 5px 5px #000000;
+    -ms-box-shadow: 0 0 5px 5px #000000;
     box-shadow: 0 0 5px 5px #000000;
     box-shadow: 0 0 5px 5px rgba(0,0,0,0.5);
 }

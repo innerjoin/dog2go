@@ -71,11 +71,11 @@ export class GameArea {
     }
 
     enterIncorrectOrientation() {
-        alert("incorrect");
+        $("#gamePageOverlay").css("display", "flex");
     }
 
     leaveIncorrectOrientation() {
-        alert("correct");
+        $("#gamePageOverlay").css("display", "none");
     }
 
     static getFieldById(id: number, fields: MoveDestinationField[]): MoveDestinationField {

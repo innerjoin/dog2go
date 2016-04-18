@@ -236,6 +236,22 @@
     <Compile Include="Tests\Backend\NunitGameHubTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Frontend\Images\cards-min\card_1-11-play_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_10_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_12_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_13-play_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_2_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_3_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_4_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_5_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_6_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_7v1_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_7v2_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_7v3_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_8_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_9_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_exchange_190x300komp.png" />
+    <Content Include="Frontend\Images\cards-min\card_joker_190x300komp.png" />
     <Content Include="Frontend\Images\wood-min.jpg" />
     <Content Include="Frontend\Images\wood.jpg" />
     <Content Include="Frontend\Library\domReady.js" />
