@@ -5,6 +5,7 @@
     public Start: Date;
     public Cookie: string;
     public Stop: Date;
+    PlayerFieldAreas: IPlayerFieldArea[] = [];
     /*        public List < PlayerFieldArea > PlayerFieldAreas;
         public List < Participation > Participations; */
 }

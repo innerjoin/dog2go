@@ -1,12 +1,7 @@
-﻿export enum AreaColor {
-    Red = 0xff0000,
-    Blue = 0x0000ff,
-    Green = 0x00ff00,
-    Yellow = 0xedc613
-}
+﻿
 
-export class MoveDestinationField {
-    identifier: number;
+export class MoveDestinationField implements IMoveDestinationField {
+    Identifier: number;
     previous: MoveDestinationField;
     next: MoveDestinationField;
 
@@ -28,9 +23,12 @@ export class MoveDestinationField {
     private setNext(next: MoveDestinationField) {
         this.next = next;
     }
+
+    NextIdentifier: number;
+    PreviousIdentifier: number;
 }
 
-export class KennelField extends MoveDestinationField {
+export class KennelField extends MoveDestinationField implements IKennelField{
     constructor() {
         super(null);
     }
@@ -96,4 +94,12 @@ export class PlayerFieldArea {
             this.kennelFields.push(new KennelField());
         }
     }
+}
+
+
+export enum AreaColor {
+    Red = 0xff0000,
+    Blue = 0x0000ff,
+    Green = 0x00ff00,
+    Yellow = 0xedc613
 }

@@ -20,7 +20,7 @@ describe("GameArea", () => {
     });
 
     it("creates Kennel fields at the right position", () => {
-        var area = new Area.GameArea();
+        var area = new Area.GameArea(true);
         var data = [
             new BuildUpTypes.KennelField(),
             new BuildUpTypes.KennelField(),

@@ -1,12 +1,4 @@
-﻿interface IGameTable {
-    Name: string;
-    Identifier: number;
-    Start: Date;
-    Cookie: string;
-    Stop: Date;
-    /*        public List < PlayerFieldArea > PlayerFieldAreas;
-        public List < Participation > Participations; */
-}
+﻿
 
 interface IHandCard extends ICard {
     IsPlayed: boolean;
@@ -15,7 +7,7 @@ interface IHandCard extends ICard {
 interface ICard {
         Name: string;
         Value: number;
-        Picture: any; // TODO: Not needed
+        Picture: any;
         Attributes: ICardAttribute[];
 }
 

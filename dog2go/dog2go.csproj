@@ -338,6 +338,7 @@
     <TypeScriptCompile Include="Frontend\Classes\Model\ChatModel.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Model\GameModel.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Model\GameModel.d.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Model\TableModel.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\buildUpTypes.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\ChatService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameArea.ts" />

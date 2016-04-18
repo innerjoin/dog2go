@@ -22,7 +22,9 @@ namespace dog2go.Backend.Model
         private PlayerFieldArea _next;
         public ColorCode ColorCode { get; set; }
         public List<MoveDestinationField> Fields { get; set; }
-        public List<KennelField> KennelFields { get; set; } 
+        public List<KennelField> KennelFields { get; set; }
+        public List<EndField> EndFields { get; set; }
+        public StartField StartField { get; set; }
         public List<Meeple> Meeples { get; set; }
         public Participation Participation { get; set; }
         [IgnoreDataMember]
@@ -65,6 +67,7 @@ namespace dog2go.Backend.Model
         {
             List<Meeple> meepleList = new List<Meeple>();
             List<KennelField> kennelFields = new List<KennelField>();
+            List<EndField> endFields = new List<EndField>();
 
             for (var count = 0; count < NumberOfMeeple; count++)
             {
@@ -93,6 +96,7 @@ namespace dog2go.Backend.Model
             EndField endField = new EndField(fieldId + NumberOfFieldsAfterStart + 1) { Previous = startField };
             startField.EndFieldEntry = endField;
             fields.Add(startField);
+            StartField = startField;
 
             StandardField standardFieldAfter = new StandardField(++fieldId) { Previous = null };
 
@@ -112,6 +116,7 @@ namespace dog2go.Backend.Model
                 EndField tempEndField = new EndField(++fieldId) { Previous = endField };
                 endField.Next = tempEndField;
                 fields.Add(endField);
+                endFields.Add(endField);
                 endField = tempEndField;
             }
 
