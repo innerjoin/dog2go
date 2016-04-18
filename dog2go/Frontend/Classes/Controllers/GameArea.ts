@@ -9,9 +9,6 @@ import MoveDestinationField = BuildUpTypes.MoveDestinationField;
 import KennelField = BuildUpTypes.KennelField;
 import StartField = BuildUpTypes.StartField;
 
-//import GameFieldsService = require("../Services/GameFieldsService");
-//import GameFieldService = GameFieldsService.GameFieldService;
-
 export class GameArea {
 
     constructor() {
@@ -22,7 +19,7 @@ export class GameArea {
             create: this.create.bind(this)
         };
         console.log(_phaser);
-        this.game = new Phaser.Game(700, 700, Phaser.AUTO, "gameContent", gameStates, true);
+        this.game = new Phaser.Game(2100, 2100, Phaser.AUTO, "gameContent", gameStates, true);
         const fc = new Coordinates.FieldCoordinates();
         this.pos = fc.FOUR_PlAYERS;
     }
@@ -61,7 +58,6 @@ export class GameArea {
             this.game.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
             this.game.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
         }
-        //this.game.scale.updatela
     }
 
     gameResized(width, height) {
@@ -114,8 +110,8 @@ export class GameArea {
     addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
         const graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
         graphics.beginFill(color, 1);
-        graphics.lineStyle(2, 0x222222, 1);
-        graphics.drawCircle(0, 0, 30); //draw a circle relative to it's parent (in this case, the graphics object)
+        graphics.lineStyle(6, 0x222222, 1);
+        graphics.drawCircle(0, 0, 90); //draw a circle relative to it's parent (in this case, the graphics object)
         graphics.endFill();
         this.fields.push(graphics);
         return graphics;
@@ -138,17 +134,6 @@ export class GameArea {
             item.y = nearest.y;
         }
     }
-
-    //// This function is called when a full screen request comes in
-    //onGoFullScreen() {
-    //    // tell Phaser how you want it to handle scaling when you go full screen
-    //    this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
-    //    // and this causes it to actually do it
-    //    this.game.scale.refresh();
-    //}
-    //goFullScreen() {
-
-    //}
 
     create() {
         //this.gameFieldService.getGameFieldData();
@@ -193,16 +178,10 @@ export class GameArea {
         }
         const meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
         meepleBlue.anchor.setTo(0.5, 0.5);
-        meepleBlue.scale.setTo(0.08, 0.08);
+        meepleBlue.scale.setTo(0.4, 0.4);
         meepleBlue.inputEnabled = true;
         meepleBlue.input.enableDrag();
         meepleBlue.input.enableSnap(40, 40, false, true);
-        console.log("meeples parent is: ", meepleBlue.parent);
         meepleBlue.events.onDragStop.add(this.dropLimiter, this);
-
-        // would allow to go to fullscreen on desktop systems
-        //this.game.scale.onFullScreenInit.add(GameArea.prototype.onGoFullScreen, this);        
-        //this.game.input.onTap.add(() => { this.game.scale.startFullScreen(true); }, this);
-    }
-    
+    }    
 }
