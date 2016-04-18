@@ -8,10 +8,16 @@ export class SessionController {
     private sessionService: SessionService;
     constructor() {
         this.sessionService = new SessionService(this.newSession, this.updateOpenGames);
-        this.checkConnection();
+        //this.checkConnection = this.checkConnection;
+        //this.doSmthing = this.doSmthing;
+    }
+
+    public doSmthing = () => {
+        console.log("doSmthing", this);
     }
 
     public checkConnection = () => {
+        console.log("CheckConnection", this);
         var cookie: string = document.cookie;
         var gameHub = $.connection.gameHub;
         if (cookie.length == 0) {
@@ -21,7 +27,6 @@ export class SessionController {
             var name = "Hallo ich bins";
             this.sessionService.login(name, cookie);
         }
-        
     }
 
     newSession(cookie: string) {

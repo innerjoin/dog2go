@@ -16,12 +16,16 @@ export class GameMaster {
     private sessionContoller: SessionController;
     
 
-
     constructor() {
-        this.sessionController = new SessionController();
+        var sessionController = new SessionController();
+        this.sessionController = sessionController;
+
         this.chatController = new ChatController();
         this.gameArea = new GameArea();
-
         
+        $().ready(() => {
+            sessionController.checkConnection();
+        });
     }
+    
 }
