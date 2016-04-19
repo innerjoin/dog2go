@@ -9,6 +9,7 @@ import MoveDestinationField = BuildUpTypes.MoveDestinationField;
 import KennelField = BuildUpTypes.KennelField;
 import StartField = BuildUpTypes.StartField;
 
+const scaleFactor = 2;
 export class GameArea {
 
     constructor() {
@@ -19,11 +20,10 @@ export class GameArea {
             create: this.create.bind(this)
         };
         console.log(_phaser);
-        this.game = new Phaser.Game(2100, 2100, Phaser.AUTO, "gameContent", gameStates, true);
-        const fc = new Coordinates.FieldCoordinates();
+        this.game = new Phaser.Game(scaleFactor * 700, scaleFactor * 700, Phaser.AUTO, "gameContent", gameStates, true);
+        const fc = new Coordinates.FieldCoordinates(scaleFactor);
         this.pos = fc.FOUR_PlAYERS;
     }
-
     pos: FieldCoordinatesData;
     //gameFieldService: GameFieldService;
     game: Phaser.Game;
@@ -110,8 +110,8 @@ export class GameArea {
     addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
         const graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
         graphics.beginFill(color, 1);
-        graphics.lineStyle(6, 0x222222, 1);
-        graphics.drawCircle(0, 0, 90); //draw a circle relative to it's parent (in this case, the graphics object)
+        graphics.lineStyle(scaleFactor * 2, 0x222222, 1);
+        graphics.drawCircle(0, 0, scaleFactor * 30); //draw a circle relative to it's parent (in this case, the graphics object)
         graphics.endFill();
         this.fields.push(graphics);
         return graphics;
@@ -178,10 +178,14 @@ export class GameArea {
         }
         const meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
         meepleBlue.anchor.setTo(0.5, 0.5);
-        meepleBlue.scale.setTo(0.4, 0.4);
+        meepleBlue.scale.setTo(scaleFactor * 0.13, scaleFactor * 0.13);
         meepleBlue.inputEnabled = true;
         meepleBlue.input.enableDrag();
-        meepleBlue.input.enableSnap(120, 120, false, true);
+        meepleBlue.input.enableSnap(scaleFactor * 40, scaleFactor * 40, false, true);
         meepleBlue.events.onDragStop.add(this.dropLimiter, this);
+
+        $("#gamePageOverlay").css("display", "none");
+        $(".pageOverlayContent > .loading").css("display", "none");
+        $(".pageOverlayContent > .switchOrientation").css("display", "block");
     }    
 }

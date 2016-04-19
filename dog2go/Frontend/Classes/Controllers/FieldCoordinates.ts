@@ -1,7 +1,7 @@
 ﻿export class FieldCoordinates {
     FOUR_PlAYERS: FieldCoordinatesData;
-    constructor() {
-        this.FOUR_PlAYERS = new FieldCoordinatesData(120, [1530, 90, 570, 2010], [90, 570, 2010, 1530]);
+    constructor(scaleFactor: number) {
+        this.FOUR_PlAYERS = new FieldCoordinatesData(scaleFactor * 40, [scaleFactor * 510, scaleFactor * 30, scaleFactor * 190, scaleFactor * 670], [scaleFactor * 30, scaleFactor * 190, scaleFactor * 670, scaleFactor * 510]);
     }
 }
 
