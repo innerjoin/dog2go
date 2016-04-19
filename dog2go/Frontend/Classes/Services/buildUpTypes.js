@@ -5,13 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 define(["require", "exports"], function (require, exports) {
     "use strict";
-    (function (AreaColor) {
-        AreaColor[AreaColor["Red"] = 16711680] = "Red";
-        AreaColor[AreaColor["Blue"] = 255] = "Blue";
-        AreaColor[AreaColor["Green"] = 65280] = "Green";
-        AreaColor[AreaColor["Yellow"] = 15582739] = "Yellow";
-    })(exports.AreaColor || (exports.AreaColor = {}));
-    var AreaColor = exports.AreaColor;
     var MoveDestinationField = (function () {
         function MoveDestinationField(previous) {
             this.previous = previous;
@@ -99,5 +92,12 @@ define(["require", "exports"], function (require, exports) {
         return PlayerFieldArea;
     }());
     exports.PlayerFieldArea = PlayerFieldArea;
+    (function (AreaColor) {
+        AreaColor[AreaColor["Red"] = 16711680] = "Red";
+        AreaColor[AreaColor["Blue"] = 255] = "Blue";
+        AreaColor[AreaColor["Green"] = 65280] = "Green";
+        AreaColor[AreaColor["Yellow"] = 15582739] = "Yellow";
+    })(exports.AreaColor || (exports.AreaColor = {}));
+    var AreaColor = exports.AreaColor;
 });
 //# sourceMappingURL=buildUpTypes.js.map

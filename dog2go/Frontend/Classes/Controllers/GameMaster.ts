@@ -7,6 +7,8 @@ import gac = require("./GameArea");
 import GameArea = gac.GameArea;
 import sc = require("./SessionController");
 import SessionController = sc.SessionController;
+import gfs = require("../Services/GameFieldsService");
+import GameFieldService = gfs.GameFieldService;
 
 
 export class GameMaster {
