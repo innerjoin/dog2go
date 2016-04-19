@@ -80,6 +80,8 @@ export class GameArea {
             this.addKennelFields(this.game, area.KennelFields, areaPos, area.ColorCode);
             var fieldNr = 0;
 
+            let endFields: IEndField[] = this.getEndFields(area.Fields);
+
             // create destination fields
             while (current) {
                 var color = 0xeeeeee;
@@ -92,14 +94,14 @@ export class GameArea {
                     
                     // Generate Endfields from startfield
                     var finalField = startField.EndFieldEntry;
-                    /*for (let j = 0; j < area.EndFields.length; j++) {
+                    for (let j = 0; j < endFields.length; j++) {
                         ex += areaPos.xAltOffset;
                         ey += areaPos.yAltOffset;
-                        finalField.viewRepresentation = this.addField(game, ex, ey, color);
-                        finalField = this.getFieldById(finalField.nextIdentifier, area.Fields);
-                    }*/
+                        finalField.viewRepresentation = this.addField(game, ex, ey, color, finalField.Identifier);
+                        finalField = this.getFieldById(finalField.NextIdentifier, area.Fields);
+                    }
                 }
-                current.viewRepresentation = this.addField(game, areaPos.x, areaPos.y, color);
+                current.viewRepresentation = this.addField(game, areaPos.x, areaPos.y, color, current.Identifier);
                 // Calculate Position for next field 
                 if (fieldNr < 8 || fieldNr > 11) {
                     areaPos.x += areaPos.xOffset;
@@ -125,45 +127,6 @@ export class GameArea {
         meepleBlue.events.onDragStop.add(this.dropLimiter, this);
         console.log("GameArea: Finished Building");
         return;
-        /*var areas: IPlayerFieldArea[] = gameTable.PlayerFieldAreas;
-        
-        for (let area of areas) {
-            
-            let field = area.Fields[0];
-            const areaPos = this.fieldCoordinates.getAreaCoordinates(pos);
-            
-            // create kennel fields           
-            this.addKennelFields(this.game, area.KennelFields, areaPos, area.ColorCode);
-
-            // create destination fields
-            for (let i = 0; i < area.Fields.length; i++) {
-                var color = 0xeeeeee;
-                if (field instanceof StartField) {
-                    color = area.ColorCode;
-                    let ex = areaPos.x;
-                    let ey = areaPos.y;
-                    let finEl = field.endFieldEntry;
-                    for (let j = 0; j < area.EndFields.length; j++) {
-                        ex += areaPos.xAltOffset;
-                        ey += areaPos.yAltOffset;
-                        field.viewRepresentation = this.addField(game, ex, ey, color);
-                        finEl = finEl.next;
-                    }
-                }
-                field.viewRepresentation = this.addField(game, areaPos.x, areaPos.y, color);
-                // Calculate Position for next field 
-                if (i < 8 || i > 11) {
-                    areaPos.x += areaPos.xOffset;
-                    areaPos.y += areaPos.yOffset;
-                } else {
-                    areaPos.x += areaPos.xAltOffset;
-                    areaPos.y += areaPos.yAltOffset;
-                }
-                field = this.getFieldById(field.nextIdentifier, area.Fields);
-                field = field.next;
-            }
-            pos++;
-        }*/
     }
 
     gameResized(width, height) {
@@ -189,60 +152,26 @@ export class GameArea {
         return null;
     }
 
+    getEndFields(fields: IMoveDestinationField[]): IEndField[] {
+        var result: IEndField[] = [];
+        for (var field of fields) {
+            if (field.FieldType.localeCompare("dog2go.Backend.Model.EndField") === 0) {
+                result.push(field);
+            }
+        }
+        return result;
+    }
+
     create() {
         console.log("Create GameArea");
         //this.gameFieldService.getGameFieldData();
         return;
-        var game = this.game;
-        let pos = 0;
-
-        for (let area of this.areas) {
-            let el = area.gameFields[0];
-            const areaPos = this.fieldCoordinates.getAreaCoordinates(pos);
-            
-            // create kennel fields           
-            this.addKennelFields(this.game, area.kennelFields, areaPos, area.color);
-
-            // create destination fields
-            for (let i = 0; i < area.gameFields.length; i++) {
-                var color = 0xeeeeee;
-                if (el instanceof StartField) {
-                    color = area.color;
-                    let ex = areaPos.x;
-                    let ey = areaPos.y;
-                    let finEl = el.endFieldEntry;
-                    for (let j = 0; j < area.endFields.length; j++) {
-                        ex += areaPos.xAltOffset;
-                        ey += areaPos.yAltOffset;
-                        el.viewRepresentation = this.addField(game, ex, ey, color);
-                        finEl = finEl.next;
-                    }
-                }
-                el.viewRepresentation = this.addField(game, areaPos.x, areaPos.y, color);
-                // Calculate Position for next field 
-                if (i < 8 || i > 11) {
-                    areaPos.x += areaPos.xOffset;
-                    areaPos.y += areaPos.yOffset;
-                } else {
-                    areaPos.x += areaPos.xAltOffset;
-                    areaPos.y += areaPos.yAltOffset;
-                }
-                el = el.next;
-            }
-            pos++;
-        }
-        const meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
-        meepleBlue.anchor.setTo(0.5, 0.5);
-        meepleBlue.scale.setTo(0.4, 0.4);
-        meepleBlue.inputEnabled = true;
-        meepleBlue.input.enableDrag();
-        meepleBlue.input.enableSnap(120, 120, false, true);
-        meepleBlue.events.onDragStop.add(this.dropLimiter, this);
     }
     addKennelFields(game: Phaser.Game, kennelFields: IKennelField[], areaPos: AreaCoordinates, color: number) {
         const kennelX = areaPos.x + 11 * areaPos.xOffset;
         const kennelY = areaPos.y + 11 * areaPos.yOffset;
         for (let i = 0; i < kennelFields.length; i++) {
+            var kennelField: IKennelField = kennelFields[i];
             let xx = 0;
             let yy = 0;
             switch (i % 4) {
@@ -259,16 +188,19 @@ export class GameArea {
                     yy = areaPos.yOffset + areaPos.yAltOffset;
                     break;
             }
-            kennelFields[i].viewRepresentation = this.addField(game, kennelX + xx, kennelY + yy, color);
+            kennelField.viewRepresentation = this.addField(game, kennelX + xx, kennelY + yy, color, kennelField.Identifier);
         }
     }
 
-    addField(game: Phaser.Game, x: number, y: number, color: number): Phaser.Graphics {
+    addField(game: Phaser.Game, x: number, y: number, color: number, id?: number): Phaser.Graphics {
         const graphics = game.add.graphics(x, y); // positioning is relative to parent (in this case, to the game world as no parent is defined)
         graphics.beginFill(color, 1);
         graphics.lineStyle(6, 0x222222, 1);
         graphics.drawCircle(0, 0, 90); //draw a circle relative to it's parent (in this case, the graphics object)
         graphics.endFill();
+        var style = { font: "25px Arial", fill: "#000000", align: "center" };
+        var text = game.make.text(5, 5, id+"", style);
+        graphics.addChild(text);
         this.fields.push(graphics);
         return graphics;
     }

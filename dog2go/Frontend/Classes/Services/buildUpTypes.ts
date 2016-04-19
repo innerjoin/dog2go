@@ -26,6 +26,7 @@ export class MoveDestinationField implements IMoveDestinationField {
 
     NextIdentifier: number;
     PreviousIdentifier: number;
+    FieldType: string;
 }
 
 export class KennelField extends MoveDestinationField implements IKennelField{

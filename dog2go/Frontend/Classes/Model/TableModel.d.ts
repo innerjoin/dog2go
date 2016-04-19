@@ -20,6 +20,8 @@ interface IMoveDestinationField {
     previous: IMoveDestinationField;
     next: IMoveDestinationField;
 
+    FieldType: string;
+
     NextIdentifier: number;
     PreviousIdentifier: number;
 
