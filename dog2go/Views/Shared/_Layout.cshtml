@@ -4,10 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - dog2go</title>
-    @Scripts.Render("~/bundles/require")
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/require")
 
 </head>
 <body>
@@ -21,86 +24,14 @@
     <input type="checkbox" id="nav-trigger" class="nav-trigger" />
     <label for="nav-trigger"></label>
 
-<div class="site-wrap">
-    @RenderBody()
-</div>
+    <div class="site-wrap">
+        @RenderBody()
+    </div>
 
-<footer>
-    <p>&copy; @DateTime.Now.Year - dog2go team</p>
-</footer>
+    <footer>
+        <p>&copy; @DateTime.Now.Year - dog2go team</p>
+    </footer>
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@RenderSection("scripts", required: false)
-
-    @*<script type="text/javascript">
-    $(document).ready(function () {
-
-
-        //stick in the fixed 100% height behind the navbar but don't wrap it
-        $('#slide-nav.navbar-inverse').after($('<div class="inverse" id="navbar-height-col"></div>'));
-
-        $('#slide-nav.navbar-default').after($('<div id="navbar-height-col"></div>'));
-
-        // Enter your ids or classes
-        var toggler = '.navbar-toggle';
-        var pagewrapper = '#page-content';
-        var navigationwrapper = '.navbar-header';
-        var menuwidth = '100%'; // the menu inside the slide menu itself
-        var slidewidth = '80%';
-        var menuneg = '-100%';
-        var slideneg = '-80%';
-
-
-        $("#slide-nav").on("click", toggler, function (e) {
-
-            var selected = $(this).hasClass('slide-active');
-
-            $('#slidemenu').stop().animate({
-                left: selected ? menuneg : '0px'
-            });
-
-            $('#navbar-height-col').stop().animate({
-                left: selected ? slideneg : '0px'
-            });
-
-            $(pagewrapper).stop().animate({
-                left: selected ? '0px' : slidewidth
-            });
-
-            $(navigationwrapper).stop().animate({
-                left: selected ? '0px' : slidewidth
-            });
-
-
-            $(this).toggleClass('slide-active', !selected);
-            $('#slidemenu').toggleClass('slide-active');
-
-
-            $('#page-content, .navbar, body, .navbar-header').toggleClass('slide-active');
-
-
-        });
-
-
-        var selected = '#slidemenu, #page-content, body, .navbar, .navbar-header';
-
-
-        $(window).on("resize", function () {
-
-            if ($(window).width() > 767 && $('.navbar-toggle').is(':hidden')) {
-                $(selected).removeClass('slide-active');
-            }
-
-
-        });
-
-
-
-
-    });
-    </script>*@
-
-
+    @RenderSection("scripts", required: false)
 </body>
 </html>
