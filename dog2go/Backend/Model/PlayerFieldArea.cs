@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Web.UI.WebControls;
 
 namespace dog2go.Backend.Model
 {
@@ -22,7 +23,9 @@ namespace dog2go.Backend.Model
         private PlayerFieldArea _next;
         public ColorCode ColorCode { get; set; }
         public List<MoveDestinationField> Fields { get; set; }
-        public List<KennelField> KennelFields { get; set; } 
+        public List<KennelField> KennelFields { get; set; }
+        public List<EndField> EndFields { get; set; }
+        public StartField StartField { get; set; }
         public List<Meeple> Meeples { get; set; }
         public Participation Participation { get; set; }
         [IgnoreDataMember]
@@ -65,6 +68,7 @@ namespace dog2go.Backend.Model
         {
             List<Meeple> meepleList = new List<Meeple>();
             List<KennelField> kennelFields = new List<KennelField>();
+            List<EndField> endFields = new List<EndField>();
 
             for (var count = 0; count < NumberOfMeeple; count++)
             {
@@ -93,12 +97,17 @@ namespace dog2go.Backend.Model
             EndField endField = new EndField(fieldId + NumberOfFieldsAfterStart + 1) { Previous = startField };
             startField.EndFieldEntry = endField;
             fields.Add(startField);
+            StartField = startField;
 
             StandardField standardFieldAfter = new StandardField(++fieldId) { Previous = null };
 
-            for (int count = 1; count < NumberOfFieldsAfterStart; count++)
+            for (int count = 1; count <= NumberOfFieldsAfterStart; count++)
             {
                 StandardField tempField = new StandardField(++fieldId) { Previous = standardFieldAfter };
+                if (count == 1)
+                {
+                    StartField.Next = tempField;
+                }
                 standardFieldAfter.Next = tempField;
                 fields.Add(standardFieldAfter);
                 standardFieldAfter = tempField;
@@ -112,6 +121,7 @@ namespace dog2go.Backend.Model
                 EndField tempEndField = new EndField(++fieldId) { Previous = endField };
                 endField.Next = tempEndField;
                 fields.Add(endField);
+                endFields.Add(endField);
                 endField = tempEndField;
             }
 

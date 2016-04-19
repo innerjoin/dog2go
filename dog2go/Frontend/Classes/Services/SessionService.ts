@@ -1,19 +1,25 @@
 ﻿export class SessionService {
     private static instance: SessionService = null;
     constructor(newSession: (cookie: string) => any,
-        updateOpenGames: (games: any) => any) {// TODO: Change to Typed
+        updateOpenGames: (games: any) => any) { // TODO: Change to Typed
         if (SessionService.instance) {
             throw new Error("Error: SessionService instantiation failed. Singleton module! Use .getInstance() instead of new.");
         }
-        var sessionHub = $.connection.sessionHub;
-
-        sessionHub.client.newSession = function (cookie: string) {
+        //var sessionHub = $.connection.sessionHub;
+        var gameHub = $.connection.gameHub;
+        gameHub.client.newSession = function (cookie: string){
             newSession(cookie);
-        };
+        }
         
-        sessionHub.client.updateOpenGames = function (games: any) {// TODO: Change to Typed
+        gameHub.client.updateOpenGames = function(games: GameTable[]) {
+            console.log(games);
             updateOpenGames(games);
         }
+
+        gameHub.client.backToGame = function(table: IGameTable, cards: Card[]) {
+            console.log(table, cards);
+        }
+
         SessionService.instance = this;
     }
 
@@ -29,17 +35,10 @@
     }
 
     public login(name: string, cookie: string): void {
-        var sessionHub = $.connection.sessionHub;
+        var gameHub = $.connection.gameHub;
         $.connection.hub.start().done(() => {
-            sessionHub.server.login(name, cookie);
+            gameHub.server.login(name, null);
         });
     }
-
-    public createGame(): void {
-        var sessionHub = $.connection.sessionHub;
-
-        $.connection.hub.start().done(() => {
-            sessionHub.server.createGame();
-        });
-    }
+    
 }

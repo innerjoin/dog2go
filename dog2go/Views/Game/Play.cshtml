@@ -1,5 +1,10 @@
 ﻿@using dog2go.Views.Extensions
-
+<div id="gamePageOverlay">
+    <div class="pageOverlayContent">
+        <span class="loading"><h1>Loading...</h1></span>
+        <span class="switchOrientation"><h1>Switch to landscape mode for a better user experience</h1></span>
+    </div>
+</div>
 <div id="gameContainer">
     <div id="gameContent"></div>
     <div id="sideContainer">
@@ -12,7 +17,14 @@
             </div>
             <input type="hidden" id="displayname" />
         </div>
-        <div id="cardContainer">@*TODO: add cards here*@</div>
+        <div id="cardContainer">
+            <img src="~/Frontend/Images/cards-min/card_1-11-play_190x300komp.png"></img>
+            <img src="~/Frontend/Images/cards-min/card_3_190x300komp.png"></img>
+            <img src="~/Frontend/Images/cards-min/card_8_190x300komp.png"></img>
+            <img src="~/Frontend/Images/cards-min/card_10_190x300komp.png"></img>
+            <img src="~/Frontend/Images/cards-min/card_joker_190x300komp.png"></img>
+            <img src="~/Frontend/Images/cards-min/card_3_190x300komp.png"></img>
+        </div>
     </div>
 </div>
 

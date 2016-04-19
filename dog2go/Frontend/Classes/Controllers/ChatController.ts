@@ -6,21 +6,30 @@ export class ChatController {
     private chatService: ChatService;
     constructor() {
         this.chatService = ChatService.getInstance(this.putMessage);
-        $('#sendmessage').click(() => {
-            this.chatService.sendMessage($('#message').val());
-            $('#message').val('').focus();
+        $("#message").keypress((e) => {
+            if (e.which === 13) this.sendChat();
+        });
+        $("#sendmessage").click(() => {
+            this.sendChat();
         });
 
-        //$('#displayname').val(prompt('Enter your name:', ''));
+        $("#displayname").val("TEST");
         // Set initial focus to message input box.  
-        $('#message').focus();
+        //$('#message').focus();
+        $("#gameContent").focus();
+
+    }
+
+    private sendChat() {
+        this.chatService.sendMessage($('#message').val());
+        $("#message").val("");//.focus();
+        $("#gameContent").focus();
     }
 
     public putMessage(name: string, message: string) {
-        var encodedName = $('<div />').text(name).html();
-        var encodedMsg = $('<div />').text(message).html();
+        const encodedName = $("<div />").text(name).html();
+        const encodedMsg = $("<div />").text(message).html();
         // Add the message to the page. 
-        $('#chatBox').append('<li><strong>' + encodedName
-            + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');
+        $("#chatBox").append(`<li><strong>${encodedName}</strong>:&nbsp;&nbsp;${encodedMsg}</li>`);
     }
 }
