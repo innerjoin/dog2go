@@ -11,10 +11,9 @@
             newSession(cookie);
         };
         
-        sessionHub.client.updtadeOpenGames = function (games: any) {// TODO: Change to Typed
+        sessionHub.client.updateOpenGames = function (games: any) {// TODO: Change to Typed
             updateOpenGames(games);
         }
-
         SessionService.instance = this;
     }
 
@@ -27,6 +26,13 @@
             throw new Error("Error: First call needs a callback!");
         }
         return SessionService.instance;
+    }
+
+    public login(name: string, cookie: string): void {
+        var sessionHub = $.connection.sessionHub;
+        $.connection.hub.start().done(() => {
+            sessionHub.server.login(name, cookie);
+        });
     }
 
     public createGame(): void {

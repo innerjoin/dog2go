@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using dog2go.Backend.Model;
+using dog2go.Backend.Interfaces;
 
 namespace dog2go.Backend.Repos
 {
@@ -31,12 +32,5 @@ namespace dog2go.Backend.Repos
         {
             return _users;
         }
-    }
-
-    public interface IUserRepository
-    {
-        void Add(User newUser);
-        void Remove(User deleteUser);
-        List<User> Get();
     }
 }

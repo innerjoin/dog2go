@@ -1,10 +1,4 @@
-﻿interface IMessage {
-    Msg: string;
-    User: IUser;
-    Group: string;
-
-}
-interface IUser {
+﻿interface IUser {
     Identifier: string;
     Nickname: string;
     GroupName: string;

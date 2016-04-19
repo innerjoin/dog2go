@@ -9,7 +9,7 @@ namespace dog2go.Tests.Backend
     public class NunitGameHubTest
     {
 
-        private readonly GameHub _hub = new GameHub(UserRepository.Instance);
+        private readonly GameHub _hub = new GameHub(GameRepository.Instance);
         #region "Testmethods for HasBlocked-Method"
         [Test]
         public void dog_testHasBlocked()

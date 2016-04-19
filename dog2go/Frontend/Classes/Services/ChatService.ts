@@ -1,6 +1,5 @@
 ﻿
 import ChatModel = require("../Model/ChatModel");
-import Message = ChatModel.Message;
 
 export class ChatService {
     private static instance: ChatService = null;
@@ -10,8 +9,8 @@ export class ChatService {
         }
         var chatHub = $.connection.chatHub;
 
-        chatHub.client.broadcastMessage = function (name: string, message: IMessage) {
-            callback(message.User.Nickname, message.Msg);
+        chatHub.client.broadcastMessage = function (name: string, message: string) {
+            callback(name, message);
         };
         
         ChatService.instance = this;
@@ -27,14 +26,10 @@ export class ChatService {
         return ChatService.instance;
     }
 
-    public sendMessage(name: string, message: string): void {
+    public sendMessage(message: string): void {
         var chatHub = $.connection.chatHub;
-        var msg: Message = new Message();
-        msg.Msg = message;
-        msg.User.Nickname = name;
-        msg.Group = "testGroup";
         $.connection.hub.start().done(() => {
-            chatHub.server.sendMessage(msg);
+            chatHub.server.sendMessage(message);
         });
     }
 }

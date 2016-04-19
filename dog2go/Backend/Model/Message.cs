@@ -12,7 +12,6 @@ namespace dog2go.Backend.Model
         }
 
         public string Msg;
-        public User User;
         public string Group;
 
     }

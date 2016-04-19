@@ -4,10 +4,10 @@
 }
 
 interface IChatHubClient {
-    broadcastMessage(name:string, message: IMessage);
+    broadcastMessage(name:string, message: string);
     doSomeShit();
 }
 
 interface IChatHubServer {
-    sendMessage(message: IMessage): void;
+    sendMessage(message: string): void;
 }

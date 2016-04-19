@@ -7,7 +7,7 @@ export class ChatController {
     constructor() {
         this.chatService = ChatService.getInstance(this.putMessage);
         $('#sendmessage').click(() => {
-            this.chatService.sendMessage($('#displayname').val(), $('#message').val());
+            this.chatService.sendMessage($('#message').val());
             $('#message').val('').focus();
         });
 

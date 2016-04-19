@@ -8,7 +8,7 @@ interface ISessionHub extends HubProxy {
 interface ISessionHubClient {
     newSession(cookie: string);
     // TODO: Change to Type
-    updtadeOpenGames(games: any);
+    updateOpenGames(games: any);
 }
 
 interface ISessionHubServer {
