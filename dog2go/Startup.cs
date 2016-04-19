@@ -27,7 +27,6 @@ namespace dog2go
             app.MapSignalR(new HubConfiguration { EnableDetailedErrors = true});
 #else
             Console.WriteLine("Hello this is Release Mode!");
-            GlobalHost.DependencyResolver.Register(typeof(GameHub), () => new GameHub(UserRepository.Instance));
             app.MapSignalR();
 #endif
 
