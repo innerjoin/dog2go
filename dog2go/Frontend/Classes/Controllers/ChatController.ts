@@ -21,7 +21,7 @@ export class ChatController {
     }
 
     private sendChat() {
-        this.chatService.sendMessage($("#displayname").val(), $("#message").val());
+        this.chatService.sendMessage($('#message').val());
         $("#message").val("");//.focus();
         $("#gameContent").focus();
     }

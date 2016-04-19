@@ -64,6 +64,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin.Cors, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Cors.3.0.1\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit3TestAdapter.3.0.10\lib\Mono.Cecil.dll</HintPath>
       <Private>False</Private>
@@ -93,6 +97,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Cors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.0.0\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -201,14 +209,20 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Backend\Connection\AuthorizeEchoConnection.cs" />
+    <Compile Include="Backend\Hubs\AuthorizeEchoHub.cs" />
     <Compile Include="Backend\Hubs\CardHub.cs" />
     <Compile Include="Backend\Hubs\ChatHub.cs" />
     <Compile Include="Backend\Hubs\GameHub.cs" />
+    <Compile Include="Backend\Hubs\SessionHub.cs" />
     <Compile Include="Backend\Interfaces\IChatRepository.cs" />
+    <Compile Include="Backend\Interfaces\IConnectionRepository.cs" />
+    <Compile Include="Backend\Interfaces\IGameRepository.cs" />
+    <Compile Include="Backend\Interfaces\IUserRepository.cs" />
     <Compile Include="Backend\Model\Card.cs" />
     <Compile Include="Backend\Model\CardAttribute.cs" />
     <Compile Include="Backend\Model\CardMove.cs" />
-    <Compile Include="Backend\Repos\ChatMessageRepository.cs" />
     <Compile Include="Backend\Model\EndField.cs" />
     <Compile Include="Backend\Model\GameTable.cs" />
     <Compile Include="Backend\Model\HandCard.cs" />
@@ -220,15 +234,22 @@
     <Compile Include="Backend\Model\Participation.cs" />
     <Compile Include="Backend\Model\PlayerFieldArea.cs" />
     <Compile Include="Backend\Model\PlayRound.cs" />
+    <Compile Include="Backend\Model\SessionUtil.cs" />
     <Compile Include="Backend\Model\StandardField.cs" />
     <Compile Include="Backend\Model\StartField.cs" />
     <Compile Include="Backend\Model\User.cs" />
+    <Compile Include="Backend\Repos\ChatMessageRepository.cs" />
+    <Compile Include="Backend\Repos\ConnectionRepository.cs" />
+    <Compile Include="Backend\Repos\GameRepository.cs" />
     <Compile Include="Backend\Repos\UserRepository.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tests\Backend\NunitHubConnectionTest.cs" />
@@ -313,9 +334,12 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Game\Play.cshtml" />
-    <Content Include="Views\Game\Login.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config">
@@ -323,6 +347,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Frontend\Classes\LoginStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\GameStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\FieldCoordinates.ts" />
