@@ -4,6 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     var MoveDestinationField = (function () {
         function MoveDestinationField(previous) {
             this.previous = previous;
@@ -19,7 +20,7 @@ define(["require", "exports"], function (require, exports) {
             this.next = next;
         };
         return MoveDestinationField;
-    })();
+    }());
     exports.MoveDestinationField = MoveDestinationField;
     var KennelField = (function (_super) {
         __extends(KennelField, _super);
@@ -27,7 +28,7 @@ define(["require", "exports"], function (require, exports) {
             _super.call(this, null);
         }
         return KennelField;
-    })(MoveDestinationField);
+    }(MoveDestinationField));
     exports.KennelField = KennelField;
     var EndField = (function (_super) {
         __extends(EndField, _super);
@@ -35,7 +36,7 @@ define(["require", "exports"], function (require, exports) {
             _super.call(this, previous);
         }
         return EndField;
-    })(MoveDestinationField);
+    }(MoveDestinationField));
     exports.EndField = EndField;
     var StartField = (function (_super) {
         __extends(StartField, _super);
@@ -46,7 +47,7 @@ define(["require", "exports"], function (require, exports) {
             this.endFieldEntry = next;
         };
         return StartField;
-    })(MoveDestinationField);
+    }(MoveDestinationField));
     exports.StartField = StartField;
     var PlayerFieldArea = (function () {
         function PlayerFieldArea(color) {
@@ -89,7 +90,7 @@ define(["require", "exports"], function (require, exports) {
             }
         };
         return PlayerFieldArea;
-    })();
+    }());
     exports.PlayerFieldArea = PlayerFieldArea;
     (function (AreaColor) {
         AreaColor[AreaColor["Red"] = 16711680] = "Red";

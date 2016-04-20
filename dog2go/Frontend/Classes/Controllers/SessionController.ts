@@ -15,18 +15,18 @@ export class SessionController {
         console.log("doSmthing", this);
     }
 
-    public checkConnection = () => {
-        console.log("CheckConnection", this);
-        var cookie: string = document.cookie;
-        var gameHub = $.connection.gameHub;
-        if (cookie.length == 0) {
-            var name = "Hallo ich bins";
-            this.sessionService.login(name, null);
-        } else {
-            var name = "Hallo ich bins";
-            this.sessionService.login(name, cookie);
-        }
-    }
+    //public checkConnection = () => {
+    //    console.log("CheckConnection", this);
+    //    var cookie: string = document.cookie;
+    //    var gameHub = $.connection.gameHub;
+    //    if (cookie.length == 0) {
+    //        var name = "Hallo ich bins";
+    //        this.sessionService.login(name, null);
+    //    } else {
+    //        var name = "Hallo ich bins";
+    //        this.sessionService.login(name, cookie);
+    //    }
+    //}
 
     newSession(cookie: string) {
         document.cookie = cookie;
@@ -37,4 +37,4 @@ export class SessionController {
     updateOpenGames(games: any) { // TODO: Change to typed
         console.log('SessionController: updateOpenGamese', games);
     }
-}
+} 

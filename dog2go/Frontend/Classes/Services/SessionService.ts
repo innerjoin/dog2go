@@ -34,11 +34,11 @@
         return SessionService.instance;
     }
 
-    public login(name: string, cookie: string): void {
-        var gameHub = $.connection.gameHub;
-        $.connection.hub.start().done(() => {
-            gameHub.server.login(name, null);
-        });
-    }
+    //public login(name: string, cookie: string): void {
+    //    var gameHub = $.connection.gameHub;
+    //    $.connection.hub.start().done(() => {
+    //        //gameHub.server.login(name, null);
+    //    });
+    //}
     
 }
