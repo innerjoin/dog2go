@@ -5,23 +5,27 @@ using System.Linq;
 using System.Web;
 using dog2go.Backend.Model;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 
 namespace dog2go.Backend.Hubs
 {
+    [HubName("cardHub")]
     public class CardHub : Hub
     {
 
-        //Server Methoden
-        /*public void SendCards(List<HandCard> cards);
-        public void CheckHasOpportunity();// true notifyActualPlayer | false dropCards
-        public void ChooseCard(HandCard card);
-        public void ChooseCardExchange(HandCard card);
-        public void ChooseMove(MeepleMove move);*/
+        /*
+         * Server Methoden
+         * public void SendCards(List<HandCard> cards);
+         * public void CheckHasOpportunity();// true notifyActualPlayer | false dropCards
+         * public void ChooseCard(HandCard card);
+         * public void ChooseCardExchange(HandCard card);
+         * public void ChooseMove(MeepleMove move);
+         */
 
         private static readonly List<Card> Deck = new List<Card>();
 
         private static readonly Random Rng = new Random();
-        public static void Shuffle()
+        private static void Shuffle()
         {
             int n = Deck.Count;
             while (n > 1)
@@ -36,9 +40,9 @@ namespace dog2go.Backend.Hubs
 
         public Card GetCard()
         {
-            int index = 0;
-            Card card = Deck[index];
-            Deck.RemoveAt(index);
+            int indexOfCardOnTop = 0;
+            Card card = Deck[indexOfCardOnTop];
+            Deck.RemoveAt(indexOfCardOnTop);
             if (Deck.Count <= 1)
             {
                 MakeInitDeck();
@@ -46,9 +50,9 @@ namespace dog2go.Backend.Hubs
             return card;
         }
 
-        public List<Card> MakeInitDeck()
+        private List<Card> MakeInitDeck()
         {
-            //make Jokercards
+            //make all Jokercards
             for (int i = 0; i < 6; i++)
             {
                 Deck.Add(new Card("cardJocker", 0, new List<CardAttribute>()
