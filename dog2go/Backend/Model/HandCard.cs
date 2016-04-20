@@ -7,7 +7,7 @@ namespace dog2go.Backend.Model
     {
         public bool IsPlayed { get; set; }
 
-        public HandCard(string name, int value, Image picture, List<CardAttribute> attributes) : base(name, value, picture, attributes)
+        public HandCard(string name, int id, List<CardAttribute> attributes) : base(name, id, attributes)
         {
 
         }
