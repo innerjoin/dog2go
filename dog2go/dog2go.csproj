@@ -375,8 +375,9 @@
     <TypeScriptCompile Include="Frontend\Library\SignalR\signalr.d.ts" />
     <Content Include="Frontend\requirejs.config.js" />
     <TypeScriptCompile Include="Frontend\Library\requirejs\require.d.ts" />
-    <TypeScriptCompile Include="Tests\Frontend\GameArea.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Controllers\GameArea.test.ts" />
     <TypeScriptCompile Include="Tests\Frontend\buildUpTypes.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Services\GameFieldService.test.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

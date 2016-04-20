@@ -7,15 +7,15 @@ interface IGameHub extends HubProxy {
 }
 
 interface IGameHubClient {
-    createGameTable(areas: any); // TODO: implement Class
+    createGameTable?(areas: any); // TODO: implement Class
 
-    newSession(cookie: string);
-    updateOpenGames(gameTable: IGameTable[]);
-    backToGame(table: IGameTable, cards: Card[]);
+    newSession?(cookie: string);
+    updateOpenGames?(gameTable: IGameTable[]);
+    backToGame?(table: IGameTable, cards: Card[]);
 }
 
 interface IGameHubServer {
-    sendGameTable(): void;
+    sendGameTable?(): void;
 
-    login(name: string, cookie: string);
+    login?(name: string, cookie: string);
 }
