@@ -4,7 +4,10 @@
         this.FOUR_PlAYERS = new FieldCoordinatesData(scaleFactor * 40, [scaleFactor * 510, scaleFactor * 30, scaleFactor * 190, scaleFactor * 670], [scaleFactor * 30, scaleFactor * 190, scaleFactor * 670, scaleFactor * 510]);
     }
 }
-
+export class Coordinate {
+    x: number;
+    y: number;
+}
 export class AreaCoordinates {
     x: number;
     y: number;

@@ -1,16 +1,27 @@
 import _phaser = require("phaser");
-import Coordinates = require("./FieldCoordinates");
 import BuildUpTypes = require("../Services/buildUpTypes");
 import Gfs = require("../Services/GameFieldsService");
 import AreaColor = BuildUpTypes.AreaColor;
-import FieldCoordinatesData = Coordinates.FieldCoordinatesData;
-import AreaCoordinates = Coordinates.AreaCoordinates;
-import PlayerFieldArea = BuildUpTypes.PlayerFieldArea;
+
+import coords = require("./FieldCoordinates");
+import FieldCoordinatesData = coords.FieldCoordinatesData;
+import AreaCoordinates = coords.AreaCoordinates;
+import FieldCoordinates = coords.FieldCoordinates;
+import Coordinate = coords.Coordinate;
+
 import MoveDestinationField = BuildUpTypes.MoveDestinationField;
 import KennelField = BuildUpTypes.KennelField;
 import StartField = BuildUpTypes.StartField;
 import GameFieldService = Gfs.GameFieldService;
-
+import TableModel = require("../Model/TableModel");
+import IAreaColor = TableModel.IAreaColor;
+import IPlayerFieldArea = TableModel.IPlayerFieldArea;
+import IMoveDestinationField = TableModel.IMoveDestinationField;
+import IMeeple = TableModel.IMeeple;
+import IGameTable = TableModel.IGameTable;
+import IEndField = TableModel.IEndField;
+import IKennelField = TableModel.IKennelField;
+import IStartField = TableModel.IStartField;
 const scaleFactor = 2;
 export class GameArea {
 
@@ -26,7 +37,7 @@ export class GameArea {
         };
         console.log(_phaser);
         this.game = new Phaser.Game(scaleFactor * 700, scaleFactor * 700, Phaser.AUTO, "gameContent", gameStates, true);
-        const fc = new Coordinates.FieldCoordinates(scaleFactor);
+        const fc = new FieldCoordinates(scaleFactor);
         this.fieldCoordinates = fc.FOUR_PlAYERS;
     }
 
@@ -34,30 +45,21 @@ export class GameArea {
     fieldCoordinates: FieldCoordinatesData;
 
     game: Phaser.Game;
-    areas: BuildUpTypes.PlayerFieldArea[] = [];
     fields: Phaser.Graphics[] = [];
+    allKennelFields: IKennelField[] = [];
 
-    // Remove this function when GameAreaData comes from server!
-    static addTestData(): PlayerFieldArea[] {
-        const areas: PlayerFieldArea[] = [];
-        const colors: AreaColor[] = [AreaColor.Red, AreaColor.Blue, AreaColor.Yellow, AreaColor.Green];
-        for (let i = 0; i < 4; i++) {
-            const area = new PlayerFieldArea(colors[i]);
-            areas.push(area);
-        }
-        return areas;
-    }
 
     /* load game assets here, but not objects */
     preload() {
         
-        console.log("Going to load GameFields");
         this.gameFieldService.getGameFieldData();
-        console.log("GFS_Command Out");
-        this.areas = GameArea.addTestData();
         this.fields = [];
         
-        this.game.load.image("meeple_blue", "../Frontend/Images/pawn_blue.png");
+        this.game.load.image("meeple_blue", "../Frontend/Images/meeple_blue.png");
+        this.game.load.image("meeple_red", "../Frontend/Images/meeple_red.png");
+        this.game.load.image("meeple_green", "../Frontend/Images/meeple_green.png");
+        this.game.load.image("meeple_yellow", "../Frontend/Images/meeple_yellow.png");
+
         this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.game.scale.refresh();
         if (!this.game.device.desktop) {
@@ -117,6 +119,8 @@ export class GameArea {
             }
             currentPos++;
         }
+        this.initializeMeeples(gameTable);
+        
 
         // Single Meeple on field
         const meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
@@ -133,6 +137,54 @@ export class GameArea {
         $(".pageOverlayContent > .switchOrientation").css("display", "block");
 
         return;
+    }
+
+    private initializeMeeples(gameTable: IGameTable) {
+        console.log("Initializing Meeples", this.game);
+        for (var player of gameTable.PlayerFieldAreas) {
+            for (var meeple of player.Meeples) {
+                console.log("Meeple: ", meeple, this.getSpriteNameForColorCode(meeple.ColorCode));
+                var spriteName: string = this.getSpriteNameForColorCode(meeple.ColorCode);
+                //this.game.add.sprite()
+                const meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, spriteName);
+                meepleBlue.anchor.setTo(0.5, 0.5);
+                meepleBlue.scale.setTo(scaleFactor * 0.13, scaleFactor * 0.13);
+                meepleBlue.inputEnabled = true;
+                meepleBlue.input.enableDrag();
+                meepleBlue.input.enableSnap(scaleFactor * 40, scaleFactor * 40, false, true);
+                meepleBlue.events.onDragStop.add(this.dropLimiter, this);
+            }
+        }
+    }
+ 
+    getMeeplePosition(meeple: IMeeple): Coordinate {
+        var result: Coordinate;
+        var fieldType: string = meeple.CurrentPosition.FieldType;
+        var field: IMoveDestinationField;
+        switch (fieldType) {
+            case "dog2go.Backend.Model.KennelField":
+                for (var field of this.allKennelFields) {
+                    //if(field.)
+                }
+        default:
+        }
+
+        return null;
+    }
+
+    getSpriteNameForColorCode(colorCode: TableModel.IAreaColor) : string {
+        switch (colorCode) {
+            case IAreaColor.Blue:
+                return "meeple_blue";
+            case IAreaColor.Red:
+                return "meeple_red";
+            case IAreaColor.Green:
+                return "meeple_green";
+            case IAreaColor.Yellow:
+                return "meeple_yellow";
+            default:
+                throw new Error("Color not found for Code: " + colorCode);
+        }
     }
 
     gameResized(width, height) {
@@ -173,6 +225,7 @@ export class GameArea {
         //this.gameFieldService.getGameFieldData();
         return;
     }
+
     addKennelFields(game: Phaser.Game, kennelFields: IKennelField[], areaPos: AreaCoordinates, color: number) {
         const kennelX = areaPos.x + 11 * areaPos.xOffset;
         const kennelY = areaPos.y + 11 * areaPos.yOffset;
@@ -195,6 +248,7 @@ export class GameArea {
                     break;
             }
             kennelField.viewRepresentation = this.addField(game, kennelX + xx, kennelY + yy, color, kennelField.Identifier);
+            this.allKennelFields.push(kennelField);
         }
     }
 
@@ -205,7 +259,7 @@ export class GameArea {
         graphics.drawCircle(0, 0, scaleFactor * 30); //draw a circle relative to it's parent (in this case, the graphics object)
         graphics.endFill();
         var style = { font: "20px Arial", fill: "#000000", align: "center" };
-        var text = game.make.text(2, 2, id+"", style);
+        var text = game.make.text(2, 2, id + "", style);
         graphics.addChild(text);
         this.fields.push(graphics);
         return graphics;
@@ -228,58 +282,4 @@ export class GameArea {
             item.y = nearest.y;
         }
     }
-
-    //create() {
-    //    //this.gameFieldService.getGameFieldData();
-        
-    //    var game = this.game;
-    //    let pos = 0;
-
-    //    for (let area of this.areas) {
-    //        let el = area.gameFields[0];
-    //        const areaPos = this.pos.getAreaCoordinates(pos);
-            
-    //        // create kennel fields           
-    //        this.addKennelFields(this.game, area.kennelFields, areaPos, area.color);
-
-    //        // create destination fields
-    //        for (let i = 0; i < area.gameFields.length; i++) {
-    //            var color = 0xeeeeee;
-    //            if (el instanceof StartField) {
-    //                color = area.color;
-    //                let ex = areaPos.x;
-    //                let ey = areaPos.y;
-    //                let finEl = el.endFieldEntry;
-    //                for (let j = 0; j < area.endFields.length; j++) {
-    //                    ex += areaPos.xAltOffset;
-    //                    ey += areaPos.yAltOffset;
-    //                    el.viewRepresentation = this.addField(game, ex, ey, color);
-    //                    finEl = finEl.next;
-    //                }
-    //            }
-    //            el.viewRepresentation = this.addField(game, areaPos.x, areaPos.y, color);
-    //            // Calculate Position for next field 
-    //            if (i < 8 || i > 11) {
-    //                areaPos.x += areaPos.xOffset;
-    //                areaPos.y += areaPos.yOffset;
-    //            } else {
-    //                areaPos.x += areaPos.xAltOffset;
-    //                areaPos.y += areaPos.yAltOffset;
-    //            }
-    //            el = el.next;
-    //        }
-    //        pos++;
-    //    }
-    //    const meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
-    //    meepleBlue.anchor.setTo(0.5, 0.5);
-    //    meepleBlue.scale.setTo(scaleFactor * 0.13, scaleFactor * 0.13);
-    //    meepleBlue.inputEnabled = true;
-    //    meepleBlue.input.enableDrag();
-    //    meepleBlue.input.enableSnap(scaleFactor * 40, scaleFactor * 40, false, true);
-    //    meepleBlue.events.onDragStop.add(this.dropLimiter, this);
-
-    //    $("#gamePageOverlay").css("display", "none");
-    //    $(".pageOverlayContent > .loading").css("display", "none");
-    //    $(".pageOverlayContent > .switchOrientation").css("display", "block");
-    //}    
 }

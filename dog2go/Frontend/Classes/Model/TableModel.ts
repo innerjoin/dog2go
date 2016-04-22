@@ -1,6 +1,6 @@
 ﻿
 
-interface IGameTable {
+export interface IGameTable {
     Name: string;
     Identifier: number;
     Start: Date;
@@ -11,11 +11,15 @@ interface IGameTable {
         public List < Participation > Participations; */
 }
 
+export interface IMeeple {
+    ColorCode: IAreaColor;
+    CurrentPosition: IMoveDestinationField;
+    IsStartFieldBlocked: boolean;
+}
 
 
 
-
-interface IMoveDestinationField {
+export interface IMoveDestinationField {
     Identifier: number;
     previous: IMoveDestinationField;
     next: IMoveDestinationField;
@@ -28,19 +32,19 @@ interface IMoveDestinationField {
     viewRepresentation: Phaser.Graphics;
 }
 
-interface IKennelField extends IMoveDestinationField {
+export interface IKennelField extends IMoveDestinationField {
 
 }
 
-interface IEndField extends IMoveDestinationField {
+export interface IEndField extends IMoveDestinationField {
     
 }
 
-interface IStartField extends IMoveDestinationField {
+export interface IStartField extends IMoveDestinationField {
     EndFieldEntry: IEndField;
 }
 
-interface IPlayerFieldArea {
+export interface IPlayerFieldArea {
 
     PreviousIdentifier: number;
     NextIdentifier: number;
@@ -53,11 +57,11 @@ interface IPlayerFieldArea {
     Fields: IMoveDestinationField[];
     EndFields: IEndField[];
     StartField: IStartField;
-    //    public List<Meeple> Meeples { get; set; }
+    Meeples: IMeeple[];
     //   public Participation Participation { get; set; } 
 }
 
-declare enum  IAreaColor {
+export enum  IAreaColor {
     Red = 0xff0000,
     Blue = 0x0000ff,
     Green = 0x00ff00,
