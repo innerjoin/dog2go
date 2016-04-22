@@ -1,3 +1,4 @@
+/// <reference path="../Model/TableModel.d.ts"/>
 import _phaser = require("phaser");
 import BuildUpTypes = require("../Services/buildUpTypes");
 import Gfs = require("../Services/GameFieldsService");
@@ -7,21 +8,12 @@ import coords = require("./FieldCoordinates");
 import FieldCoordinatesData = coords.FieldCoordinatesData;
 import AreaCoordinates = coords.AreaCoordinates;
 import FieldCoordinates = coords.FieldCoordinates;
-import Coordinate = coords.Coordinate;
 
 import MoveDestinationField = BuildUpTypes.MoveDestinationField;
 import KennelField = BuildUpTypes.KennelField;
 import StartField = BuildUpTypes.StartField;
 import GameFieldService = Gfs.GameFieldService;
-import TableModel = require("../Model/TableModel");
-import IAreaColor = TableModel.IAreaColor;
-import IPlayerFieldArea = TableModel.IPlayerFieldArea;
-import IMoveDestinationField = TableModel.IMoveDestinationField;
-import IMeeple = TableModel.IMeeple;
-import IGameTable = TableModel.IGameTable;
-import IEndField = TableModel.IEndField;
-import IKennelField = TableModel.IKennelField;
-import IStartField = TableModel.IStartField;
+
 const scaleFactor = 2;
 export class GameArea {
 
@@ -47,7 +39,6 @@ export class GameArea {
     game: Phaser.Game;
     fields: Phaser.Graphics[] = [];
     allKennelFields: IKennelField[] = [];
-
 
     /* load game assets here, but not objects */
     preload() {
@@ -89,7 +80,6 @@ export class GameArea {
             while (current) {
                 var color = 0xeeeeee;
                 if (current.Identifier === area.StartField.Identifier) {
-                    
                     var startField: IStartField = <IStartField>current;
                     color = area.ColorCode;
                     let ex = areaPos.x;
@@ -120,17 +110,6 @@ export class GameArea {
             currentPos++;
         }
         this.initializeMeeples(gameTable);
-        
-
-        // Single Meeple on field
-        const meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'meeple_blue');
-        meepleBlue.anchor.setTo(0.5, 0.5);
-        meepleBlue.scale.setTo(scaleFactor * 0.13, scaleFactor * 0.13);
-        meepleBlue.inputEnabled = true;
-        meepleBlue.input.enableDrag();
-        meepleBlue.input.enableSnap(scaleFactor * 40, scaleFactor * 40, false, true);
-        meepleBlue.events.onDragStop.add(this.dropLimiter, this);
-        console.log("GameArea: Finished Building");
 
         $("#gamePageOverlay").css("display", "none");
         $(".pageOverlayContent > .loading").css("display", "none");
@@ -143,44 +122,49 @@ export class GameArea {
         console.log("Initializing Meeples", this.game);
         for (var player of gameTable.PlayerFieldAreas) {
             for (var meeple of player.Meeples) {
-                console.log("Meeple: ", meeple, this.getSpriteNameForColorCode(meeple.ColorCode));
+                var coordinates: Phaser.Point = this.getMeeplePosition(meeple);
+                    console.log("Meeple: ", meeple, this.getSpriteNameForColorCode(meeple.ColorCode), coordinates);
                 var spriteName: string = this.getSpriteNameForColorCode(meeple.ColorCode);
                 //this.game.add.sprite()
-                const meepleBlue = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, spriteName);
-                meepleBlue.anchor.setTo(0.5, 0.5);
-                meepleBlue.scale.setTo(scaleFactor * 0.13, scaleFactor * 0.13);
-                meepleBlue.inputEnabled = true;
-                meepleBlue.input.enableDrag();
-                meepleBlue.input.enableSnap(scaleFactor * 40, scaleFactor * 40, false, true);
-                meepleBlue.events.onDragStop.add(this.dropLimiter, this);
+                const meepleSprite = this.game.add.sprite(coordinates.x, coordinates.y, spriteName);
+                meepleSprite.anchor.setTo(0.5, 0.5);
+                meepleSprite.scale.setTo(scaleFactor * 0.13, scaleFactor * 0.13);
+                meepleSprite.inputEnabled = true;
+                //meepleSprite.scale.
+                meepleSprite.input.enableDrag();
+                meepleSprite.input.enableSnap(scaleFactor * 40, scaleFactor * 40, false, true);
+                meepleSprite.events.onDragStop.add(this.dropLimiter, this);
             }
         }
     }
  
-    getMeeplePosition(meeple: IMeeple): Coordinate {
-        var result: Coordinate;
+    getMeeplePosition(meeple: IMeeple): Phaser.Point {
+        var result: Phaser.Point;
         var fieldType: string = meeple.CurrentPosition.FieldType;
-        var field: IMoveDestinationField;
+
         switch (fieldType) {
             case "dog2go.Backend.Model.KennelField":
                 for (var field of this.allKennelFields) {
-                    //if(field.)
+                    if (field.Identifier === meeple.CurrentPosition.Identifier) {
+                        result = field.viewRepresentation.position;
+                        break;
+                    }
                 }
         default:
         }
 
-        return null;
+        return result;
     }
 
-    getSpriteNameForColorCode(colorCode: TableModel.IAreaColor) : string {
+    getSpriteNameForColorCode(colorCode: number) : string {
         switch (colorCode) {
-            case IAreaColor.Blue:
+            case AreaColor.Blue:
                 return "meeple_blue";
-            case IAreaColor.Red:
+            case AreaColor.Red:
                 return "meeple_red";
-            case IAreaColor.Green:
+            case AreaColor.Green:
                 return "meeple_green";
-            case IAreaColor.Yellow:
+            case AreaColor.Yellow:
                 return "meeple_yellow";
             default:
                 throw new Error("Color not found for Code: " + colorCode);

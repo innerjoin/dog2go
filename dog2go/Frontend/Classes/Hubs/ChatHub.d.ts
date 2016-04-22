@@ -3,6 +3,7 @@
     server: IChatHubServer;
 }
 
+
 interface IChatHubClient {
     broadcastMessage(name:string, message: string);
     doSomeShit();

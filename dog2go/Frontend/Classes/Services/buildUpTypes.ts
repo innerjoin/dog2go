@@ -1,6 +1,4 @@
-﻿
-
-export class MoveDestinationField implements IMoveDestinationField {
+﻿export class MoveDestinationField implements IMoveDestinationField {
     Identifier: number;
     previous: MoveDestinationField;
     next: MoveDestinationField;
