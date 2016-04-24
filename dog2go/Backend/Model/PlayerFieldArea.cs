@@ -99,7 +99,7 @@ namespace dog2go.Backend.Model
             fields.Add(startField);
             StartField = startField;
 
-            StandardField standardFieldAfter = new StandardField(++fieldId) { Previous = null };
+            StandardField standardFieldAfter = new StandardField(fieldId) { Previous = null };
 
             for (int count = 1; count <= NumberOfFieldsAfterStart; count++)
             {
