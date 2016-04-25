@@ -7,7 +7,7 @@ interface IHandCard extends ICard {
 interface ICard {
         Name: string;
         Value: number;
-        Picture: any;
+        ImageIdentifier: string;
         Attributes: ICardAttribute[];
 }
 

@@ -14,7 +14,7 @@ namespace dog2go.Backend.Hubs
     [Authorize]
     public class GameHub : Hub
     {
-        private IGameRepository _games;
+        private readonly IGameRepository _games;
         public GameHub(IGameRepository repos)
         {
             _games = repos;

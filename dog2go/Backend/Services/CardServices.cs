@@ -9,9 +9,14 @@ namespace dog2go.Backend.Services
 
         private static readonly List<Card> Deck = new List<Card>();
 
-        public int CurrentRound = 0;
+        public int CurrentRound;
 
         private static readonly Random Rng = new Random();
+
+        public CardServices()
+        {
+            CurrentRound = 0;
+        }
 
         public int GetNumberOfCardsPerUser()
         {
