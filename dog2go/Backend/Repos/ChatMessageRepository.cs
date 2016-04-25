@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using dog2go.Backend.Interfaces;
+using dog2go.Backend.Model;
 
-namespace dog2go.Backend.Model
+namespace dog2go.Backend.Repos
 {
     public sealed class ChatMessageRepository : IChatRepository
     {

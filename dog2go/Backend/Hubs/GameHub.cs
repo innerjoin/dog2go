@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web.Caching;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
 using dog2go.Backend.Services;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Hubs;
 
 namespace dog2go.Backend.Hubs
 {
+    [Authorize]
     public class GameHub : Hub
     {
         //private readonly  List<User> _userList = new List<User>();
@@ -60,7 +57,17 @@ namespace dog2go.Backend.Hubs
 
             return table;
         }
-
+        public void UpdateOpenGames()
+        {
+            Clients.Client(Context.ConnectionId).updateOpenGames(GameRepository.Instance.Get().Find(game => game.Participations.Count < 4));
+        }
+        public void BackToGame()
+        {
+            foreach (var table in GameRepository.Instance.Get().Where(table => table.Participations.Any(participation => participation.Participant.Nickname == Context.User.Identity.Name)))
+            {
+                Clients.Client(Context.ConnectionId).backToGame(table, table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name).ActualPlayRound.Cards);
+            }
+        }
         public GameTable GetGeneratedGameTable()
         {
             return GenerateNewGameTable();
@@ -70,14 +77,10 @@ namespace dog2go.Backend.Hubs
             Clients.All.createGameTable(GenerateNewGameTable());
         }
 
-
-
         public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
         {
             return Validation.ValidateMove(meepleMove, cardMove);
         }
-
-
 
         public async Task CreateGame()
         {
@@ -89,7 +92,7 @@ namespace dog2go.Backend.Hubs
             //Task task = JoinGroup(selectedUser.Nickname + "_group");
             //Task task = hub.JoinGroup(selectedUser.Nickname + "_group");
 
-            table.Cookie = "dog2go_group=" + selectedUser.Nickname + "_group;expires" + new DateTime().AddSeconds(24 * 60 * 60).ToString("d", CultureInfo.CurrentCulture); ;
+            table.Cookie = "dog2go_group=" + selectedUser.Nickname + "_group;expires" + new DateTime().AddSeconds(24 * 60 * 60).ToString("d", CultureInfo.CurrentCulture);
             table.Participations.Add(new Participation(UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId)));
             //await task;
             Clients.Client(Context.ConnectionId).createGameTable(table);
@@ -119,7 +122,7 @@ namespace dog2go.Backend.Hubs
 
         public void CheckHasOpportunity()
         {
-            GameTable actualGameTable = _games.Get().Find(table => table.Cookie == UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId).Cookie);
+            GameTable actualGameTable = _games.Get().Find(table => table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name )!= null );
             List<HandCard> actualHand = actualGameTable.Participations.Find(
                 participation =>
                     participation.Participant == UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId)).ActualPlayRound.Cards;

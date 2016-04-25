@@ -1,72 +1,89 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using dog2go.Backend.Interfaces;
+using dog2go.Backend.Model;
 
 namespace dog2go.Backend.Repos
 {
-    class ConnectionRepository<T> : IConnectionRepository<T>
+    public class ConnectionRepository : IConnectionRepository
     {
-        private readonly Dictionary<T, HashSet<string>> _connections;
+        private readonly ConcurrentDictionary<string, HashSet<string>> _connections;
 
         private ConnectionRepository()
         {
-            _connections = new Dictionary<T, HashSet<string>>();
+            _connections = new ConcurrentDictionary<string, HashSet<string>>();
         } 
-        public static ConnectionRepository<T> Instance { get; } = new ConnectionRepository<T>();
+        public static ConnectionRepository Instance { get; } = new ConnectionRepository();
 
         public int Count => _connections.Count;
 
-        public void Add(T key, string connectionId)
+        public HashSet<string> Add(string key, string connection)
         {
             lock (_connections)
             {
-                HashSet<string> connections;
-                if (!_connections.TryGetValue(key, out connections))
+                HashSet<string> connectionsSet;
+                if (!_connections.TryGetValue(key, out connectionsSet))
                 {
-                    connections = new HashSet<string>();
-                    _connections.Add(key, connections);
+                    connectionsSet = new HashSet<string>();
+                    _connections.GetOrAdd(key, connectionsSet);
                 }
 
-                lock (connections)
+                lock (connectionsSet)
                 {
-                    connections.Add(connectionId);
+                    connectionsSet.Add(connection);
                 }
+                return connectionsSet;
             }
         }
 
-        public IEnumerable<string> GetConnections(T key)
-        {
-            HashSet<string> connections;
-            if (_connections.TryGetValue(key, out connections))
-            {
-                return connections;
-            }
-
-            return Enumerable.Empty<string>();
-        }
-
-        public void Remove(T key, string connectionId)
+        public HashSet<string> GetConnections(string key)
         {
             lock (_connections)
             {
-                HashSet<string> connections;
-                if (!_connections.TryGetValue(key, out connections))
+                HashSet<string> connectionsSet;
+                if (_connections.TryGetValue(key, out connectionsSet))
+                {
+                    return connectionsSet;
+                }
+            }
+
+            return new HashSet<string>();
+        }
+
+        public void Remove(string key, string connectionId)
+        {
+            lock (_connections)
+            {
+                HashSet<string> connectionSet;
+                if (!_connections.TryGetValue(key, out connectionSet))
                 {
                     return;
                 }
 
-                lock (connections)
+                lock (connectionSet)
                 {
-                    connections.Remove(connectionId);
+                    connectionSet.Remove(connectionId);
 
-                    if (connections.Count == 0)
+                    if (connectionSet.Count == 0)
                     {
-                        _connections.Remove(key);
+                        HashSet<string> removedConnectionSet;
+                        _connections.TryRemove(key, out removedConnectionSet);
                     }
                 }
+            }
+        }
+
+        public void Remove(string key)
+        {
+            lock (_connections)
+            {
+                HashSet<string> connectionSet;
+                _connections.TryRemove(key, out connectionSet);
             }
         }
     }

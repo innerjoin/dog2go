@@ -209,13 +209,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Backend\Connection\AuthorizeEchoConnection.cs" />
-    <Compile Include="Backend\Hubs\AuthorizeEchoHub.cs" />
     <Compile Include="Backend\Hubs\CardHub.cs" />
     <Compile Include="Backend\Hubs\ChatHub.cs" />
     <Compile Include="Backend\Hubs\GameHub.cs" />
-    <Compile Include="Backend\Hubs\SessionHub.cs" />
     <Compile Include="Backend\Interfaces\IChatRepository.cs" />
     <Compile Include="Backend\Interfaces\IConnectionRepository.cs" />
     <Compile Include="Backend\Interfaces\IGameRepository.cs" />
@@ -234,7 +230,6 @@
     <Compile Include="Backend\Model\Participation.cs" />
     <Compile Include="Backend\Model\PlayerFieldArea.cs" />
     <Compile Include="Backend\Model\PlayRound.cs" />
-    <Compile Include="Backend\Model\SessionUtil.cs" />
     <Compile Include="Backend\Model\StandardField.cs" />
     <Compile Include="Backend\Model\StartField.cs" />
     <Compile Include="Backend\Model\User.cs" />
@@ -341,10 +336,9 @@
     </Content>
     <Content Include="Views\Game\Play.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="Backend\Connection\" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

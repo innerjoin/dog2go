@@ -123,7 +123,7 @@ export class GameArea {
         for (var player of gameTable.PlayerFieldAreas) {
             for (var meeple of player.Meeples) {
                 var coordinates: Phaser.Point = this.getMeeplePosition(meeple);
-                    console.log("Meeple: ", meeple, this.getSpriteNameForColorCode(meeple.ColorCode), coordinates);
+                  //  console.log("Meeple: ", meeple, this.getSpriteNameForColorCode(meeple.ColorCode), coordinates);
                 var spriteName: string = this.getSpriteNameForColorCode(meeple.ColorCode);
                 //this.game.add.sprite()
                 const meepleSprite = this.game.add.sprite(coordinates.x, coordinates.y, spriteName);

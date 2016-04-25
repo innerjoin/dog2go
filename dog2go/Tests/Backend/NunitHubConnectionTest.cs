@@ -10,7 +10,7 @@ namespace dog2go.Tests.Backend
     {
 
         private readonly GameHub _gameHub = new GameHub(GameRepository.Instance);
-        private readonly ChatHub _chatHub = new ChatHub(ChatMessageRepository.Instance);
+        private readonly ChatHub _chatHub = new ChatHub(ConnectionRepository.Instance, ChatMessageRepository.Instance);
 
         #region "Testmethods for Communication between hubs"
 

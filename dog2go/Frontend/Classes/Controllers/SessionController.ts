@@ -37,4 +37,4 @@ export class SessionController {
     updateOpenGames(games: any) { // TODO: Change to typed
         console.log('SessionController: updateOpenGamese', games);
     }
-} 
+}
