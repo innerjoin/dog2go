@@ -35,16 +35,16 @@ describe("GameFieldService - ", () => {
         //};
     });
     
-    it("get Instance", () => {
-        gfs.GameFieldService.bind($);
-        gfs.GameFieldService.getInstance.bind($);
-        var gameFieldService = gfs.GameFieldService.getInstance(callbackCreate.fn);
-        gameFieldService.getGameFieldData();
+    //it("get Instance", () => {
+    //    gfs.GameFieldService.bind($);
+    //    gfs.GameFieldService.getInstance.bind($);
+    //    var gameFieldService = gfs.GameFieldService.getInstance(callbackCreate.fn);
+    //    gameFieldService.getGameFieldData();
 
-        // Allways if Hub has been started correctly
-        expect($.connection.hub.start).toHaveBeenCalled();
+    //    // Allways if Hub has been started correctly
+    //    expect($.connection.hub.start).toHaveBeenCalled();
 
-        expect(callbackCreate.fn).toHaveBeenCalled();
-        expect(callbackCreate.fn).toHaveBeenCalledWith(gameTable);
-    });
+    //    expect(callbackCreate.fn).toHaveBeenCalled();
+    //    expect(callbackCreate.fn).toHaveBeenCalledWith(gameTable);
+    //});
 });

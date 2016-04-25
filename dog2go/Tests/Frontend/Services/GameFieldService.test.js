@@ -1,4 +1,4 @@
-define(["require", "exports", "jquery", "../../../Frontend/Classes/Services/GameFieldsService"], function (require, exports, $, gfs) {
+define(["require", "exports", "jquery"], function (require, exports, $) {
     "use strict";
     //require("signalr.hubs");
     describe("GameFieldService - ", function () {
@@ -27,16 +27,16 @@ define(["require", "exports", "jquery", "../../../Frontend/Classes/Services/Game
             //}, client: {}
             //};
         });
-        it("get Instance", function () {
-            gfs.GameFieldService.bind($);
-            gfs.GameFieldService.getInstance.bind($);
-            var gameFieldService = gfs.GameFieldService.getInstance(callbackCreate.fn);
-            gameFieldService.getGameFieldData();
-            // Allways if Hub has been started correctly
-            expect($.connection.hub.start).toHaveBeenCalled();
-            expect(callbackCreate.fn).toHaveBeenCalled();
-            expect(callbackCreate.fn).toHaveBeenCalledWith(gameTable);
-        });
+        //it("get Instance", () => {
+        //    gfs.GameFieldService.bind($);
+        //    gfs.GameFieldService.getInstance.bind($);
+        //    var gameFieldService = gfs.GameFieldService.getInstance(callbackCreate.fn);
+        //    gameFieldService.getGameFieldData();
+        //    // Allways if Hub has been started correctly
+        //    expect($.connection.hub.start).toHaveBeenCalled();
+        //    expect(callbackCreate.fn).toHaveBeenCalled();
+        //    expect(callbackCreate.fn).toHaveBeenCalledWith(gameTable);
+        //});
     });
 });
 //# sourceMappingURL=GameFieldService.test.js.map
