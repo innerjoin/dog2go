@@ -21,10 +21,10 @@ export class SessionController {
         var gameHub = $.connection.gameHub;
         if (cookie.length == 0) {
             var name = "Hallo ich bins";
-            this.sessionService.login(name, null);
+            //this.sessionService.login(name, null);
         } else {
             var name = "Hallo ich bins";
-            this.sessionService.login(name, cookie);
+            //this.sessionService.login(name, cookie);
         }
     }
 

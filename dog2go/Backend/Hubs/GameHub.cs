@@ -14,6 +14,7 @@ using Microsoft.AspNet.SignalR.Hubs;
 
 namespace dog2go.Backend.Hubs
 {
+    [Authorize]
     public class GameHub : Hub
     {
         //private readonly  List<User> _userList = new List<User>();
@@ -59,7 +60,17 @@ namespace dog2go.Backend.Hubs
 
             return table;
         }
-
+        public void UpdateOpenGames()
+        {
+            Clients.Client(Context.ConnectionId).updateOpenGames(GameRepository.Instance.Get().Find(game => game.Participations.Count < 4));
+        }
+        public void BackToGame()
+        {
+            foreach (var table in GameRepository.Instance.Get().Where(table => table.Participations.Any(participation => participation.Participant.Nickname == Context.User.Identity.Name)))
+            {
+                Clients.Client(Context.ConnectionId).backToGame(table, table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name).ActualPlayRound.Cards);
+            }
+        }
         public GameTable GetGeneratedGameTable()
         {
             return GenerateNewGameTable();
@@ -68,8 +79,6 @@ namespace dog2go.Backend.Hubs
         {
             Clients.All.createGameTable(GenerateNewGameTable());
         }
-
-
 
         public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
         {
@@ -205,8 +214,6 @@ namespace dog2go.Backend.Hubs
             }
         }
 
-
-
         public async Task CreateGame()
         {
             /*DefaultHubManager hd = new DefaultHubManager(GlobalHost.DependencyResolver);
@@ -247,7 +254,7 @@ namespace dog2go.Backend.Hubs
 
         public void CheckHasOpportunity()
         {
-            GameTable actualGameTable = _games.Get().Find(table => table.Cookie == UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId).Cookie);
+            GameTable actualGameTable = _games.Get().Find(table => table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name )!= null );
             List<HandCard> actualHand = actualGameTable.Participations.Find(
                 participation =>
                     participation.Participant == UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId)).ActualPlayRound.Cards;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,45 +9,87 @@ using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
-using User = dog2go.Backend.Model.User;
 
 namespace dog2go.Backend.Hubs
 {
+    [Authorize]
     [HubName("chatHub")]
     public class ChatHub : Hub
     {
-        private readonly ConnectionRepository<string> Connections = ConnectionRepository<string>.Instance;
-        private readonly IChatRepository _repository;
-
-        public ChatHub(IChatRepository repository)
+        private readonly IChatRepository _chatRepository;
+        private readonly IConnectionRepository _connectionRepository;
+        public ChatHub(IConnectionRepository connectionRepository, IChatRepository chatRepository)
         {
-            _repository = repository;
+            _connectionRepository = connectionRepository;
+            _chatRepository = chatRepository;
         }
-
         public override Task OnConnected()
         {
-            string name = Context.User.Identity.Name;
-            Connections.Add(name, Context.ConnectionId);
             JoinGroup("session_group");
+            string userName = Context.User.Identity.Name;
+            string connectionId = Context.ConnectionId;
+
+            var connectionSet = _connectionRepository.Add(userName, connectionId);
+
+            lock (connectionSet)
+            {
+
+                connectionSet.Add(connectionId);
+
+                if (connectionSet.Count == 1)
+                {
+                    // Could be used to show other users that a new has been connected
+                    //Clients.Others.userConnected(userName);
+                }
+            }
+
             return base.OnConnected();
         }
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            string name = Context.User.Identity.Name;
+            string userName = Context.User.Identity.Name;
 
-            Connections.Remove(name, Context.ConnectionId);
+            HashSet<string> connections;
+            connections = _connectionRepository.GetConnections(userName);
+
+            if (connections != null)
+            {
+
+                lock (connections)
+                {
+
+                    connections.RemoveWhere(cid => cid.Equals(Context.ConnectionId));
+
+                    if (!connections.Any())
+                    {
+
+                        HashSet<string> removedConnectionSet;
+                        _connectionRepository.Remove(userName);
+
+                        // Could be used to show other users that a new has been connected
+                        //Clients.Others.userConnected(userName);
+                    }
+                }
+            }
+
             LeaveGroup("session_group");
+
             return base.OnDisconnected(stopCalled);
+        }
+
+        private HashSet<string> GetConnections(string username)
+        {
+            return _connectionRepository.GetConnections(username); ;
         }
 
         public override Task OnReconnected()
         {
             string name = Context.User.Identity.Name;
 
-            if (!Connections.GetConnections(name).Contains(Context.ConnectionId))
+            if (!_connectionRepository.GetConnections(name).Contains(Context.ConnectionId))
             {
-                Connections.Add(name, Context.ConnectionId);
+                _connectionRepository.Add(name, Context.ConnectionId);
             }
 
             return base.OnReconnected();
@@ -59,13 +102,13 @@ namespace dog2go.Backend.Hubs
             if (sendUser != null)
             {
                 newMessage = new Message() {Msg = message, Group = sendUser.GroupName};
-                _repository.AddMessage(newMessage);
+                _chatRepository.AddMessage(newMessage);
             }
 
             else
             {
                 newMessage = new Message() {Msg = message, Group = "session_group"};
-                _repository.AddMessage(newMessage);
+                _chatRepository.AddMessage(newMessage);
             }
             
             //var sessionHubContext = GlobalHost.ConnectionManager.GetHubContext<SessionHub>();
@@ -73,7 +116,7 @@ namespace dog2go.Backend.Hubs
             Clients.Group(newMessage.Group).broadcastMessage(Context.User.Identity.Name, message);
             //Clients.All.broadcastMessage("test_user", message);
         }
-        public void JoinGroup(string groupName)
+        private void JoinGroup(string groupName)
         {
             Groups.Add(Context.ConnectionId, groupName);
         }
