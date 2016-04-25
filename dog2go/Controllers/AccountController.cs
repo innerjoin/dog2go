@@ -30,6 +30,7 @@ namespace dog2go.Controllers
             FormsAuthentication.SetAuthCookie(userName, true);
             User user = new User()
             {
+                GroupName = "TheOneAndOnlyGroupAvailableForDog2GoAtTheMoment",
                 Identifier = userName,
                 Nickname = userName,
                 ConnectionIds = new HashSet<string>()

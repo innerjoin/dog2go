@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
@@ -12,34 +11,28 @@ using WebGrease.Css.Extensions;
 namespace dog2go.Backend.Hubs
 {
     [Authorize]
-    public class GameHub : Hub
+    public class GameHub : GenericHub
     {
-        private readonly IGameRepository _games;
-        public GameHub(IGameRepository repos)
-        {
-            _games = repos;
-        }
-        public GameHub()
-        {
-            _games = GameRepository.Instance;
-        }
+        public GameHub(IGameRepository repos): base(repos){}
+
+        public GameHub() {}
 
         private int CreateGameTable()
         {
-            var id = _games.Get().Count;
+            var id = Games.Get().Count;
             var generatedTable = GenerateNewGameTable(id);
-            _games.Add(generatedTable);
+            Games.Add(generatedTable);
             return generatedTable.Identifier;
         }
 
         public GameTable ConnectToTable()
         {
             int gameId = 0;
-            if (_games.Get().Count == 0)
+            if (Games.Get().Count == 0)
                 gameId = CreateGameTable();
             string curUser = Context.User.Identity.Name;
 
-            GameTable table = _games.Get().Find(x => x.Identifier == gameId);
+            GameTable table = Games.Get().Find(x => x.Identifier == gameId);
             if (table?.Participations == null || table.Participations.Count >= 4)
                 throw new Exception("Table already full");
 
@@ -95,26 +88,6 @@ namespace dog2go.Backend.Hubs
 
             GameTable table = new GameTable(areas, gameId);
             return table;
-        }
-
-        public override Task OnConnected()
-        {
-
-            string userName = Context.User.Identity.Name;
-            string connectionId = Context.ConnectionId;
-
-            User user = UserRepository.Instance.Get(userName);
-
-            lock (user.ConnectionIds)
-            {
-                user.ConnectionIds.Add(connectionId);
-                if (user.ConnectionIds.Count == 1)
-                {
-                    Clients.Others.userConnected(userName);
-                }
-            }
-
-            return base.OnConnected();
         }
 
         public void SendCards(List<HandCard> cards, User user)

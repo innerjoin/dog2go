@@ -211,6 +211,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Backend\Hubs\CardHub.cs" />
     <Compile Include="Backend\Hubs\ChatHub.cs" />
+    <Compile Include="Backend\Hubs\GenericHub.cs" />
     <Compile Include="Backend\Hubs\GameHub.cs" />
     <Compile Include="Backend\Interfaces\IChatRepository.cs" />
     <Compile Include="Backend\Interfaces\IConnectionRepository.cs" />

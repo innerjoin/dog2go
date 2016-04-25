@@ -23,7 +23,7 @@ namespace dog2go.Controllers
         {
             ConcurrentDictionary<string, User> users = UserRepository.Instance.Get();
             if (users == null || users.Count == 0) return true;
-            return users.First(x => x.Value.Identifier == User.Identity.Name).Value == null;
+            return users.FirstOrDefault(x => x.Value.Identifier == User.Identity.Name).Value == null;
         }
     }
 }
