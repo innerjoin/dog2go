@@ -84,17 +84,14 @@ namespace dog2go.Backend.Hubs
 
         public async Task CreateGame()
         {
-            /*DefaultHubManager hd = new DefaultHubManager(GlobalHost.DependencyResolver);
-            var hub = hd.ResolveHub("sessionHub") as SessionHub;*/
-
             GameTable table = GenerateNewGameTable();
             User selectedUser = UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId);
-            //Task task = JoinGroup(selectedUser.Nickname + "_group");
-            //Task task = hub.JoinGroup(selectedUser.Nickname + "_group");
+            var chatHubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            Task task = chatHubContext.Groups.Add(Context.ConnectionId, selectedUser.Nickname+"_group");
 
             table.Cookie = "dog2go_group=" + selectedUser.Nickname + "_group;expires" + new DateTime().AddSeconds(24 * 60 * 60).ToString("d", CultureInfo.CurrentCulture);
             table.Participations.Add(new Participation(UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId)));
-            //await task;
+            await task;
             Clients.Client(Context.ConnectionId).createGameTable(table);
         }
 
@@ -112,14 +109,14 @@ namespace dog2go.Backend.Hubs
                     Partner = selectedGameTable.Participations.Last().Participant
                 }
                 : new Participation(UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId));
-            //Task task = JoinGroup(UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId).GroupName);
-           // Task task = hub.JoinGroup(UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId).GroupName);
+            var chatHubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            Task task = chatHubContext.Groups.Add(Context.ConnectionId, UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId).GroupName);
             selectedGameTable.Participations.Add(newParticipation);
             selectedGameTable.Participations.Find((participation => participation.Participant == selectedGameTable.Participations.Last().Partner)).Partner = newParticipation.Participant;
-            //await task;
+            await task;
             Clients.Client(Context.ConnectionId).creatGameTable(selectedGameTable);
         }
-
+        
         public void CheckHasOpportunity()
         {
             GameTable actualGameTable = _games.Get().Find(table => table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name )!= null );
