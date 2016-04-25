@@ -1,66 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Web;
 using dog2go.Backend.Model;
-using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Hubs;
 
-namespace dog2go.Backend.Hubs
+namespace dog2go.Backend.Services
 {
-    [HubName("cardHub")]
-    public class CardHub : Hub
+    public class CardServices
     {
-
-        /*
-         * Server Methoden
-         * public void SendCards(List<HandCard> cards);
-         * public void CheckHasOpportunity();// true notifyActualPlayer | false dropCards
-         * public void ChooseCard(HandCard card);
-         * public void ChooseCardExchange(HandCard card);
-         * public void ChooseMove(MeepleMove move);
-         */
 
         private static readonly List<Card> Deck = new List<Card>();
 
-        private static int _currentRound = 0;
+        public int CurrentRound = 0;
 
         private static readonly Random Rng = new Random();
 
-        public void SendCards(List<HandCard> cards, User user)
+        public int GetNumberOfCardsPerUser()
         {
-            // TODO: send hand cards to specific user
-        }
-
-        public void AllConnected()
-        {
-            int nr = GetNumberOfCardsPerUser();
-            List<User> users = null; //TODO: how to access users???
-            foreach (User user in users)
-            {
-                List<HandCard> cards = new List<HandCard>();
-                for (int i = 0; i < nr; i++)
-                {
-                    cards.Add(new HandCard(GetCard()));
-                }
-                SendCards(cards, user);
-            }
-        }
-
-        private static int GetNumberOfCardsPerUser()
-        {
-            int nr;
-            if (_currentRound == 0)
-                nr = 6;
-            nr = _currentRound % 4 + 2;
-            _currentRound++;
+            int nr = CurrentRound == 0 ? 6 : CurrentRound % 4 + 2;
+            CurrentRound++;
             return nr;
-            // R    | Nr
-            // 1    | 5
-            // 2    | 4
-            // 3    | 3
-            // 4    | 2
         }
 
         private static void Shuffle()
@@ -78,17 +35,17 @@ namespace dog2go.Backend.Hubs
 
         public Card GetCard()
         {
-            const int indexOfCardOnTop = 0;
-            Card card = Deck[indexOfCardOnTop];
-            Deck.RemoveAt(indexOfCardOnTop);
-            if (Deck.Count <= 1)
+            if (Deck.Count < 1)
             {
                 MakeInitDeck();
             }
+            const int indexOfCardOnTop = 0;
+            Card card = Deck[indexOfCardOnTop];
+            Deck.RemoveAt(indexOfCardOnTop);
             return card;
         }
 
-        private List<Card> MakeInitDeck()
+        private void MakeInitDeck()
         {
             //make all Jokercards
             for (int i = 0; i < 6; i++)
@@ -126,12 +83,11 @@ namespace dog2go.Backend.Hubs
                 Deck.Add(new Card("card8", 8, "card_8_190x300komp.png", new List<CardAttribute>() { new CardAttribute(AttributeEnum.EightFields) }));
                 Deck.Add(new Card("card9", 9, "card_9_190x300komp.png", new List<CardAttribute>() { new CardAttribute(AttributeEnum.NineFields) }));
                 Deck.Add(new Card("card10", 10, "card_10_190x300komp.png", new List<CardAttribute>() { new CardAttribute(AttributeEnum.TenFields) }));
-                Deck.Add(new Card("card11", 11, "card_1-11_190x300komp.png", new List<CardAttribute>() { new CardAttribute(AttributeEnum.ElevenFields), new CardAttribute(AttributeEnum.OneField), new CardAttribute(AttributeEnum.LeaveKennel) }));
+                Deck.Add(new Card("card11", 11, "card_1-11-play_190x300komp.png", new List<CardAttribute>() { new CardAttribute(AttributeEnum.ElevenFields), new CardAttribute(AttributeEnum.OneField), new CardAttribute(AttributeEnum.LeaveKennel) }));
                 Deck.Add(new Card("card12", 12, "card_12_190x300komp.png", new List<CardAttribute>() { new CardAttribute(AttributeEnum.TwelveFields) }));
                 Deck.Add(new Card("card13", 13, "card_13-play_190x300komp.png", new List<CardAttribute>() { new CardAttribute(AttributeEnum.ThirteenFields), new CardAttribute(AttributeEnum.LeaveKennel) }));
             }
             Shuffle();
-            return Deck;
         }
     }
 }

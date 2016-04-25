@@ -29,10 +29,10 @@ describe("GameFieldService - ", () => {
         spyOn($.connection.hub, "start").and.callFake(() => {
             return callbackDone;
         });
-        $.connection["gameHub"] = {server: {
-            sendGameTable: () => { $.connection.gameHub.client.createGameTable(gameTable); }
-        }, client: {}
-        };
+        //$.connection["gameHub"] = {server: {
+        //    sendGameTable: () => { $.connection.gameHub.client.createGameTable(gameTable); }
+        //}, client: {}
+        //};
     });
     
     it("get Instance", () => {

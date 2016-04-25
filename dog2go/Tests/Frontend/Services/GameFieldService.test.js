@@ -22,10 +22,10 @@ define(["require", "exports", "jquery", "../../../Frontend/Classes/Services/Game
             spyOn($.connection.hub, "start").and.callFake(function () {
                 return callbackDone;
             });
-            $.connection["gameHub"] = { server: {
-                    sendGameTable: function () { $.connection.gameHub.client.createGameTable(gameTable); }
-                }, client: {}
-            };
+            //$.connection["gameHub"] = {server: {
+            //    sendGameTable: () => { $.connection.gameHub.client.createGameTable(gameTable); }
+            //}, client: {}
+            //};
         });
         it("get Instance", function () {
             gfs.GameFieldService.bind($);

@@ -97,7 +97,8 @@ namespace dog2go.Backend.Hubs
 
         public void SendMessage(string message)
         {
-            User sendUser = UserRepository.Instance.Get().Find(user => user.Nickname == Context.User.Identity.Name);
+            User sendUser = UserRepository.Instance.Get().First(u => u.Value.Nickname != Context.User.Identity.Name).Value;
+            //User sendUser = UserRepository.Instance.Get().Find(user => user.Nickname == Context.User.Identity.Name);
             Message newMessage;
             if (sendUser != null)
             {

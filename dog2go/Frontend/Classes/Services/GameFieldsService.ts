@@ -13,6 +13,15 @@ export class GameFieldService {
             console.log("GameFieldService: GotBack createGameTable!", areas);
             callback(areas);
         }
+        gameHub.client.assignHandCards = (cards) => {
+            console.log("cards: ", cards);
+            var container = $("#cardContainer");
+            console.log("container: ", container);
+            for (var i = 0; i < cards.length; i++) {
+                container.append("<img src=\"/Frontend/Images/cards-min/" + cards[i].ImageIdentifier + "\" ></img>");
+            }
+
+        }
         GameFieldService.instance = this;
     }
 
@@ -26,11 +35,29 @@ export class GameFieldService {
         return GameFieldService.instance;
     }
 
+    public assignHandCards(cards: any) {
+        alert("hi there");
+        console.log("cards:", cards);
+    }
+
     public getGameFieldData():void {
         var gameHub = $.connection.gameHub;
         $.connection.hub.start().done(() => {
             console.log("GameFieldService: Connection etablished");
-            gameHub.server.sendGameTable();
+            //gameHub.server.sendGameTable();
+            //gameHub.server.createGame();
+            gameHub.server.connectToTable();
+            //console.log("createGameTable...");
+            //gameHub.server.createGameTable().then(id => {
+            //    console.log("createGameTable executed, id is: ", id);
+            //    console.log("ConnectToTable...");
+            //    return gameHub.server.connectToTable(id);
+            //}).then(table => {
+            //        console.log("ConnectToTable executed, result is: ", table);                
+            //  //  });
+            //    return table;
+            //});
+
         });
     }
 }

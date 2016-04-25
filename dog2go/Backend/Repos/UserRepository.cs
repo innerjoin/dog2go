@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,25 +11,34 @@ namespace dog2go.Backend.Repos
 {
     public class UserRepository : IUserRepository
     {
-        private readonly List<User> _users;
+        private readonly ConcurrentDictionary<string, User> _users;
 
         private UserRepository()
         {
-            _users = new List<User>();
+            _users = new ConcurrentDictionary<string, User>();
         }
         public static UserRepository Instance { get; } = new UserRepository();
 
-        public void Add(User newUser)
+        public User Get(string userName)
         {
-            _users.Add(newUser);
+            User user;
+            _users.TryGetValue(userName, out user);
+            return user;
         }
 
-        public void Remove(User deleteUser)
+        public User GetOrAdd(string userName, User user)
         {
-            _users.Remove(deleteUser);
+            return _users.GetOrAdd(userName, user);
         }
 
-        public List<User> Get()
+        public User Remove(string userName)
+        {
+            User user;
+            _users.TryRemove(userName, out user);
+            return user;
+        }
+
+        public ConcurrentDictionary<string, User> Get()
         {
             return _users;
         }
