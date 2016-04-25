@@ -1,10 +1,10 @@
 ﻿import _phaser = require("phaser");
-import Area = require("../../Frontend/Classes/Controllers/GameArea");
-import BuildUpTypes = require("../../Frontend/Classes/Services/buildUpTypes");
-import Coordinates = require("../../Frontend/Classes/Controllers/FieldCoordinates");
+import Area = require("../../../Frontend/Classes/Controllers/GameArea");
+import BuildUpTypes = require("../../../Frontend/Classes/Services/buildUpTypes");
+import Coordinates = require("../../../Frontend/Classes/Controllers/FieldCoordinates");
 import FieldCoordinatesData = Coordinates.FieldCoordinatesData;
 
-describe("GameArea", () => {
+describe("GameArea - ", () => {
     var timerCallback: jasmine.Spy;
     var game: Phaser.Game;
     beforeEach(() => {

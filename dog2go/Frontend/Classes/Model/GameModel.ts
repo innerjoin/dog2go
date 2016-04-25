@@ -1,4 +1,5 @@
-﻿class GameTable implements IGameTable {
+﻿
+class GameTable implements IGameTable {
 
     public Name: string;
     public Identifier: number;

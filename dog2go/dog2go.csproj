@@ -237,6 +237,7 @@
     <Compile Include="Backend\Repos\ConnectionRepository.cs" />
     <Compile Include="Backend\Repos\GameRepository.cs" />
     <Compile Include="Backend\Repos\UserRepository.cs" />
+    <Compile Include="Backend\Services\Validation.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -247,6 +248,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tests\Backend\NunitValidationTest.cs" />
     <Compile Include="Tests\Backend\NunitHubConnectionTest.cs" />
     <Compile Include="Views\Extensions\RequireJsHelpers.cs" />
     <Compile Include="Tests\Backend\NunitGameHubTest.cs" />
@@ -268,6 +270,10 @@
     <Content Include="Frontend\Images\cards-min\card_9_190x300komp.png" />
     <Content Include="Frontend\Images\cards-min\card_exchange_190x300komp.png" />
     <Content Include="Frontend\Images\cards-min\card_joker_190x300komp.png" />
+    <Content Include="Frontend\Images\meeple_blue.png" />
+    <Content Include="Frontend\Images\meeple_green.png" />
+    <Content Include="Frontend\Images\meeple_red.png" />
+    <Content Include="Frontend\Images\meeple_yellow.png" />
     <Content Include="Frontend\Images\wood-min.jpg" />
     <Content Include="Frontend\Images\wood.jpg" />
     <Content Include="Frontend\Library\domReady.js" />
@@ -276,7 +282,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Frontend\Library\Phaser\phaser.js" />
     <Content Include="Frontend\Library\Phaser\phaser.min.js" />
-    <Content Include="Frontend\Images\pawn_blue.png" />
+    <Content Include="Frontend\Images\old_pawn_blue.png" />
     <Content Include="Frontend\Library\SignalR\jquery.signalR-2.2.0.js" />
     <Content Include="Frontend\Library\SignalR\jquery.signalR-2.2.0.min.js" />
     <Content Include="Frontend\Styles\bootstrap\bootstrap-theme.css" />
@@ -356,6 +362,7 @@
     <TypeScriptCompile Include="Frontend\Classes\Model\GameModel.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Model\GameModel.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Model\TableModel.d.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Model\TableModel.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\buildUpTypes.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\ChatService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameArea.ts" />
@@ -369,8 +376,9 @@
     <TypeScriptCompile Include="Frontend\Library\SignalR\signalr.d.ts" />
     <Content Include="Frontend\requirejs.config.js" />
     <TypeScriptCompile Include="Frontend\Library\requirejs\require.d.ts" />
-    <TypeScriptCompile Include="Tests\Frontend\GameArea.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Controllers\GameArea.test.ts" />
     <TypeScriptCompile Include="Tests\Frontend\buildUpTypes.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Services\GameFieldService.test.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -451,6 +459,11 @@
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.2.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.2.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
+  <Import Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(SQLDBExtensionsRefPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(SQLDBExtensionsRefPath)' == ''" />
+  <PropertyGroup>
+    <SsdtUnitTestVersion>2.0</SsdtUnitTestVersion>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

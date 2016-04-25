@@ -26,7 +26,7 @@ export class GameMaster {
         this.gameArea = new GameArea();
         
         $().ready(() => {
-            sessionController.checkConnection();
+            //sessionController.checkConnection();
         });
     }
     

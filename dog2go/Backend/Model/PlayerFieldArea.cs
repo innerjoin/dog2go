@@ -72,7 +72,7 @@ namespace dog2go.Backend.Model
 
             for (var count = 0; count < NumberOfMeeple; count++)
             {
-                KennelField kennelField = new KennelField(count + 1);
+                KennelField kennelField = new KennelField(++fieldId);
                 meepleList.Add(new Meeple(kennelField, this.ColorCode));
                 kennelFields.Add(kennelField);
             }
@@ -99,7 +99,7 @@ namespace dog2go.Backend.Model
             fields.Add(startField);
             StartField = startField;
 
-            StandardField standardFieldAfter = new StandardField(++fieldId) { Previous = null };
+            StandardField standardFieldAfter = new StandardField(fieldId) { Previous = null };
 
             for (int count = 1; count <= NumberOfFieldsAfterStart; count++)
             {

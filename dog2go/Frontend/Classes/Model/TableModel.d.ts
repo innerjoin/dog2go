@@ -1,4 +1,5 @@
-﻿
+﻿/// <reference path="TableModel.ts"/>
+
 
 interface IGameTable {
     Name: string;
@@ -11,9 +12,27 @@ interface IGameTable {
         public List < Participation > Participations; */
 }
 
+interface IPlayerFieldArea {
+    PreviousIdentifier: number;
+    NextIdentifier: number;
+    Identifier: number;
+    FieldId: number;
+    _previous: IPlayerFieldArea;
+    _next: IPlayerFieldArea;
+    ColorCode: number;
+    KennelFields: IKennelField[];
+    Fields: IMoveDestinationField[];
+    EndFields: IEndField[];
+    StartField: IStartField;
+    Meeples: IMeeple[];
+    //   public Participation Participation { get; set; } 
+}
 
-
-
+interface IMeeple {
+    ColorCode: number;
+    CurrentPosition: IMoveDestinationField;
+    IsStartFieldBlocked: boolean;
+}
 
 interface IMoveDestinationField {
     Identifier: number;
@@ -40,26 +59,10 @@ interface IStartField extends IMoveDestinationField {
     EndFieldEntry: IEndField;
 }
 
-interface IPlayerFieldArea {
 
-    PreviousIdentifier: number;
-    NextIdentifier: number;
-    Identifier: number;
-    FieldId: number;
-    _previous: IPlayerFieldArea;
-    _next: IPlayerFieldArea;
-    ColorCode: IAreaColor;
-    KennelFields: IKennelField[];
-    Fields: IMoveDestinationField[];
-    EndFields: IEndField[];
-    StartField: IStartField;
-    //    public List<Meeple> Meeples { get; set; }
-    //   public Participation Participation { get; set; } 
-}
-
-declare enum  IAreaColor {
-    Red = 0xff0000,
-    Blue = 0x0000ff,
-    Green = 0x00ff00,
-    Yellow = 0xedc613
-}
+/*interface IAreaColor {
+    Red;// = 0xff0000;
+    Blue;// = 0x0000ff;
+    Green;// = 0x00ff00;
+    Yellow;// = 0xedc613;
+}*/

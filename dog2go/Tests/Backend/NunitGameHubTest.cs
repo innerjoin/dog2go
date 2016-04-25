@@ -42,7 +42,7 @@ namespace dog2go.Tests.Backend
             GameTable table = _hub.GetGeneratedGameTable();
             PlayerFieldArea blueArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
             PlayerFieldArea redArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red);
-            StandardField standardField = (StandardField)blueArea.Fields.Find(field => field.Identifier == 12);
+            StandardField standardField = (StandardField)blueArea.Fields.Find(field => field.Identifier == 16);
             standardField.CurrentMeeple = blueArea.Meeples.Find(meeple =>
             {
                 meeple.IsStartFieldBlocked = false;
