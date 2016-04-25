@@ -14,15 +14,12 @@ export class ChatController {
         });
 
         $("#displayname").val("TEST");
-        // Set initial focus to message input box.  
-        //$('#message').focus();
         $("#gameContent").focus();
-
     }
 
     private sendChat() {
         this.chatService.sendMessage($('#message').val());
-        $("#message").val("");//.focus();
+        $("#message").val("");
         $("#gameContent").focus();
     }
 
@@ -31,5 +28,7 @@ export class ChatController {
         const encodedMsg = $("<div />").text(message).html();
         // Add the message to the page. 
         $("#chatBox").append(`<li><strong>${encodedName}</strong>:&nbsp;&nbsp;${encodedMsg}</li>`);
+        // auto scroll chat to bottom
+        $('#chatBox').animate({ scrollTop: $(document).height() }, "slow");
     }
 }
