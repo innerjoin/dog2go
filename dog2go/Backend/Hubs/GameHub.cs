@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.EnterpriseServices.Internal;
 using System.Linq;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
@@ -60,6 +61,13 @@ namespace dog2go.Backend.Hubs
 
             return table;
         }
+
+        // for test method calls only
+        public GameTable GetGeneratedGameTable()
+        {
+            return GenerateNewGameTable(-1);
+        }
+
         private GameTable GenerateNewGameTable(int gameId)
         {
             List<PlayerFieldArea> areas = new List<PlayerFieldArea>();
@@ -118,6 +126,40 @@ namespace dog2go.Backend.Hubs
                 SendCards(cards, user.Participant);
             }
         }
+
+        public bool HasBlockedField(MoveDestinationField startCountField, int fieldCount)
+        {
+            if (fieldCount < 0)
+            {
+                for (var i = 0; i > fieldCount; i--)
+                {
+                    startCountField = startCountField.Previous;
+                    StartField startField = startCountField as StartField;
+                    if (startField != null)
+                    {
+                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
+                    }
+                }
+
+                return false;
+            }
+
+            else
+            {
+                for (var i = 0; i <= fieldCount; i++)
+                {
+                    startCountField = startCountField.Next;
+                    StartField startField = startCountField as StartField;
+                    if (startField != null)
+                    {
+                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
+                    }
+                }
+
+                return true;
+            }
+        }
+
 
         /*
          * Server Methoden
@@ -335,37 +377,5 @@ namespace dog2go.Backend.Hubs
         //    return false;
         //}
 
-        //public bool HasBlockedField(MoveDestinationField startCountField, int fieldCount)
-        //{
-        //    if (fieldCount < 0)
-        //    {
-        //        for (var i = 0; i > fieldCount; i--)
-        //        {
-        //            startCountField = startCountField.Previous;
-        //            StartField startField = startCountField as StartField;
-        //            if (startField != null)
-        //            {
-        //                return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
-        //            }
-        //        }
-
-        //        return false;
-        //    }
-
-        //    else
-        //    {
-        //        for (var i = 0; i <= fieldCount; i++)
-        //        {
-        //            startCountField = startCountField.Next;
-        //            StartField startField = startCountField as StartField;
-        //            if (startField != null)
-        //            {
-        //                return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
-        //            }
-        //        }
-
-        //        return true;
-        //    }
-        //}
     }
 }
