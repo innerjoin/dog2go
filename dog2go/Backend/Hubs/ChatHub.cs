@@ -64,7 +64,6 @@ namespace dog2go.Backend.Hubs
                     if (!connections.Any())
                     {
 
-                        HashSet<string> removedConnectionSet;
                         _connectionRepository.Remove(userName);
 
                         // Could be used to show other users that a new has been connected

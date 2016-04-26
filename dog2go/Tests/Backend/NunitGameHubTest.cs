@@ -19,21 +19,17 @@ namespace dog2go.Tests.Backend
             PlayerFieldArea blueArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
             PlayerFieldArea redArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red);
             StandardField standardField = (StandardField)blueArea.Fields.Find(field => field.Identifier == 12);
-            standardField.CurrentMeeple = blueArea.Meeples.Find(meeple =>
-            {
-                meeple.IsStartFieldBlocked = false;
-                return (meeple != null);
-            });
+            Meeple blueMeeple = blueArea.Meeples.Find(meeple => meeple.ColorCode == ColorCode.Blue);
+            blueMeeple.IsStartFieldBlocked = false;
+            standardField.CurrentMeeple = blueMeeple;
 
             StartField startField = (StartField)redArea.Fields.Find(field => field.FieldType.Contains("StartField"));
 
-            startField.CurrentMeeple = redArea.Meeples.Find(meeple =>
-            {
-                meeple.IsStartFieldBlocked = true;
-                return (meeple != null);
-            });
+            Meeple redMeeple = redArea.Meeples.Find(meeple => meeple.ColorCode == ColorCode.Red);
+            redMeeple.IsStartFieldBlocked = true;
+            startField.CurrentMeeple = redMeeple;
 
-            Assert.That(_hub.HasBlockedField(standardField, 10), Is.EqualTo(true));
+            Assert.That(_hub.HasBlockedField(standardField, 13), Is.EqualTo(true));
         }
 
         [Test]
@@ -43,19 +39,15 @@ namespace dog2go.Tests.Backend
             PlayerFieldArea blueArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
             PlayerFieldArea redArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red);
             StandardField standardField = (StandardField)blueArea.Fields.Find(field => field.Identifier == 16);
-            standardField.CurrentMeeple = blueArea.Meeples.Find(meeple =>
-            {
-                meeple.IsStartFieldBlocked = false;
-                return (meeple != null);
-            });
+            Meeple blueMeeple = blueArea.Meeples.Find(meeple => meeple.ColorCode == ColorCode.Blue);
+            blueMeeple.IsStartFieldBlocked = false;
+            standardField.CurrentMeeple = blueMeeple;
 
             StartField startField = (StartField)redArea.Fields.Find(field => field.FieldType.Contains("StartField"));
 
-            startField.CurrentMeeple = redArea.Meeples.Find(meeple =>
-            {
-                meeple.IsStartFieldBlocked = false;
-                return (meeple != null);
-            });
+            Meeple redMeeple = redArea.Meeples.Find(meeple => meeple.ColorCode == ColorCode.Red);
+            redMeeple.IsStartFieldBlocked = false;
+            startField.CurrentMeeple = redMeeple;
 
             Assert.That(_hub.HasBlockedField(standardField, 10), Is.EqualTo(false));
         }
@@ -66,21 +58,16 @@ namespace dog2go.Tests.Backend
             GameTable table = _hub.GetGeneratedGameTable();
             PlayerFieldArea blueArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
             PlayerFieldArea redArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red);
+            StandardField standardField = (StandardField)redArea.Fields.Find(field => field.FieldType.Contains("StandardField"));
+            
+            Meeple blueMeeple = blueArea.Meeples.Find(meeple => meeple.ColorCode == ColorCode.Blue);
+            blueMeeple.IsStartFieldBlocked = false;
+            standardField.CurrentMeeple = blueMeeple;
 
             StartField startField = (StartField)blueArea.Fields.Find(field => field.FieldType.Contains("StartField"));
-            startField.CurrentMeeple = blueArea.Meeples.Find(meeple =>
-            {
-                meeple.IsStartFieldBlocked = false;
-                return (meeple != null);
-            });
-
-            StandardField standardField = (StandardField)redArea.Fields.Find(field => field.FieldType.Contains("StandardField"));
-
-            startField.CurrentMeeple = redArea.Meeples.Find(meeple =>
-            {
-                meeple.IsStartFieldBlocked = false;
-                return (meeple != null);
-            });
+            Meeple redMeeple = redArea.Meeples.Find(meeple => meeple.ColorCode == ColorCode.Red);
+            redMeeple.IsStartFieldBlocked = true;
+            startField.CurrentMeeple = redMeeple;
 
             Assert.That(_hub.HasBlockedField(standardField, -4), Is.EqualTo(false));
         }

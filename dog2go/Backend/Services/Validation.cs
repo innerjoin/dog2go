@@ -8,139 +8,168 @@ namespace dog2go.Backend.Services
 {
     public class Validation
     {
+        private static bool ProveChangePlace(Meeple moveMeeple, MoveDestinationField destinationField)
+        {
+            if (moveMeeple == null || destinationField.CurrentMeeple == null)
+                return false;
+            if (IsSameColorCode(moveMeeple.ColorCode, destinationField.CurrentMeeple.ColorCode))
+                return false;
+            if (IsSimpleInvalidChangeField(destinationField) || IsSimpleInvalidChangeField(moveMeeple.CurrentPosition))
+                return false;
+            return IsValidStartField(destinationField) && IsValidStartField(moveMeeple.CurrentPosition);
+        }
+
+        private static bool ProveLeaveKennel(Meeple moveMeeple, MoveDestinationField destinationField)
+        {
+            if (!moveMeeple.CurrentPosition.FieldType.Contains("KennelField"))
+                return false;
+            if (!destinationField.FieldType.Contains("StartField"))
+                return false;
+            StartField startField = destinationField as StartField;
+            if (!IsSameColorCode(startField.ColorCode, moveMeeple.ColorCode))
+                return false;
+            return destinationField.CurrentMeeple == null || IsValidStartField(destinationField);
+        }
+
+        private static bool ProveValueCard(Meeple moveMeeple, MoveDestinationField destinationField, int value)
+        {
+            MoveDestinationField currentPos = moveMeeple.CurrentPosition;
+            if (HasBlockedField(currentPos, value))
+                return false;
+            if (destinationField.FieldType.Contains("EndField"))
+                return CanMoveToEndFields(currentPos, value);
+            currentPos = GetNextField(currentPos, value);
+            return currentPos.Identifier == destinationField.Identifier;
+        }
+
+        private static bool IsSameColorCode(ColorCode firstColorCode, ColorCode secondColorCode)
+        {
+            return firstColorCode == secondColorCode;
+        }
+
+        private static bool IsValidStartField(MoveDestinationField field)
+        {
+            StartField startField = field as StartField;
+            return startField != null && !startField.CurrentMeeple.IsStartFieldBlocked;
+        }
+        private static bool IsSimpleInvalidChangeField(MoveDestinationField field)
+        {
+            KennelField kennelField = field as KennelField;
+            EndField endField = field as EndField;
+
+            return kennelField != null || endField != null;
+        }
         public static bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
         {
+            Meeple movedMeeple = meepleMove.Meeple;
+            MoveDestinationField destinationField = meepleMove.MoveDestination;
+
+            if (movedMeeple == null || cardMove.SelectedAttribute == null)
+                return false;
+
             if (cardMove.SelectedAttribute.Attribute == AttributeEnum.ChangePlace)
             {
-                if (meepleMove.Meeple != null && meepleMove.MoveDestination.CurrentMeeple != null)
-                {
-                    if (meepleMove.Meeple.ColorCode != meepleMove.MoveDestination.CurrentMeeple.ColorCode)
-                    {
-                        if (
-                            !(meepleMove.MoveDestination is KennelField || meepleMove.MoveDestination is EndField ||
-                              meepleMove.Meeple.CurrentPosition is KennelField ||
-                              meepleMove.Meeple.CurrentPosition is EndField))
-                        {
-                            var destinationStartField = meepleMove.MoveDestination as StartField;
-                            var sourceStartField = meepleMove.Meeple.CurrentPosition as StartField;
-                            if (destinationStartField != null && sourceStartField != null)
-                            {
-                                if (destinationStartField.ColorCode == destinationStartField.CurrentMeeple.ColorCode)
-                                {
-                                    return !destinationStartField.CurrentMeeple.IsStartFieldBlocked;
-                                }
-
-                                if (sourceStartField.ColorCode == sourceStartField.CurrentMeeple.ColorCode)
-                                {
-                                    return !sourceStartField.CurrentMeeple.IsStartFieldBlocked;
-                                }
-
-                                return true;
-                            }
-
-                            else
-                            {
-
-                                if (destinationStartField != null && meepleMove.Meeple.CurrentPosition is StandardField)
-                                {
-                                    if (destinationStartField.ColorCode == destinationStartField.CurrentMeeple.ColorCode)
-                                    {
-                                        return !destinationStartField.CurrentMeeple.IsStartFieldBlocked;
-                                    }
-
-                                    else
-                                    {
-                                        return true;
-                                    }
-                                }
-
-                                if (sourceStartField != null && meepleMove.MoveDestination is StandardField)
-                                {
-                                    if (sourceStartField.ColorCode == sourceStartField.CurrentMeeple.ColorCode)
-                                    {
-                                        return !sourceStartField.CurrentMeeple.IsStartFieldBlocked;
-                                    }
-
-                                    else
-                                    {
-                                        return true;
-                                    }
-                                }
-
-                                var destinationStandField = meepleMove.MoveDestination as StandardField;
-                                var sourceStandField = meepleMove.Meeple.CurrentPosition as StandardField;
-                                if (destinationStandField != null && sourceStandField != null)
-                                {
-                                    return true;
-                                }
-                            }
-                        }
-
-                        else
-                        {
-                            return false;
-                        }
-
-                    }
-
-                    else
-                    {
-                        return false;
-                    }
-                }
-
-                else
-                {
-                    return false;
-                }
+               return ProveChangePlace(movedMeeple, destinationField);
             }
 
             if (cardMove.SelectedAttribute.Attribute == AttributeEnum.LeaveKennel)
             {
-                var destination = meepleMove.MoveDestination as StartField;
-                if (meepleMove.MoveDestination.CurrentMeeple != null)
-                {
-                    return destination?.ColorCode == meepleMove.MoveDestination.CurrentMeeple.ColorCode;
-                }
-                else
-                {
-                    return true;
-                }
+                return ProveLeaveKennel(movedMeeple, destinationField);               
             }
 
             else
             {
-                AttributeEnum attribute = cardMove.SelectedAttribute.Attribute;
-                int value = (int)attribute;
-                MoveDestinationField currentPos = meepleMove.Meeple.CurrentPosition;
-                if (value > 0)
-                {
-                    while (value > 0)
-                    {
-                        currentPos = currentPos.Next;
-                        value--;
-                    }
-                }
-                else
-                {
-                    while (value < 0)
-                    {
-                        currentPos = currentPos.Previous;
-                        value++;
-                    }
-                }
-
-                if (currentPos == meepleMove.MoveDestination)
-                {
-                    return true;
-                }
-
-                else
-                {
-                    return false;
-                }
+                return ProveValueCard(movedMeeple, destinationField, (int)cardMove.SelectedAttribute.Attribute);
             }
         }
 
+        public static bool CanMoveToEndFields(MoveDestinationField startCountField, int fieldCount)
+        {
+            if (!HasBlockedField(startCountField, fieldCount))
+            {
+                for (var i = 0; i <= fieldCount; i++)
+                {
+                    startCountField = startCountField.Next;
+                    StartField startField = startCountField as StartField;
+                    if (startField != null)
+                    {
+                        EndField endField = startField.EndFieldEntry;
+                        for (var j = fieldCount - i; j >= 0; j--)
+                        {
+                            endField = (EndField)endField.Next;
+                            if (endField == null)
+                                return false;
+                        }
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static bool HasBlockedField(MoveDestinationField startCountField, int fieldCount)
+        {
+            if (fieldCount < 0)
+            {
+                for (var i = 0; i > fieldCount; i--)
+                {
+                    while (startCountField.FieldType.Contains("EndField"))
+                        startCountField = startCountField.Previous;
+                    StartField startField = startCountField as StartField;
+                    if (startField != null)
+                    {
+                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
+                    }
+
+                    startCountField = startCountField.Previous;
+                }
+
+                return false;
+            }
+
+            else
+            {
+                for (var i = 0; i <= fieldCount; i++)
+                {
+                    while (startCountField.FieldType.Contains("EndField"))
+                        startCountField = startCountField.Next;
+                    
+                    StartField startField = startCountField as StartField;
+                    if (startField != null)
+                    {
+                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
+                    }
+
+                    startCountField = startCountField.Next;
+                }
+
+                return false;
+            }
+        }
+
+        public static MoveDestinationField GetNextField(MoveDestinationField currentPos, int value)
+        {
+            if (value > 0)
+            {
+                while (value > 0)
+                {
+                    currentPos = currentPos.Next;
+                    if (!IsSimpleInvalidChangeField(currentPos))
+                        --value;
+                }
+            }
+            else
+            {
+                while (value < 0)
+                {
+                    currentPos = currentPos.Previous;
+                    if (!IsSimpleInvalidChangeField(currentPos))
+                        value++;
+                }
+            }
+
+            return currentPos;
+        }
     }
 }
