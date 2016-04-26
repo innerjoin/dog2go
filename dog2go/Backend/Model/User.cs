@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace dog2go.Backend.Model
 {
@@ -9,6 +10,8 @@ namespace dog2go.Backend.Model
         public string Identifier { get; set; }
         public string Nickname { get; set; }
         public string GroupName { get; set; }
+        public HashSet<string> ConnectionIds { get; set; }
+
         public User(string name)
         {
             Nickname = name;

@@ -14,7 +14,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void dog_testHasBlocked()
         {
-            
+
             GameTable table = _hub.GetGeneratedGameTable();
             PlayerFieldArea blueArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
             PlayerFieldArea redArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red);

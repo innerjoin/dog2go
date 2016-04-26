@@ -13,10 +13,9 @@ interface IGameHubClient {
     newSession?(cookie: string);
     updateOpenGames?(gameTable: IGameTable[]);
     backToGame?(table: IGameTable, cards: Card[]);
+    assignHandCards(cards: Card[]);
 }
 
 interface IGameHubServer {
-    sendGameTable?(): void;
-
-    login?(name: string, cookie: string);
+    connectToTable(): IGameTable;
 }

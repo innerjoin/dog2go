@@ -30,7 +30,7 @@ namespace dog2go.Tests.Backend
             CardMove cardMove = new CardMove()
             {
                 Card =
-                    new Card("card11", 11,
+                    new Card("card11", 11,"testCardWithoutPic",
                         new List<CardAttribute>()
                         {
                             new CardAttribute(AttributeEnum.ElevenFields),
@@ -59,7 +59,7 @@ namespace dog2go.Tests.Backend
             CardMove cardMove = new CardMove()
             {
                 Card =
-                    new Card("card4", 4,
+                    new Card("card4", 4, "testCardWithoutPic",
                         new List<CardAttribute>()
                         {
                             new CardAttribute(AttributeEnum.FourFieldsBack),
@@ -67,7 +67,7 @@ namespace dog2go.Tests.Backend
                         }),
                 SelectedAttribute = new CardAttribute(AttributeEnum.FourFields)
             };
-            Assert.AreEqual(true, Validation.ValidateMove(meepleMove, cardMove));
+            Assert.AreEqual(true, Validation.ValidateMove(meepleMove, cardMove)); 
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace dog2go.Tests.Backend
             CardMove cardMove = new CardMove()
             {
                 Card =
-                    new Card("card4", 4,
+                    new Card("card4", 4, "testCardWithoutPic",
                         new List<CardAttribute>()
                         {
                             new CardAttribute(AttributeEnum.FourFieldsBack),
@@ -115,7 +115,7 @@ namespace dog2go.Tests.Backend
             };
             CardMove cardMove = new CardMove()
             {
-                Card = new Card("card13", 13, new List<CardAttribute>() { new CardAttribute(AttributeEnum.ThirteenFields), new CardAttribute(AttributeEnum.LeaveKennel) }),
+                Card = new Card("card13", 13, "testCardWithoutPic", new List<CardAttribute>() { new CardAttribute(AttributeEnum.ThirteenFields), new CardAttribute(AttributeEnum.LeaveKennel) }),
                 SelectedAttribute = new CardAttribute(AttributeEnum.ThirteenFields)
             };
             Assert.AreEqual(true, Validation.ValidateMove(meepleMove, cardMove));
@@ -138,7 +138,7 @@ namespace dog2go.Tests.Backend
             CardMove cardMove = new CardMove()
             {
                 Card =
-                    new Card("card13", 13,
+                    new Card("card13", 13, "testCardWithoutPic",
                         new List<CardAttribute>()
                         {
                             new CardAttribute(AttributeEnum.ThirteenFields),
@@ -166,7 +166,7 @@ namespace dog2go.Tests.Backend
             CardMove cardMove = new CardMove()
             {
                 Card =
-                    new Card("card13", 13,
+                    new Card("card13", 13, "testCardWithoutPic",
                         new List<CardAttribute>()
                         {
                             new CardAttribute(AttributeEnum.ThirteenFields),
