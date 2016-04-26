@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using dog2go.Backend.Model;
+using dog2go.Backend.Repos;
 using dog2go.Models;
 
 namespace dog2go.Controllers
@@ -15,7 +13,6 @@ namespace dog2go.Controllers
 
         public ViewResult Login()
         {
-
             return View();
         }
 
@@ -23,14 +20,35 @@ namespace dog2go.Controllers
         [ActionName("Login")]
         public ActionResult PostLogin(LoginViewModel loginModel)
         {
-
-            if (ModelState.IsValid)
+            string userName = loginModel.UserName;
+            if (!ModelState.IsValid || UserNameTaken(userName) || LimitToOneTableExceeded())
             {
-                FormsAuthentication.SetAuthCookie(loginModel.UserName, true);
-                return RedirectToAction("Play", "Game");
+                return View(loginModel);
             }
+                
 
-            return View(loginModel);
+            FormsAuthentication.SetAuthCookie(userName, true);
+            User user = new User()
+            {
+                GroupName = "TheOneAndOnlyGroupAvailableForDog2GoAtTheMoment",
+                Identifier = userName,
+                Nickname = userName,
+                ConnectionIds = new HashSet<string>()
+            };
+            UserRepository.Instance.Get().GetOrAdd(userName, user);
+            return RedirectToAction("Play", "Game");
+        }
+
+        public bool LimitToOneTableExceeded()
+        {
+            ModelState.AddModelError(string.Empty, "Gametable already full. Come back later");
+            return UserRepository.Instance.Get().Count >= 4;
+        }
+
+        private bool UserNameTaken(string userName)
+        {
+            ModelState.AddModelError(string.Empty, "Username already taken!");
+            return UserRepository.Instance.Get().ContainsKey(userName);
         }
 
         [HttpGet]

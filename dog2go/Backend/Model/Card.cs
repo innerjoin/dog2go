@@ -7,13 +7,15 @@ namespace dog2go.Backend.Model
     {
         public string Name { get; set; }
         public int Id { get; set; }
+        public string ImageIdentifier { get; private set; }
         public List<CardAttribute> Attributes { get; set; }
 
-        public Card(string name, int id, List<CardAttribute> attributes)
+        public Card(string name, int id, string imageIdentifier, List<CardAttribute> attributes)
         {
-            this.Name = name;
-            this.Id = id;
-            this.Attributes = attributes;
+            Name = name;
+            Id = id;
+            ImageIdentifier = imageIdentifier;
+            Attributes = attributes;
         }
     }
 }

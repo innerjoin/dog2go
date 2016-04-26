@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
@@ -14,7 +11,7 @@ namespace dog2go.Backend.Hubs
 {
     [Authorize]
     [HubName("chatHub")]
-    public class ChatHub : Hub
+    public class ChatHub : GenericHub
     {
         private readonly IChatRepository _chatRepository;
         private readonly IConnectionRepository _connectionRepository;
@@ -25,79 +22,80 @@ namespace dog2go.Backend.Hubs
         }
         public override Task OnConnected()
         {
-            JoinGroup("session_group");
-            string userName = Context.User.Identity.Name;
-            string connectionId = Context.ConnectionId;
+            JoinGroup("TheOneAndOnlyGroupAvailableForDog2GoAtTheMoment");
+            //string userName = Context.User.Identity.Name;
+            //string connectionId = Context.ConnectionId;
 
-            var connectionSet = _connectionRepository.Add(userName, connectionId);
+            //var connectionSet = _connectionRepository.Add(userName, connectionId);
 
-            lock (connectionSet)
-            {
+            //lock (connectionSet)
+            //{
 
-                connectionSet.Add(connectionId);
+            //    connectionSet.Add(connectionId);
 
-                if (connectionSet.Count == 1)
-                {
-                    // Could be used to show other users that a new has been connected
-                    //Clients.Others.userConnected(userName);
-                }
-            }
+            //    if (connectionSet.Count == 1)
+            //    {
+            //        // Could be used to show other users that a new has been connected
+            //        //Clients.Others.userConnected(userName);
+            //    }
+            //}
 
             return base.OnConnected();
         }
 
-        public override Task OnDisconnected(bool stopCalled)
-        {
-            string userName = Context.User.Identity.Name;
+        //public override Task OnDisconnected(bool stopCalled)
+        //{
+        //    string userName = Context.User.Identity.Name;
 
-            HashSet<string> connections;
-            connections = _connectionRepository.GetConnections(userName);
+        //    HashSet<string> connections;
+        //    connections = _connectionRepository.GetConnections(userName);
 
-            if (connections != null)
-            {
+        //    if (connections != null)
+        //    {
 
-                lock (connections)
-                {
+        //        lock (connections)
+        //        {
 
-                    connections.RemoveWhere(cid => cid.Equals(Context.ConnectionId));
+        //            connections.RemoveWhere(cid => cid.Equals(Context.ConnectionId));
 
-                    if (!connections.Any())
-                    {
+        //            if (!connections.Any())
+        //            {
 
-                        HashSet<string> removedConnectionSet;
-                        _connectionRepository.Remove(userName);
+        //                HashSet<string> removedConnectionSet;
+        //                _connectionRepository.Remove(userName);
 
-                        // Could be used to show other users that a new has been connected
-                        //Clients.Others.userConnected(userName);
-                    }
-                }
-            }
+        //                // Could be used to show other users that a new has been connected
+        //                //Clients.Others.userConnected(userName);
+        //            }
+        //        }
+        //    }
 
-            LeaveGroup("session_group");
+        //    LeaveGroup("session_group");
 
-            return base.OnDisconnected(stopCalled);
-        }
+        //    return base.OnDisconnected(stopCalled);
+        //}
 
-        private HashSet<string> GetConnections(string username)
-        {
-            return _connectionRepository.GetConnections(username); ;
-        }
+        //private HashSet<string> GetConnections(string username)
+        //{
+        //    return _connectionRepository.GetConnections(username); ;
+        //}
 
-        public override Task OnReconnected()
-        {
-            string name = Context.User.Identity.Name;
+        //public override Task OnReconnected()
+        //{
+        //    string name = Context.User.Identity.Name;
 
-            if (!_connectionRepository.GetConnections(name).Contains(Context.ConnectionId))
-            {
-                _connectionRepository.Add(name, Context.ConnectionId);
-            }
+        //    if (!_connectionRepository.GetConnections(name).Contains(Context.ConnectionId))
+        //    {
+        //        _connectionRepository.Add(name, Context.ConnectionId);
+        //    }
 
-            return base.OnReconnected();
-        }
+        //    return base.OnReconnected();
+        //}
 
         public void SendMessage(string message)
         {
-            User sendUser = UserRepository.Instance.Get().Find(user => user.Nickname == Context.User.Identity.Name);
+            User sendUser = UserRepository.Instance.Get().First(u => u.Value.Nickname != Context.User.Identity.Name).Value;
+            //User sendUser = UserRepository.Instance.Get().Find(user => user.Nickname == Context.User.Identity.Name);
             Message newMessage;
             if (sendUser != null)
             {
@@ -121,9 +119,9 @@ namespace dog2go.Backend.Hubs
             Groups.Add(Context.ConnectionId, groupName);
         }
 
-        private void LeaveGroup(string groupName)
-        {
-            Groups.Remove(Context.ConnectionId, groupName);
-        }
+        //private void LeaveGroup(string groupName)
+        //{
+        //    Groups.Remove(Context.ConnectionId, groupName);
+        //}
     }
 }

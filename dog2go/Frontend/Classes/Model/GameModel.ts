@@ -18,7 +18,7 @@ class HandCard extends Card implements IHandCard {
 class Card implements ICard {
     Name: string;
     Value: number;
-    Picture: any;
+    ImageIdentifier: string;
     Attributes: CardAttribute[];
 }
 
