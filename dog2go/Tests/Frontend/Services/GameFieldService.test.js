@@ -1,5 +1,4 @@
 define(["require", "exports", "jquery"], function (require, exports, $) {
-    "use strict";
     //require("signalr.hubs");
     describe("GameFieldService - ", function () {
         var gameTable;
