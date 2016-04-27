@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
@@ -22,7 +21,7 @@ namespace dog2go.Backend.Hubs
         }
         public override Task OnConnected()
         {
-            JoinGroup("TheOneAndOnlyGroupAvailableForDog2GoAtTheMoment");
+            JoinGroup(GlobalDefinitions.GroupName);
             //string userName = Context.User.Identity.Name;
             //string connectionId = Context.ConnectionId;
 
@@ -94,8 +93,7 @@ namespace dog2go.Backend.Hubs
 
         public void SendMessage(string message)
         {
-            User sendUser = UserRepository.Instance.Get().First(u => u.Value.Nickname != Context.User.Identity.Name).Value;
-            //User sendUser = UserRepository.Instance.Get().Find(user => user.Nickname == Context.User.Identity.Name);
+            User sendUser = UserRepository.Instance.Get().FirstOrDefault(u => u.Value.Nickname != Context.User.Identity.Name).Value;
             Message newMessage;
             if (sendUser != null)
             {
@@ -105,15 +103,13 @@ namespace dog2go.Backend.Hubs
 
             else
             {
-                newMessage = new Message() {Msg = message, Group = "session_group"};
+                newMessage = new Message() {Msg = message, Group = GlobalDefinitions.GroupName };
                 _chatRepository.AddMessage(newMessage);
             }
-            
-            //var sessionHubContext = GlobalHost.ConnectionManager.GetHubContext<SessionHub>();
-            //sessionHubContext.Clients.Group("session_group").broadcastMessage("test_user",message);
+
             Clients.Group(newMessage.Group).broadcastMessage(Context.User.Identity.Name, message);
-            //Clients.All.broadcastMessage("test_user", message);
         }
+
         private void JoinGroup(string groupName)
         {
             Groups.Add(Context.ConnectionId, groupName);

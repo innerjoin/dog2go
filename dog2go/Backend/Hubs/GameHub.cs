@@ -19,8 +19,8 @@ namespace dog2go.Backend.Hubs
 
         private int CreateGameTable()
         {
-            var id = Games.Get().Count;
-            var generatedTable = GenerateNewGameTable(id);
+            int newIdentifier = Games.Get().Count;
+            GameTable generatedTable = GenerateNewGameTable(newIdentifier);
             Games.Add(generatedTable);
             return generatedTable.Identifier;
         }
@@ -33,7 +33,7 @@ namespace dog2go.Backend.Hubs
             string curUser = Context.User.Identity.Name;
 
             GameTable table = Games.Get().Find(x => x.Identifier == gameId);
-            if (table?.Participations == null || table.Participations.Count >= 4)
+            if (table?.Participations == null || table.Participations.Count >= GlobalDefinitions.NofParticipantsPerTable)
                 throw new Exception("Table already full");
 
             Participation newParticipation;
@@ -55,11 +55,18 @@ namespace dog2go.Backend.Hubs
 
             Clients.Client(Context.ConnectionId).createGameTable(table);
 
-            if(table.Participations.Count >= 4)
+            if(table.Participations.Count >= GlobalDefinitions.NofParticipantsPerTable)
                 AllConnected(table);
 
             return table;
         }
+
+        // for test method calls only
+        public GameTable GetGeneratedGameTable()
+        {
+            return GenerateNewGameTable(-1);
+        }
+
         private GameTable GenerateNewGameTable(int gameId)
         {
             List<PlayerFieldArea> areas = new List<PlayerFieldArea>();
@@ -118,6 +125,12 @@ namespace dog2go.Backend.Hubs
                 SendCards(cards, user.Participant);
             }
         }
+
+        public bool HasBlockedField(MoveDestinationField startCountField, int fieldCount)
+        {
+            return Validation.HasBlockedField(startCountField, fieldCount);
+        }
+
 
         /*
          * Server Methoden
@@ -335,37 +348,5 @@ namespace dog2go.Backend.Hubs
         //    return false;
         //}
 
-        //public bool HasBlockedField(MoveDestinationField startCountField, int fieldCount)
-        //{
-        //    if (fieldCount < 0)
-        //    {
-        //        for (var i = 0; i > fieldCount; i--)
-        //        {
-        //            startCountField = startCountField.Previous;
-        //            StartField startField = startCountField as StartField;
-        //            if (startField != null)
-        //            {
-        //                return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
-        //            }
-        //        }
-
-        //        return false;
-        //    }
-
-        //    else
-        //    {
-        //        for (var i = 0; i <= fieldCount; i++)
-        //        {
-        //            startCountField = startCountField.Next;
-        //            StartField startField = startCountField as StartField;
-        //            if (startField != null)
-        //            {
-        //                return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
-        //            }
-        //        }
-
-        //        return true;
-        //    }
-        //}
     }
 }
