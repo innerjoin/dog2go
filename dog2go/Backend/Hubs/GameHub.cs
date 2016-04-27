@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.EnterpriseServices.Internal;
 using System.Linq;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
@@ -20,8 +19,8 @@ namespace dog2go.Backend.Hubs
 
         private int CreateGameTable()
         {
-            var id = Games.Get().Count;
-            var generatedTable = GenerateNewGameTable(id);
+            int newIdentifier = Games.Get().Count;
+            GameTable generatedTable = GenerateNewGameTable(newIdentifier);
             Games.Add(generatedTable);
             return generatedTable.Identifier;
         }
