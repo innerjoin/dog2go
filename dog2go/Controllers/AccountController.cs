@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Security;
+using dog2go.Backend;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
 using dog2go.Models;
@@ -30,7 +31,7 @@ namespace dog2go.Controllers
             FormsAuthentication.SetAuthCookie(userName, true);
             User user = new User()
             {
-                GroupName = "TheOneAndOnlyGroupAvailableForDog2GoAtTheMoment",
+                GroupName = GlobalDefinitions.GroupName,
                 Identifier = userName,
                 Nickname = userName,
                 ConnectionIds = new HashSet<string>()
@@ -42,7 +43,7 @@ namespace dog2go.Controllers
         public bool LimitToOneTableExceeded()
         {
             ModelState.AddModelError(string.Empty, "Gametable already full. Come back later");
-            return UserRepository.Instance.Get().Count >= 4;
+            return UserRepository.Instance.Get().Count >= GlobalDefinitions.NofParticipantsPerTable;
         }
 
         private bool UserNameTaken(string userName)

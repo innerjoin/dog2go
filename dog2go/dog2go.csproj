@@ -209,7 +209,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Backend\Hubs\CardHub.cs" />
     <Compile Include="Backend\Hubs\ChatHub.cs" />
     <Compile Include="Backend\Hubs\GenericHub.cs" />
     <Compile Include="Backend\Hubs\GameHub.cs" />
@@ -256,6 +255,7 @@
     <Compile Include="Tests\Backend\NunitGameHubTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backend\GlobalDefinitions.cs" />
     <Content Include="Frontend\Images\cards-min\card_1-11-play_190x300komp.png" />
     <Content Include="Frontend\Images\cards-min\card_10_190x300komp.png" />
     <Content Include="Frontend\Images\cards-min\card_12_190x300komp.png" />
@@ -340,9 +340,7 @@
     <Content Include="Views\Game\Play.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Backend\Connection\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config">
