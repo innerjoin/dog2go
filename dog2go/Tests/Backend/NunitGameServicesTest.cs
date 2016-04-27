@@ -48,6 +48,11 @@ namespace dog2go.Tests.Backend
                 return gameTable;
             }
         }
+        private static bool arePartners(PlayerFieldArea currentPlayerFieldArea, PlayerFieldArea partnerPlayerFieldArea)
+        {
+            return currentPlayerFieldArea.Participation.Participant.Identifier.Equals(
+                partnerPlayerFieldArea.Participation.Participant.Identifier);
+        }
 
         #region "Testmethods for IsGameFinished-Method" 
 
@@ -76,9 +81,7 @@ namespace dog2go.Tests.Backend
             {
                 foreach (PlayerFieldArea partnerPlayerFieldArea in gameTable.PlayerFieldAreas)
                 {
-                    if (
-                        currentPlayerFieldArea.Participation.Participant.Identifier.Equals(
-                            partnerPlayerFieldArea.Participation.Participant.Identifier))
+                    if (arePartners(currentPlayerFieldArea, partnerPlayerFieldArea))
                     {
                         for (int j = 0; j < 4; j++)
                         {
@@ -92,6 +95,7 @@ namespace dog2go.Tests.Backend
            Assert.AreEqual(true, _gameServices.IsGameFinished(gameTable));
         }
 
+
         [Test]
         public void TestIsGameFinishedNegativeOnlyOneFinished()
         {
@@ -101,9 +105,7 @@ namespace dog2go.Tests.Backend
             {
                 foreach (PlayerFieldArea partnerPlayerFieldArea in gameTable.PlayerFieldAreas)
                 {
-                    if (
-                        currentPlayerFieldArea.Participation.Participant.Identifier.Equals(
-                            partnerPlayerFieldArea.Participation.Participant.Identifier) && !partnerFounded)
+                    if (arePartners(currentPlayerFieldArea, partnerPlayerFieldArea) && !partnerFounded)
                     {
                         for (int j = 0; j < 4; j++)
                         {
