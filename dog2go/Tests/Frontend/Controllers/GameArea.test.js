@@ -1,4 +1,5 @@
 define(["require", "exports", "phaser", "../../../Frontend/Classes/Controllers/GameArea", "../../../Frontend/Classes/Services/buildUpTypes", "../../../Frontend/Classes/Controllers/FieldCoordinates"], function (require, exports, _phaser, Area, BuildUpTypes, Coordinates) {
+    "use strict";
     var FieldCoordinatesData = Coordinates.FieldCoordinatesData;
     describe("GameArea - ", function () {
         var timerCallback;
