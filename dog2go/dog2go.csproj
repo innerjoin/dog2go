@@ -349,6 +349,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Frontend\Classes\Controllers\TurnController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\LoginStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\GameStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />

@@ -9,9 +9,6 @@ import FieldCoordinatesData = coords.FieldCoordinatesData;
 import AreaCoordinates = coords.AreaCoordinates;
 import FieldCoordinates = coords.FieldCoordinates;
 
-import MoveDestinationField = BuildUpTypes.MoveDestinationField;
-import KennelField = BuildUpTypes.KennelField;
-import StartField = BuildUpTypes.StartField;
 import GameFieldService = Gfs.GameFieldService;
 
 const scaleFactor = 2;
