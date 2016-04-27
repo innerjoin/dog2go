@@ -2,6 +2,7 @@
 import _phaser = require("phaser");
 import BuildUpTypes = require("../Services/buildUpTypes");
 import Gfs = require("../Services/GameFieldsService");
+import gfc = require("./GameFieldsController");
 import AreaColor = BuildUpTypes.AreaColor;
 
 import coords = require("./FieldCoordinates");
@@ -9,6 +10,7 @@ import FieldCoordinatesData = coords.FieldCoordinatesData;
 import AreaCoordinates = coords.AreaCoordinates;
 import FieldCoordinates = coords.FieldCoordinates;
 
+import GameFieldController = gfc.GameFieldController;
 import GameFieldService = Gfs.GameFieldService;
 
 const scaleFactor = 2;
@@ -17,6 +19,7 @@ export class GameArea {
     constructor(isTesting?: boolean) {
         if (!isTesting) {
             this.gameFieldService = GameFieldService.getInstance(this.buildFields.bind(this));
+            this.gameFieldController = new GameFieldController();
         }
         //var chat = new ChatController();
         //this.gameFieldService = GameFieldsService.GameFieldService.getInstance(this.buildFields.bind(this));
@@ -31,6 +34,7 @@ export class GameArea {
     }
 
     gameFieldService: GameFieldService;
+    gameFieldController: GameFieldController;
     fieldCoordinates: FieldCoordinatesData;
 
     game: Phaser.Game;
@@ -114,6 +118,8 @@ export class GameArea {
 
         return;
     }
+
+        
 
     private initializeMeeples(gameTable: IGameTable) {
         console.log("Initializing Meeples", this.game);

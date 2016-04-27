@@ -4,6 +4,9 @@ import PlayerFieldArea = BuildUpTypes.PlayerFieldArea;
 
 export class GameFieldService {
     private static instance: GameFieldService = null;
+    public assignHandCardsCB: (cards: ICard[]) => any;
+    public createGameTableCB: (ev: IGameTable) => any;
+
     constructor(callback: (ev: IGameTable) => any) {
         if (GameFieldService.instance) {
             // ReSharper disable once TsNotResolved
@@ -13,44 +16,10 @@ export class GameFieldService {
         gameHub.client.createGameTable = (areas) => {
             callback(areas);
         }
-        gameHub.client.assignHandCards = (cards: Card[]) => {
-            this.showHandCards(cards);
+        gameHub.client.assignHandCards = (cards: ICard[]) => {
+            this.assignHandCardsCB(cards);
         }
         GameFieldService.instance = this;
-    }
-
-    public showHandCards(cards: Card[]) {
-        const container = $("#cardContainer");
-        $("#gameContent > canvas").droppable({
-            accept: ".handcards",
-            drop: (event, ui) => {
-                console.log("drop it");
-                var id = ui.draggable.attr("id");
-                console.log("verify the following card: ", id);
-            }
-        });
-        for (let i = 0; i < cards.length; i++) { 
-            container.append(`<img class="handcards" id="${cards[i].Name}" src="/Frontend/Images/cards-min/${cards[i].ImageIdentifier}" ></img>`);
-            $(`#${cards[i].Name}`).draggable({
-                revert: function (event, ui) {
-                    // on older version of jQuery use "draggable"
-                    // $(this).data("draggable")
-                    // 
-                    // on 1.11.x versions of jQuery use "uiDraggable"
-                    // $(this).data("uiDraggable")
-                    // on 2.x versions of jQuery use "ui-draggable"
-                    // $(this).data("ui-draggable")
-                    $(this).data("ui-draggable").originalPosition = {
-                        top: 0,
-                        left: 0
-                    };
-                    // return boolean
-                    return !event;
-                    // that evaluate like this:
-                    // return event !== false ? false : true;
-                }
-            });
-        }
     }
 
     public static getInstance(callback: (ev: IGameTable) => any) {

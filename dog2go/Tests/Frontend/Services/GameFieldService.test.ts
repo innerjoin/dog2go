@@ -11,7 +11,7 @@ describe("GameFieldService - ", () => {
     //var $ = null;
     var callbackCreate, callbackDone;
     beforeEach(() => {
-        gameTable = null;
+        gameTable = <any>{testdata: 12345};
         callbackDone = {
             done: (callback: any) => {
                 callback();
@@ -29,22 +29,22 @@ describe("GameFieldService - ", () => {
         spyOn($.connection.hub, "start").and.callFake(() => {
             return callbackDone;
         });
-        //$.connection["gameHub"] = {server: {
-        //    sendGameTable: () => { $.connection.gameHub.client.createGameTable(gameTable); }
-        //}, client: {}
-        //};
+        $.connection["gameHub"] = <any>{server: <any>{
+            connectToTable: () => { $.connection.gameHub.client.createGameTable(gameTable); }
+        }, client: <any>{}
+        };
     });
     
-    //it("get Instance", () => {
-    //    gfs.GameFieldService.bind($);
-    //    gfs.GameFieldService.getInstance.bind($);
-    //    var gameFieldService = gfs.GameFieldService.getInstance(callbackCreate.fn);
-    //    gameFieldService.getGameFieldData();
+    it("get Instance", () => {
+        gfs.GameFieldService.bind($);
+        gfs.GameFieldService.getInstance.bind($);
+        var gameFieldService = gfs.GameFieldService.getInstance(callbackCreate.fn);
+        gameFieldService.getGameFieldData();
 
-    //    // Allways if Hub has been started correctly
-    //    expect($.connection.hub.start).toHaveBeenCalled();
+        // Allways if Hub has been started correctly
+        expect($.connection.hub.start).toHaveBeenCalled();
 
-    //    expect(callbackCreate.fn).toHaveBeenCalled();
-    //    expect(callbackCreate.fn).toHaveBeenCalledWith(gameTable);
-    //});
+        expect(callbackCreate.fn).toHaveBeenCalled();
+        expect(callbackCreate.fn).toHaveBeenCalledWith(gameTable);
+    });
 });
