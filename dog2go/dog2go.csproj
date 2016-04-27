@@ -237,6 +237,7 @@
     <Compile Include="Backend\Repos\ConnectionRepository.cs" />
     <Compile Include="Backend\Repos\GameRepository.cs" />
     <Compile Include="Backend\Repos\UserRepository.cs" />
+    <Compile Include="Backend\Constants\ServerMessages.cs" />
     <Compile Include="Backend\Services\CardServices.cs" />
     <Compile Include="Backend\Services\GameServices.cs" />
     <Compile Include="Backend\Services\Validation.cs" />
@@ -257,7 +258,7 @@
     <Compile Include="Tests\Backend\NunitGameHubTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Backend\GlobalDefinitions.cs" />
+    <Compile Include="Backend\Constants\GlobalDefinitions.cs" />
     <Content Include="Frontend\Images\cards-min\card_1-11-play_190x300komp.png" />
     <Content Include="Frontend\Images\cards-min\card_10_190x300komp.png" />
     <Content Include="Frontend\Images\cards-min\card_12_190x300komp.png" />
