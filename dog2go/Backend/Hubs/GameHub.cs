@@ -129,35 +129,7 @@ namespace dog2go.Backend.Hubs
 
         public bool HasBlockedField(MoveDestinationField startCountField, int fieldCount)
         {
-            if (fieldCount < 0)
-            {
-                for (var i = 0; i > fieldCount; i--)
-                {
-                    startCountField = startCountField.Previous;
-                    StartField startField = startCountField as StartField;
-                    if (startField != null)
-                    {
-                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
-                    }
-                }
-
-                return false;
-            }
-
-            else
-            {
-                for (var i = 0; i <= fieldCount; i++)
-                {
-                    startCountField = startCountField.Next;
-                    StartField startField = startCountField as StartField;
-                    if (startField != null)
-                    {
-                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
-                    }
-                }
-
-                return true;
-            }
+            return Validation.HasBlockedField(startCountField, fieldCount);
         }
 
 
