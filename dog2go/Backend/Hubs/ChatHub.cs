@@ -104,7 +104,7 @@ namespace dog2go.Backend.Hubs
 
             else
             {
-                newMessage = new Message() {Msg = message, Group = "session_group"};
+                newMessage = new Message() {Msg = message, Group = "TheOneAndOnlyGroupAvailableForDog2GoAtTheMoment" };
                 _chatRepository.AddMessage(newMessage);
             }
             
