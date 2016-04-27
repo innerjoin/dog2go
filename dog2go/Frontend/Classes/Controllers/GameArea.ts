@@ -1,9 +1,10 @@
 /// <reference path="../Model/TableModel.d.ts"/>
 import _phaser = require("phaser");
-import BuildUpTypes = require("../Services/buildUpTypes");
+import gm = require("../Model/GameModel");
 import Gfs = require("../Services/GameFieldsService");
 import gfc = require("./GameFieldsController");
-import AreaColor = BuildUpTypes.AreaColor;
+
+import AreaColor = gm.AreaColor;
 
 import coords = require("./FieldCoordinates");
 import FieldCoordinatesData = coords.FieldCoordinatesData;
@@ -18,7 +19,8 @@ export class GameArea {
 
     constructor(isTesting?: boolean) {
         if (!isTesting) {
-            this.gameFieldService = GameFieldService.getInstance(this.buildFields.bind(this));
+            this.gameFieldService = GameFieldService.getInstance();
+            this.gameFieldService.createGameTableCB = this.buildFields.bind(this);
             this.gameFieldController = new GameFieldController();
         }
         //var chat = new ChatController();

@@ -9,13 +9,17 @@ interface IGameHub extends HubProxy {
 }
 
 interface IGameHubClient {
-    createGameTable?(areas: any); // TODO: implement Class
-    newSession?(cookie: string);
-    updateOpenGames?(gameTable: IGameTable[]);
-    backToGame?(table: IGameTable, cards: Card[]);
-    assignHandCards(cards: Card[]);
+    createGameTable(gameTable: IGameTable);
+    
+    backToGame(table: IGameTable, cards: ICard[]);
+    assignHandCards(cards: ICard[]);
+
+    notifyActualPlayer(possibleCards: ICard[]);
+    sendMeeplePositions(meeples: IMeeple[]);
+    dropCards();
 }
 
 interface IGameHubServer {
     connectToTable(): IGameTable;
+    ValidateMove(meepleMove: IMeepleMove, cardMove: ICardMove): boolean;
 }

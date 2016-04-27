@@ -6,19 +6,20 @@
             throw new Error("Error: SessionService instantiation failed. Singleton module! Use .getInstance() instead of new.");
         }
         //var sessionHub = $.connection.sessionHub;
-        var gameHub = $.connection.gameHub;
-        gameHub.client.newSession = function (cookie: string){
-            newSession(cookie);
-        }
-        
-        gameHub.client.updateOpenGames = function(games: GameTable[]) {
-            console.log(games);
-            updateOpenGames(games);
-        }
 
-        gameHub.client.backToGame = function(table: IGameTable, cards: Card[]) {
-            console.log(table, cards);
-        }
+        //var gameHub = $.connection.gameHub;
+        //gameHub.client.newSession = function (cookie: string){
+        //    newSession(cookie);
+        //}
+        
+        //gameHub.client.updateOpenGames = function(games: GameTable[]) {
+        //    console.log(games);
+        //    updateOpenGames(games);
+        //}
+
+        //gameHub.client.backToGame = function(table: IGameTable, cards: Card[]) {
+        //    console.log(table, cards);
+        //}
 
         SessionService.instance = this;
     }

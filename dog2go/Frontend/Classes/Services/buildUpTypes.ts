@@ -1,4 +1,4 @@
-﻿export class MoveDestinationField implements IMoveDestinationField {
+﻿/*export class MoveDestinationField implements IMoveDestinationField {
     Identifier: number;
     previous: MoveDestinationField;
     next: MoveDestinationField;
@@ -94,11 +94,4 @@ export class PlayerFieldArea {
         }
     }
 }
-
-
-export enum AreaColor {
-    Red = 0xff0000,
-    Blue = 0x0000ff,
-    Green = 0x00ff00,
-    Yellow = 0xedc613
-}
+*/

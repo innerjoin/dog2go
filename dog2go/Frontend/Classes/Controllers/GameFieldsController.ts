@@ -1,14 +1,16 @@
-﻿import gfs = require("../Services/GameFieldsService");
+﻿///<reference path="../../Library/JQuery/jqueryui.d.ts"/>
+
+import gfs = require("../Services/GameFieldsService");
 import GameFieldService = gfs.GameFieldService;
 
 export class GameFieldController {
     private gameFieldService: GameFieldService;
     constructor() {
-        this.gameFieldService = GameFieldService.getInstance(null);
+        this.gameFieldService = GameFieldService.getInstance();
         this.gameFieldService.assignHandCardsCB = this.showHandCards;
     }
 
-    public showHandCards(cards: Card[]) {
+    public showHandCards(cards: ICard[]) {
         const container = $("#cardContainer");
         $("#gameContent > canvas").droppable({
             accept: ".handcards",

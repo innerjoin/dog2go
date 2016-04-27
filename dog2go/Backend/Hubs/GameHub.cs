@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
@@ -161,10 +163,21 @@ namespace dog2go.Backend.Hubs
         //    Clients.All.createGameTable(GenerateNewGameTable());
         //}
 
-        //public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
-        //{
-        //    return Validation.ValidateMove(meepleMove, cardMove);
-        //}
+        public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(2000);
+                GameRepository repo = GameRepository.Instance;
+                //repo.Get()[0].Participations.
+            });
+            Clients.Caller.notifyActualPlayer(null);
+            Clients.Caller.sendMeeplePositions(null);
+            Clients.Caller.dropCards();
+
+            return true;
+            //return Validation.ValidateMove(meepleMove, cardMove);
+        }
 
         //public void CreateGame()
         //{

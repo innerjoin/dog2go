@@ -373,7 +373,9 @@
     <TypeScriptCompile Include="Frontend\Classes\Services\ChatService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameArea.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\GameFieldsService.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Services\RoundService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\SessionService.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Services\TurnService.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\p2.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\phaser.comments.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\pixi.comments.d.ts" />

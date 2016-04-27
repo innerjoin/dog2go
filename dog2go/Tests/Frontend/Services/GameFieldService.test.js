@@ -1,6 +1,5 @@
 define(["require", "exports", "jquery", "../../../Frontend/Classes/Services/GameFieldsService"], function (require, exports, $, gfs) {
     "use strict";
-    //require("signalr.hubs");
     describe("GameFieldService - ", function () {
         var gameTable;
         //var $ = null;
@@ -30,9 +29,10 @@ define(["require", "exports", "jquery", "../../../Frontend/Classes/Services/Game
         it("get Instance", function () {
             gfs.GameFieldService.bind($);
             gfs.GameFieldService.getInstance.bind($);
-            var gameFieldService = gfs.GameFieldService.getInstance(callbackCreate.fn);
+            var gameFieldService = gfs.GameFieldService.getInstance();
+            gameFieldService.createGameTableCB = callbackCreate.fn;
             gameFieldService.getGameFieldData();
-            // Allways if Hub has been started correctly
+            // Allways check if Hub has been started correctly
             expect($.connection.hub.start).toHaveBeenCalled();
             expect(callbackCreate.fn).toHaveBeenCalled();
             expect(callbackCreate.fn).toHaveBeenCalledWith(gameTable);
