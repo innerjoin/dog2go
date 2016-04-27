@@ -8,6 +8,10 @@ namespace dog2go.Backend.Services
 {
     public class Validation
     {
+        public static bool IsStandardField(MoveDestinationField field)
+        {
+            return field.FieldType.Contains("StandardField");
+        }
         private static bool ProveChangePlace(Meeple moveMeeple, MoveDestinationField destinationField)
         {
             if (moveMeeple == null || destinationField.CurrentMeeple == null)
@@ -16,7 +20,13 @@ namespace dog2go.Backend.Services
                 return false;
             if (IsSimpleInvalidChangeField(destinationField) || IsSimpleInvalidChangeField(moveMeeple.CurrentPosition))
                 return false;
-            return IsValidStartField(destinationField) && IsValidStartField(moveMeeple.CurrentPosition);
+            if (IsStandardField(destinationField) && !IsStandardField(moveMeeple.CurrentPosition))
+                return IsValidStartField(moveMeeple.CurrentPosition);
+            if (!IsStandardField(destinationField) && IsStandardField(moveMeeple.CurrentPosition))
+                return IsValidStartField(destinationField);
+            if (!(IsStandardField(moveMeeple.CurrentPosition) && IsStandardField(destinationField)))
+                return IsValidStartField(destinationField) && IsValidStartField(moveMeeple.CurrentPosition);
+            return true;
         }
 
         private static bool ProveLeaveKennel(Meeple moveMeeple, MoveDestinationField destinationField)
