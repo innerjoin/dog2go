@@ -69,7 +69,7 @@ namespace dog2go.Tests.Backend
 
 
         [Test]
-        public void TestIsGameFinishedPositiveFinished()
+        public void TestIsGameFinishedPositiveTeamFinished()
         {
             GameTable gameTable = MakeInitialGameTable;
             foreach (PlayerFieldArea currentPlayerFieldArea in gameTable.PlayerFieldAreas)
@@ -114,6 +114,13 @@ namespace dog2go.Tests.Backend
                     }
                 }
             }
+            Assert.AreEqual(false, _gameServices.IsGameFinished(gameTable));
+        }
+
+        [Test]
+        public void TestIsGameFinishedNegativeNobodyFinished()
+        {
+            GameTable gameTable = MakeInitialGameTable;
             Assert.AreEqual(false, _gameServices.IsGameFinished(gameTable));
         }
 
