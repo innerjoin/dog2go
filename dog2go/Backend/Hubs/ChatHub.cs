@@ -23,22 +23,7 @@ namespace dog2go.Backend.Hubs
         {
             JoinGroup(GlobalDefinitions.GroupName);
             //string userName = Context.User.Identity.Name;
-            //string connectionId = Context.ConnectionId;
-
-            //var connectionSet = _connectionRepository.Add(userName, connectionId);
-
-            //lock (connectionSet)
-            //{
-
-            //    connectionSet.Add(connectionId);
-
-            //    if (connectionSet.Count == 1)
-            //    {
-            //        // Could be used to show other users that a new has been connected
-            //        //Clients.Others.userConnected(userName);
-            //    }
-            //}
-
+            SendMessage(ServerMessages.JoinedGame);
             return base.OnConnected();
         }
 
