@@ -126,8 +126,10 @@ namespace dog2go.Backend.Model
             }
 
             fields.Add(endField);
+            endFields.Add(endField);
             Meeples = meepleList;
             KennelFields = kennelFields;
+            EndFields = endFields;
             Fields = fields;
             FieldId = fieldId;
         }

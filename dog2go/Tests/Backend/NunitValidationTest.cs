@@ -75,7 +75,7 @@ namespace dog2go.Tests.Backend
         #region "Testmethods for ValidateMove-Method"​
 
         [Test]
-        public void dog_testLeaveKennel()
+        public void TestLeaveKennel()
         {
             GameTable gameTable = _hub.GetGeneratedGameTable();
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
@@ -97,7 +97,7 @@ namespace dog2go.Tests.Backend
         }
 
         [Test]
-        public void dog_testMovedInSameFieldAreaPositive()
+        public void TestMovedInSameFieldAreaPositive()
         {
             GameTable gameTable = _hub.GetGeneratedGameTable();
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
@@ -119,7 +119,7 @@ namespace dog2go.Tests.Backend
         }
 
         [Test]
-        public void dog_testMovedInSameFieldAreaNegative()
+        public void TestMovedInSameFieldAreaNegative()
         {
             GameTable gameTable = _hub.GetGeneratedGameTable();
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
@@ -141,7 +141,7 @@ namespace dog2go.Tests.Backend
         }
 
         [Test]
-        public void dog_testMovedInOtherFieldAreaPositive()
+        public void TestMovedInOtherFieldAreaPositive()
         {
             GameTable gameTable = _hub.GetGeneratedGameTable();
             PlayerFieldArea startArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
@@ -164,7 +164,7 @@ namespace dog2go.Tests.Backend
         }
 
         [Test]
-        public void dog_testLeaveKennelWrongField()
+        public void TestLeaveKennelWrongField()
         {
             GameTable gameTable = _hub.GetGeneratedGameTable();
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
@@ -186,7 +186,7 @@ namespace dog2go.Tests.Backend
         }
 
         [Test]
-        public void dog_testLeaveKennelNotAllowed()
+        public void TestLeaveKennelNotAllowed()
         {
             GameTable gameTable = _hub.GetGeneratedGameTable();
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
