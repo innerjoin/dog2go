@@ -16,6 +16,31 @@ export class GameFieldService {
         gameHub.client.assignHandCards = (cards: Card[]) => {
             this.showHandCards(cards);
         }
+
+        var tryingToReconnect = false;
+
+        $.connection.hub.reconnecting(() => {
+            console.log("reconnecting...");
+            tryingToReconnect = true;
+        });
+
+        $.connection.hub.reconnected(() => {
+            console.log("reconnected...");
+            tryingToReconnect = false;
+        });
+
+        $.connection.hub.connectionSlow(() => {
+            console.log("connection slow...");
+        });
+
+        $.connection.hub.disconnected(() => {
+            console.log("disconnected...");
+            if (tryingToReconnect) {
+                if ($.connection.hub.lastError)
+                    alert(`Disconnected. Reason: ${$.connection.hub.lastError.message}`);
+            }
+        });
+
         GameFieldService.instance = this;
     }
 
