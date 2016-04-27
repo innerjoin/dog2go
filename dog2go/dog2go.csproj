@@ -238,6 +238,7 @@
     <Compile Include="Backend\Repos\GameRepository.cs" />
     <Compile Include="Backend\Repos\UserRepository.cs" />
     <Compile Include="Backend\Services\CardServices.cs" />
+    <Compile Include="Backend\Services\GameServices.cs" />
     <Compile Include="Backend\Services\Validation.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameController.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tests\Backend\NunitGameServicesTest.cs" />
     <Compile Include="Tests\Backend\NunitValidationTest.cs" />
     <Compile Include="Tests\Backend\NunitHubConnectionTest.cs" />
     <Compile Include="Views\Extensions\RequireJsHelpers.cs" />
