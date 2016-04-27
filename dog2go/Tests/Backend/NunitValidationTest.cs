@@ -11,6 +11,67 @@ namespace dog2go.Tests.Backend
     public class NunitValidationTest
     {
         private readonly GameHub _hub = new GameHub(GameRepository.Instance);
+
+        private readonly Card _card11 = new Card("card11", 11,"testCardWithoutPic",
+            new List<CardAttribute>()
+            {
+                CardAttributeElevenFields,
+                CardAttributeOneField,
+                CardAttributeLeaveKennel
+            });
+
+        private readonly Card _card4 = new Card("card4", 4, "testCardWithoutPic",
+            new List<CardAttribute>()
+            {
+                CardAttributeFourFieldsBack,
+                CardAttributeFourFields
+            });
+
+        private readonly Card _card13 = new Card("card13", 13, "testCardWithoutPic", 
+            new List<CardAttribute>()
+            {
+                CardAttributeThirteenFields,
+                CardAttributeLeaveKennel
+            });
+
+        private readonly Card _cardJoker = new Card("cardJoker", 0, "testCardWithoutPic",
+            new List<CardAttribute>()
+            {
+               CardAttributeOneField,
+               CardAttributeTwoFields,
+               CardAttributeThreeFields,
+               CardAttributeFourFields,
+               CardAttributeFourFieldsBack,
+               CardAttributeFiveFields,
+               CardAttributeSixFields,
+               CardAttributeSevenFields,
+               CardAttributeEightFields,
+               CardAttributeNineFields,
+               CardAttributeTenFields,
+               CardAttributeElevenFields,
+               CardAttributeTwelveFields,
+               CardAttributeThirteenFields,
+               CardAttributeChangePlace,
+               CardAttributeLeaveKennel
+            });
+
+        private static readonly CardAttribute CardAttributeOneField = new CardAttribute(AttributeEnum.OneField);
+        private static readonly CardAttribute CardAttributeTwoFields = new CardAttribute(AttributeEnum.TwoFields);
+        private static readonly CardAttribute CardAttributeThreeFields = new CardAttribute(AttributeEnum.ThreeFields);
+        private static readonly CardAttribute CardAttributeFourFields = new CardAttribute(AttributeEnum.FourFields);
+        private static readonly CardAttribute CardAttributeFiveFields = new CardAttribute(AttributeEnum.FiveFields);
+        private static readonly CardAttribute CardAttributeFourFieldsBack = new CardAttribute(AttributeEnum.FourFieldsBack);
+        private static readonly CardAttribute CardAttributeSixFields = new CardAttribute(AttributeEnum.SixFields);
+        private static readonly CardAttribute CardAttributeSevenFields = new CardAttribute(AttributeEnum.SevenFields);
+        private static readonly CardAttribute CardAttributeEightFields = new CardAttribute(AttributeEnum.EightFields);
+        private static readonly CardAttribute CardAttributeNineFields = new CardAttribute(AttributeEnum.NineFields);
+        private static readonly CardAttribute CardAttributeTenFields = new CardAttribute(AttributeEnum.TenFields);
+        private static readonly CardAttribute CardAttributeElevenFields = new CardAttribute(AttributeEnum.ElevenFields);
+        private static readonly CardAttribute CardAttributeTwelveFields = new CardAttribute(AttributeEnum.TwelveFields);
+        private static readonly CardAttribute CardAttributeThirteenFields = new CardAttribute(AttributeEnum.ThirteenFields);
+        private static readonly CardAttribute CardAttributeLeaveKennel = new CardAttribute(AttributeEnum.LeaveKennel);
+        private static readonly CardAttribute CardAttributeChangePlace = new CardAttribute(AttributeEnum.ChangePlace);
+
         #region "Testmethods for ValidateMove-Method"​
 
         [Test]
@@ -29,15 +90,8 @@ namespace dog2go.Tests.Backend
             };
             CardMove cardMove = new CardMove()
             {
-                Card =
-                    new Card("card11", 11,"testCardWithoutPic",
-                        new List<CardAttribute>()
-                        {
-                            new CardAttribute(AttributeEnum.ElevenFields),
-                            new CardAttribute(AttributeEnum.OneField),
-                            new CardAttribute(AttributeEnum.LeaveKennel)
-                        }),
-                SelectedAttribute = new CardAttribute(AttributeEnum.LeaveKennel)
+                Card = _card11,
+                SelectedAttribute = CardAttributeLeaveKennel
             };
             Assert.AreEqual(true, Validation.ValidateMove(meepleMove, cardMove));
         }
@@ -58,14 +112,8 @@ namespace dog2go.Tests.Backend
             };
             CardMove cardMove = new CardMove()
             {
-                Card =
-                    new Card("card4", 4, "testCardWithoutPic",
-                        new List<CardAttribute>()
-                        {
-                            new CardAttribute(AttributeEnum.FourFieldsBack),
-                            new CardAttribute(AttributeEnum.FourFields)
-                        }),
-                SelectedAttribute = new CardAttribute(AttributeEnum.FourFields)
+                Card = _card4,
+                SelectedAttribute = CardAttributeFourFields
             };
             Assert.AreEqual(true, Validation.ValidateMove(meepleMove, cardMove)); 
         }
@@ -86,14 +134,8 @@ namespace dog2go.Tests.Backend
             };
             CardMove cardMove = new CardMove()
             {
-                Card =
-                    new Card("card4", 4, "testCardWithoutPic",
-                        new List<CardAttribute>()
-                        {
-                            new CardAttribute(AttributeEnum.FourFieldsBack),
-                            new CardAttribute(AttributeEnum.FourFields)
-                        }),
-                SelectedAttribute = new CardAttribute(AttributeEnum.FourFieldsBack)
+                Card = _card4,
+                SelectedAttribute = CardAttributeFourFieldsBack
             };
             Assert.AreEqual(false, Validation.ValidateMove(meepleMove, cardMove));
         }
@@ -115,8 +157,8 @@ namespace dog2go.Tests.Backend
             };
             CardMove cardMove = new CardMove()
             {
-                Card = new Card("card13", 13, "testCardWithoutPic", new List<CardAttribute>() { new CardAttribute(AttributeEnum.ThirteenFields), new CardAttribute(AttributeEnum.LeaveKennel) }),
-                SelectedAttribute = new CardAttribute(AttributeEnum.ThirteenFields)
+                Card = _card13,
+                SelectedAttribute = CardAttributeThirteenFields
             };
             Assert.AreEqual(true, Validation.ValidateMove(meepleMove, cardMove));
         }
@@ -137,14 +179,8 @@ namespace dog2go.Tests.Backend
             };
             CardMove cardMove = new CardMove()
             {
-                Card =
-                    new Card("card13", 13, "testCardWithoutPic",
-                        new List<CardAttribute>()
-                        {
-                            new CardAttribute(AttributeEnum.ThirteenFields),
-                            new CardAttribute(AttributeEnum.LeaveKennel)
-                        }),
-                SelectedAttribute = new CardAttribute(AttributeEnum.LeaveKennel)
+                Card = _card13,
+                SelectedAttribute = CardAttributeLeaveKennel
             };
             Assert.AreEqual(false, Validation.ValidateMove(meepleMove, cardMove));
         }
@@ -165,14 +201,8 @@ namespace dog2go.Tests.Backend
             };
             CardMove cardMove = new CardMove()
             {
-                Card =
-                    new Card("card13", 13, "testCardWithoutPic",
-                        new List<CardAttribute>()
-                        {
-                            new CardAttribute(AttributeEnum.ThirteenFields),
-                            new CardAttribute(AttributeEnum.LeaveKennel)
-                        }),
-                SelectedAttribute = new CardAttribute(AttributeEnum.LeaveKennel)
+                Card = _card13,
+                SelectedAttribute = CardAttributeLeaveKennel
             };
             Assert.AreEqual(false, Validation.ValidateMove(meepleMove, cardMove));
         }
