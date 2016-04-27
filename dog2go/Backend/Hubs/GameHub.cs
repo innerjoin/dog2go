@@ -33,7 +33,7 @@ namespace dog2go.Backend.Hubs
             string curUser = Context.User.Identity.Name;
 
             GameTable table = Games.Get().Find(x => x.Identifier == gameId);
-            if (table?.Participations == null || table.Participations.Count >= 4)
+            if (table?.Participations == null || table.Participations.Count >= GlobalDefinitions.NofParticipantsPerTable)
                 throw new Exception("Table already full");
 
             Participation newParticipation;
@@ -55,7 +55,7 @@ namespace dog2go.Backend.Hubs
 
             Clients.Client(Context.ConnectionId).createGameTable(table);
 
-            if(table.Participations.Count >= 4)
+            if(table.Participations.Count >= GlobalDefinitions.NofParticipantsPerTable)
                 AllConnected(table);
 
             return table;
