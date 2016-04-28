@@ -14,10 +14,6 @@ export class GameFieldService {
             this.createGameTableCB(gameTable);
         }
 
-        // TODO Will be outsourced to RoundService
-        gameHub.client.assignHandCards = (cards: ICard[]) => {
-            this.assignHandCardsCB(cards);
-        }
         gameHub.client.backToGame = (gameTable, cards) => {
             this.createGameTableCB(gameTable);
             this.assignHandCardsCB(cards);

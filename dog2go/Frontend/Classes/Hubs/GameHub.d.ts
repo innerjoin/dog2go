@@ -1,6 +1,4 @@
-﻿///<reference path="../Services/buildUpTypes.ts"/>
-///<reference path="../Model/TableModel.ts"/>
-
+﻿
 interface HubProxy{}
 
 interface IGameHub extends HubProxy {

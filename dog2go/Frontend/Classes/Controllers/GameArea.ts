@@ -3,6 +3,7 @@ import _phaser = require("phaser");
 import gm = require("../Model/GameModel");
 import Gfs = require("../Services/GameFieldsService");
 import gfc = require("./GameFieldsController");
+import cc = require("./CardsController");
 
 import AreaColor = gm.AreaColor;
 
@@ -11,6 +12,7 @@ import FieldCoordinatesData = coords.FieldCoordinatesData;
 import AreaCoordinates = coords.AreaCoordinates;
 import FieldCoordinates = coords.FieldCoordinates;
 
+import CardsController = cc.CardsController;
 import GameFieldController = gfc.GameFieldController;
 import GameFieldService = Gfs.GameFieldService;
 
@@ -22,6 +24,7 @@ export class GameArea {
             this.gameFieldService = GameFieldService.getInstance();
             this.gameFieldService.createGameTableCB = this.buildFields.bind(this);
             this.gameFieldController = new GameFieldController();
+            this.cardsController = new CardsController();
         }
         //var chat = new ChatController();
         //this.gameFieldService = GameFieldsService.GameFieldService.getInstance(this.buildFields.bind(this));
@@ -38,6 +41,7 @@ export class GameArea {
     gameFieldService: GameFieldService;
     gameFieldController: GameFieldController;
     fieldCoordinates: FieldCoordinatesData;
+    cardsController: CardsController;
 
     game: Phaser.Game;
     fields: Phaser.Graphics[] = [];

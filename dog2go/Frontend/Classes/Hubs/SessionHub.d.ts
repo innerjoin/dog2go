@@ -1,5 +1,4 @@
-﻿///<reference path="../Services/buildUpTypes.ts"/>
-
+﻿
 interface ISessionHub extends HubProxy {
     client: ISessionHubClient;
     server: ISessionHubServer;

@@ -35,8 +35,28 @@ namespace dog2go.Backend.Hubs
             string curUser = Context.User.Identity.Name;
 
             GameTable table = Games.Get().Find(x => x.Identifier == gameId);
+            bool isParticipating = false;
             if (table?.Participations == null || table.Participations.Count >= GlobalDefinitions.NofParticipantsPerTable)
-                throw new Exception("Table already full");
+            {
+                table.Participations.ForEach(participation =>
+                {
+                    if (participation.Participant.Nickname.Equals(curUser))
+                    {
+                        // TODO Send Cards, when they are saved in Repo
+                        isParticipating = true;
+                        Clients.Client(Context.ConnectionId).backToGame(table, null);
+                    }
+                });
+                if (isParticipating)
+                {
+                    return table;
+                }
+                else
+                {
+                    throw new Exception("Table already full");
+                }
+                
+            }
 
             Participation newParticipation;
             if (table.Participations.Count() % 2 == 1)
