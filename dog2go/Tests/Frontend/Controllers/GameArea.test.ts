@@ -21,6 +21,7 @@ describe("GameArea - ", () => {
 
     it("creates Kennel fields at the right position", () => {
         var area = new Area.GameArea(true);
+        expect(true).toBe(true);
         //var data = [
         //    new BuildUpTypes.KennelField(),
         //    new BuildUpTypes.KennelField(),

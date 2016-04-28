@@ -387,7 +387,6 @@
     <TypeScriptCompile Include="Frontend\Library\requirejs\require.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\JQuery\jqueryui.d.ts" />
     <TypeScriptCompile Include="Tests\Frontend\Controllers\GameArea.test.ts" />
-    <TypeScriptCompile Include="Tests\Frontend\buildUpTypes.test.ts" />
     <TypeScriptCompile Include="Tests\Frontend\Services\GameFieldService.test.ts" />
   </ItemGroup>
   <ItemGroup>
