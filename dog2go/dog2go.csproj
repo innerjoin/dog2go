@@ -251,6 +251,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tests\Backend\CardServicesTest.cs" />
     <Compile Include="Tests\Backend\NunitGameServicesTest.cs" />
     <Compile Include="Tests\Backend\NunitValidationTest.cs" />
     <Compile Include="Tests\Backend\NunitHubConnectionTest.cs" />

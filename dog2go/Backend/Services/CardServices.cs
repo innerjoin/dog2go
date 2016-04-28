@@ -32,12 +32,12 @@ namespace dog2go.Backend.Services
 
         public CardServices()
         {
-            CurrentRound = 0;
+            CurrentRound = 1;
         }
 
         public int GetNumberOfCardsPerUser()
         {
-            int nr = CurrentRound == 0 ? 6 : CurrentRound % 4 + 2;
+            int nr = 6 - ((CurrentRound - 1) % 5);
             CurrentRound++;
             return nr;
         }
@@ -67,7 +67,7 @@ namespace dog2go.Backend.Services
             return card;
         }
 
-        private void MakeInitDeck()
+        private static void MakeInitDeck()
         {
             //make all Jokercards
             for (int i = 0; i < 6; i++)
@@ -110,6 +110,11 @@ namespace dog2go.Backend.Services
                 Deck.Add(new Card("card13", 13, "card_13-play_190x300komp.png", new List<CardAttribute>() { CardAttributeThirteenFields, CardAttributeLeaveKennel }));
             }
             Shuffle();
+        }
+
+        public int GetDeckSize()
+        {
+            return Deck.Count;
         }
     }
 }
