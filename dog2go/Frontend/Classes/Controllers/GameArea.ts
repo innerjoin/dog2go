@@ -1,17 +1,19 @@
 /// <reference path="../Model/TableModel.d.ts"/>
 import _phaser = require("phaser");
-import BuildUpTypes = require("../Services/buildUpTypes");
+import gm = require("../Model/GameModel");
 import Gfs = require("../Services/GameFieldsService");
-import AreaColor = BuildUpTypes.AreaColor;
+import gfc = require("./GameFieldsController");
+import cc = require("./CardsController");
+
+import AreaColor = gm.AreaColor;
 
 import coords = require("./FieldCoordinates");
 import FieldCoordinatesData = coords.FieldCoordinatesData;
 import AreaCoordinates = coords.AreaCoordinates;
 import FieldCoordinates = coords.FieldCoordinates;
 
-import MoveDestinationField = BuildUpTypes.MoveDestinationField;
-import KennelField = BuildUpTypes.KennelField;
-import StartField = BuildUpTypes.StartField;
+import CardsController = cc.CardsController;
+import GameFieldController = gfc.GameFieldController;
 import GameFieldService = Gfs.GameFieldService;
 
 const scaleFactor = 2;
@@ -19,7 +21,10 @@ export class GameArea {
 
     constructor(isTesting?: boolean) {
         if (!isTesting) {
-            this.gameFieldService = GameFieldService.getInstance(this.buildFields.bind(this));
+            this.gameFieldService = GameFieldService.getInstance();
+            this.gameFieldService.createGameTableCB = this.buildFields.bind(this);
+            this.gameFieldController = new GameFieldController();
+            this.cardsController = new CardsController();
         }
         //var chat = new ChatController();
         //this.gameFieldService = GameFieldsService.GameFieldService.getInstance(this.buildFields.bind(this));
@@ -34,7 +39,9 @@ export class GameArea {
     }
 
     gameFieldService: GameFieldService;
+    gameFieldController: GameFieldController;
     fieldCoordinates: FieldCoordinatesData;
+    cardsController: CardsController;
 
     game: Phaser.Game;
     fields: Phaser.Graphics[] = [];
@@ -117,6 +124,8 @@ export class GameArea {
 
         return;
     }
+
+        
 
     private initializeMeeples(gameTable: IGameTable) {
         console.log("Initializing Meeples", this.game);

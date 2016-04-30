@@ -209,7 +209,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Backend\Hubs\CardHub.cs" />
     <Compile Include="Backend\Hubs\ChatHub.cs" />
     <Compile Include="Backend\Hubs\GenericHub.cs" />
     <Compile Include="Backend\Hubs\GameHub.cs" />
@@ -238,6 +237,7 @@
     <Compile Include="Backend\Repos\ConnectionRepository.cs" />
     <Compile Include="Backend\Repos\GameRepository.cs" />
     <Compile Include="Backend\Repos\UserRepository.cs" />
+    <Compile Include="Backend\Constants\ServerMessages.cs" />
     <Compile Include="Backend\Services\CardServices.cs" />
     <Compile Include="Backend\Services\GameServices.cs" />
     <Compile Include="Backend\Services\Validation.cs" />
@@ -251,12 +251,15 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tests\Backend\CardServicesTest.cs" />
+    <Compile Include="Tests\Backend\NunitGameServicesTest.cs" />
     <Compile Include="Tests\Backend\NunitValidationTest.cs" />
     <Compile Include="Tests\Backend\NunitHubConnectionTest.cs" />
     <Compile Include="Views\Extensions\RequireJsHelpers.cs" />
     <Compile Include="Tests\Backend\NunitGameHubTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backend\Constants\GlobalDefinitions.cs" />
     <Content Include="Frontend\Images\cards-min\card_1-11-play_190x300komp.png" />
     <Content Include="Frontend\Images\cards-min\card_10_190x300komp.png" />
     <Content Include="Frontend\Images\cards-min\card_12_190x300komp.png" />
@@ -341,9 +344,7 @@
     <Content Include="Views\Game\Play.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Backend\Connection\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config">
@@ -351,6 +352,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Frontend\Classes\Controllers\CardsController.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Controllers\GameFieldsController.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Controllers\TurnController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\LoginStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\GameStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
@@ -367,11 +371,12 @@
     <TypeScriptCompile Include="Frontend\Classes\Model\GameModel.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Model\TableModel.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Model\TableModel.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Services\buildUpTypes.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\ChatService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameArea.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\GameFieldsService.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Services\RoundService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\SessionService.ts" />
+    <TypeScriptCompile Include="Frontend\Classes\Services\TurnService.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\p2.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\phaser.comments.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\pixi.comments.d.ts" />
@@ -382,7 +387,6 @@
     <TypeScriptCompile Include="Frontend\Library\requirejs\require.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\JQuery\jqueryui.d.ts" />
     <TypeScriptCompile Include="Tests\Frontend\Controllers\GameArea.test.ts" />
-    <TypeScriptCompile Include="Tests\Frontend\buildUpTypes.test.ts" />
     <TypeScriptCompile Include="Tests\Frontend\Services\GameFieldService.test.ts" />
   </ItemGroup>
   <ItemGroup>

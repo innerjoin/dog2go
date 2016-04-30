@@ -47,6 +47,11 @@ interface IMoveDestinationField {
     viewRepresentation: Phaser.Graphics;
 }
 
+interface IMeepleMove {
+    Meeple: IMeeple;
+    MoveDestination: IMoveDestinationField;
+}
+
 interface IKennelField extends IMoveDestinationField {
 
 }

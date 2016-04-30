@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
@@ -33,8 +35,28 @@ namespace dog2go.Backend.Hubs
             string curUser = Context.User.Identity.Name;
 
             GameTable table = Games.Get().Find(x => x.Identifier == gameId);
-            if (table?.Participations == null || table.Participations.Count >= 4)
+            bool isParticipating = false;
+            if (table?.Participations == null || table.Participations.Count >= GlobalDefinitions.NofParticipantsPerTable)
+            {
+                table.Participations.ForEach(participation =>
+                {
+                    if (participation.Participant.Nickname.Equals(curUser))
+                    {
+                        // TODO Send Cards, when they are saved in Repo
+                        isParticipating = true;
+                        Clients.Client(Context.ConnectionId).backToGame(table, null);
+                    }
+                });
+                if (isParticipating)
+                {
+                    return table;
+                }
+                else
+                {
                 throw new Exception("Table already full");
+                }
+
+            }
 
             Participation newParticipation;
             if (table.Participations.Count() % 2 == 1)
@@ -55,12 +77,8 @@ namespace dog2go.Backend.Hubs
 
             Clients.Client(Context.ConnectionId).createGameTable(table);
 
-            if (table.Participations.Count >= 4)
-            {
+            if(table.Participations.Count >= GlobalDefinitions.NofParticipantsPerTable)
                 AllConnected(table);
-
-            }
-
             return table;
         }
 
@@ -165,7 +183,8 @@ namespace dog2go.Backend.Hubs
                 {
                     allMeeples.AddRange(area.Meeples);
                 }
-                Clients.All.sendActualMeeplePositions(allMeeples);
+                //Clients.Caller.sendMeeplePositions(null);
+                Clients.All.sendMeeplePositions(allMeeples);
                 return true;
             }
             return false;
@@ -195,6 +214,22 @@ namespace dog2go.Backend.Hubs
         //{
         //    Clients.All.createGameTable(GenerateNewGameTable());
         //}
+
+        /*public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(2000);
+                GameRepository repo = GameRepository.Instance;
+                //repo.Get()[0].Participations.
+            });
+            Clients.Caller.notifyActualPlayer(null);
+            Clients.Caller.sendMeeplePositions(null);
+            Clients.Caller.dropCards();
+
+            return true;
+            //return Validation.ValidateMove(meepleMove, cardMove);
+        }*/
 
         //public void CreateGame()
         //{

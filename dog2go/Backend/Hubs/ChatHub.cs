@@ -21,24 +21,9 @@ namespace dog2go.Backend.Hubs
         }
         public override Task OnConnected()
         {
-            JoinGroup("TheOneAndOnlyGroupAvailableForDog2GoAtTheMoment");
+            JoinGroup(GlobalDefinitions.GroupName);
             //string userName = Context.User.Identity.Name;
-            //string connectionId = Context.ConnectionId;
-
-            //var connectionSet = _connectionRepository.Add(userName, connectionId);
-
-            //lock (connectionSet)
-            //{
-
-            //    connectionSet.Add(connectionId);
-
-            //    if (connectionSet.Count == 1)
-            //    {
-            //        // Could be used to show other users that a new has been connected
-            //        //Clients.Others.userConnected(userName);
-            //    }
-            //}
-
+            SendMessage(ServerMessages.JoinedGame);
             return base.OnConnected();
         }
 
@@ -94,7 +79,6 @@ namespace dog2go.Backend.Hubs
         public void SendMessage(string message)
         {
             User sendUser = UserRepository.Instance.Get().FirstOrDefault(u => u.Value.Nickname != Context.User.Identity.Name).Value;
-            //User sendUser = UserRepository.Instance.Get().Find(user => user.Nickname == Context.User.Identity.Name);
             Message newMessage;
             if (sendUser != null)
             {
@@ -104,15 +88,13 @@ namespace dog2go.Backend.Hubs
 
             else
             {
-                newMessage = new Message() {Msg = message, Group = "TheOneAndOnlyGroupAvailableForDog2GoAtTheMoment" };
+                newMessage = new Message() {Msg = message, Group = GlobalDefinitions.GroupName };
                 _chatRepository.AddMessage(newMessage);
             }
-            
-            //var sessionHubContext = GlobalHost.ConnectionManager.GetHubContext<SessionHub>();
-            //sessionHubContext.Clients.Group("session_group").broadcastMessage("test_user",message);
+
             Clients.Group(newMessage.Group).broadcastMessage(Context.User.Identity.Name, message);
-            //Clients.All.broadcastMessage("test_user", message);
         }
+
         private void JoinGroup(string groupName)
         {
             Groups.Add(Context.ConnectionId, groupName);

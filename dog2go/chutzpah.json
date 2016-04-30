@@ -13,7 +13,6 @@
     { "Path": "Frontend/Library/requirejs/require.js" },
     { "Path": "Frontend/requirejs.config.js" },
     { "Path": "Frontend/Library/JQuery/jquery-2.2.3.min.js" },
-    { "Path": "Frontend/Library/JQuery/jquery-ui-1.11.4-dnd-only.js"},
     { "Path": "Frontend/Library/SignalR/jquery.signalR-2.2.0.min.js"},
     { "Path": "Frontend/Library/Phaser/phaser.comments.d.ts", "IncludeInTestHarness": false },
     { "Path": "Frontend/Library/Phaser/pixi.comments.d.ts", "IncludeInTestHarness": false },

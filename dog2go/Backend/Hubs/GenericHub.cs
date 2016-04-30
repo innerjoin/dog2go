@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
-using dog2go.Backend.Services;
 using Microsoft.AspNet.SignalR;
-using WebGrease.Css.Extensions;
 
 namespace dog2go.Backend.Hubs
 {
@@ -41,6 +37,21 @@ namespace dog2go.Backend.Hubs
                 }
             }
             return base.OnConnected();
+        }
+
+        public override Task OnReconnected()
+        {
+            bool isHungry = true;
+            return base.OnReconnected();
+        }
+
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            Console.WriteLine(stopCalled
+                ? $"Client {Context.ConnectionId} explicitly closed the connection."
+                : $"Client {Context.ConnectionId} timed out .");
+
+            return base.OnDisconnected(stopCalled);
         }
     }
 }
