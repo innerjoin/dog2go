@@ -55,8 +55,11 @@ namespace dog2go.Backend.Hubs
 
             Clients.Client(Context.ConnectionId).createGameTable(table);
 
-            if(table.Participations.Count >= 4)
+            if (table.Participations.Count >= 4)
+            {
                 AllConnected(table);
+
+            }
 
             return table;
         }
@@ -114,6 +117,7 @@ namespace dog2go.Backend.Hubs
         private void ShuffleAndSendCardsForRound(GameTable table)
         {
             int nr = table.cardServiceData.GetNumberOfCardsPerUser();
+            PlayRound actualPlayRound = new PlayRound(table.cardServiceData.CurrentRound, nr);
             List<Participation> users = table.Participations;
             foreach (Participation user in users)
             {
@@ -123,14 +127,49 @@ namespace dog2go.Backend.Hubs
                     cards.Add(new HandCard(table.cardServiceData.GetCard()));
                 }
                 SendCards(cards, user.Participant);
+                actualPlayRound.Cards = cards;
+                user.ActualPlayRound = actualPlayRound;
             }
+            //User actualUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Identifier == Context.User.Identity.Name).Value;
+            //Clients.Client(Context.ConnectionId).notifyActualPlayer(table.cardServiceData.ProveCards(actualHandCard, actualUser, table));
         }
 
-        public bool HasBlockedField(MoveDestinationField startCountField, int fieldCount)
+        private bool HasBlockedField(MoveDestinationField startCountField, int fieldCount)
         {
             return Validation.HasBlockedField(startCountField, fieldCount);
         }
 
+        public void ChooseCardExchange(HandCard selectedCard)
+        {
+            GameTable actualGameTable = GetActualGameTable();
+            User actualUser = actualGameTable.Participations.Find(participation => participation.Participant.Identifier == Context.User.Identity.Name).Participant;
+            actualGameTable.cardServiceData.CardExchange(actualUser, ref actualGameTable, selectedCard);
+            User partnerUser = GameServices.GetPartner(actualUser, actualGameTable.Participations);
+            partnerUser.ConnectionIds.ForEach(id =>
+            {
+                Clients.Client(id).exchangeCard(selectedCard);
+            });
+        }
+
+        private GameTable GetActualGameTable()
+        {
+            return Games.Get().Find(table => table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name) != null);
+        }
+
+        public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
+        {
+            if (Validation.ValidateMove(meepleMove, cardMove))
+            {
+                List<Meeple> allMeeples = new List<Meeple>();
+                foreach (var area in GetActualGameTable().PlayerFieldAreas)
+                {
+                    allMeeples.AddRange(area.Meeples);
+                }
+                Clients.All.sendActualMeeplePositions(allMeeples);
+                return true;
+            }
+            return false;
+        }
 
         /*
          * Server Methoden
@@ -152,18 +191,9 @@ namespace dog2go.Backend.Hubs
         //        Clients.Client(Context.ConnectionId).backToGame(table, table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name).ActualPlayRound.Cards);
         //    }
         //}
-        //public GameTable GetGeneratedGameTable()
-        //{
-        //    return GenerateNewGameTable();
-        //}
         //public void SendGameTable()
         //{
         //    Clients.All.createGameTable(GenerateNewGameTable());
-        //}
-
-        //public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
-        //{
-        //    return Validation.ValidateMove(meepleMove, cardMove);
         //}
 
         //public void CreateGame()
@@ -220,133 +250,5 @@ namespace dog2go.Backend.Hubs
         //    if(selectedGameTable.Participations.Count == MaxPlayers)
         //        AllConnected(selectedGameTable);
         //}
-
-        //public void CheckHasOpportunity()
-        //{
-        //    GameTable actualGameTable = _games.Get().Find(table => table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name )!= null );
-        //    List<HandCard> actualHand = actualGameTable.Participations.Find(
-        //        participation =>
-        //            participation.Participant == UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId)).ActualPlayRound.Cards;
-        //    ProveCards(actualHand, actualGameTable);
-        //}
-
-
-        //private bool ProveCards(List<HandCard> actualHandCards, GameTable actualGameTable)
-        //{
-        //    PlayerFieldArea actualArea = actualGameTable.PlayerFieldAreas.Find(
-        //        area =>
-        //            area.Participation.Participant == UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId));
-        //    List<Meeple> myMeeples = actualArea.Meeples;
-
-        //    List<Meeple> otherMeeples = new List<Meeple>();
-        //    foreach (var playFieldArea in actualGameTable.PlayerFieldAreas)
-        //    {
-        //        otherMeeples.AddRange(playFieldArea.Meeples);
-        //    }
-
-        //    otherMeeples.RemoveAll(meeple => myMeeples.Contains(meeple));
-
-        //    foreach (var card in actualHandCards)
-        //    {
-        //        if (card.Attributes.Find(attribute => attribute.Attribute == AttributeEnum.LeaveKennel) != null)
-        //        {
-        //            Meeple proveMeeple = myMeeples.FindAll(meeple =>
-        //            {
-        //                KennelField field = meeple.CurrentPosition as KennelField;
-        //                return (field != null);
-        //            }).Find(meeple => myMeeples.Exists(startMeeple =>
-        //            {
-        //                StartField start = startMeeple.CurrentPosition as StartField;
-        //                return start != null && meeple.IsStartFieldBlocked;
-        //            }));
-
-        //            return proveMeeple != null;
-        //        }
-
-        //        else if (card.Attributes.Find(attribute => attribute.Attribute == AttributeEnum.ChangePlace) != null)
-        //        {
-        //            List<Meeple> myOpenMeeples = myMeeples.FindAll(meeple =>
-        //            {
-        //                StandardField standardField = meeple.CurrentPosition as StandardField;
-        //                StartField startField = meeple.CurrentPosition as StartField;
-        //                return (standardField != null || (startField != null && meeple.IsStartFieldBlocked == false));
-        //            });
-
-        //            List<Meeple> otherOpenMeeples = otherMeeples.FindAll(meeple =>
-        //            {
-        //                StandardField standardField = meeple.CurrentPosition as StandardField;
-        //                StartField startField = meeple.CurrentPosition as StartField;
-        //                return (standardField != null || (startField != null && meeple.IsStartFieldBlocked == false));
-        //            });
-
-        //            return myOpenMeeples.Count > 0 && otherOpenMeeples.Count > 0;
-        //        }
-
-        //        else if (card.Attributes.Find(attribute => attribute.Attribute == AttributeEnum.SevenFields) != null)
-        //        {
-        //            List<Meeple> myOpenMeeples = myMeeples.FindAll(meeple =>
-        //            {
-        //                StandardField standardField = meeple.CurrentPosition as StandardField;
-        //                StartField startField = meeple.CurrentPosition as StartField;
-        //                EndField endField = meeple.CurrentPosition as EndField;
-        //                return (standardField != null || startField != null || endField != null);
-        //            });
-
-        //            int count = (int)AttributeEnum.SevenFields;
-        //            for (int i = 0; i <= count; i++)
-        //            {
-        //                Meeple openMeeple = myMeeples.Find(meeple => !HasBlockedField(meeple.CurrentPosition, count - i));
-        //                if (myMeeples.Any(meeple => meeple != openMeeple && !HasBlockedField(meeple.CurrentPosition, i)))
-        //                    return true;
-        //                //return meeples != null || meeples.Find(meeple => CanMoveToEndFields(meeple.CurrentPosition, i)) != null;
-        //            }
-        //        }
-
-        //        else
-        //        {
-        //            List<Meeple> myOpenMeeples = myMeeples.FindAll(meeple =>
-        //            {
-        //                StandardField standardField = meeple.CurrentPosition as StandardField;
-        //                StartField startField = meeple.CurrentPosition as StartField;
-        //                EndField endField = meeple.CurrentPosition as EndField;
-        //                return (standardField != null || startField != null || endField != null);
-        //            });
-
-        //            return myOpenMeeples.Any(meeple => card.Attributes.Select(attribute => (meeple.CurrentPosition.Identifier + ((int)attribute.Attribute))).Any(newPositionId => !HasBlockedField(meeple.CurrentPosition, newPositionId)));
-        //        }
-        //    }
-        //    return false;
-        //}
-
-        //public void ChooseCardExchange(HandCard card)
-        //{
-
-        //}
-
-        //public bool CanMoveToEndFields(MoveDestinationField startCountField, int fieldCount)
-        //{
-        //    if (!HasBlockedField(startCountField, fieldCount))
-        //    {
-        //        for (var i = 0; i <= fieldCount; i++)
-        //        {
-        //            startCountField = startCountField.Next;
-        //            StartField startField = startCountField as StartField;
-        //            if (startField != null)
-        //            {
-        //                EndField endField = startField.EndFieldEntry;
-        //                for (var j = fieldCount - i; j >= 0; j--)
-        //                {
-        //                    endField = (EndField)endField.Next;
-        //                    if (endField == null)
-        //                        return false;
-        //                }
-        //                return true;
-        //            }
-        //        }
-        //    }
-
-        //    return false;
-        //}
-
     }
 }

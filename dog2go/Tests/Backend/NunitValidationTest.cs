@@ -177,6 +177,65 @@ namespace dog2go.Tests.Backend
             Assert.AreEqual(false, Validation.ValidateMove(meepleMove, cardMove));
         }
 
+        [Test]
+        public void TestChangeMeepleAllowed()
+        {
+            GameTable gameTable = _hub.GetGeneratedGameTable();
+            PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
+            PlayerFieldArea blueArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
+            StandardField startField = greenArea.Fields[10] as StandardField;
+            StandardField endField = greenArea.Fields[14] as StandardField;
+            Meeple meeple1 = greenArea.Meeples[0];
+            Meeple meeple2 = blueArea.Meeples[0];
+            startField.CurrentMeeple = meeple1;
+            endField.CurrentMeeple = meeple2;
+            MeepleMove meepleMove = new MeepleMove()
+            {
+                Meeple = meeple1,
+                MoveDestination = endField
+            };
+            CardMove cardMove = new CardMove()
+            {
+                Card = new Card("cardChangePlace", 14, "testCardWithoutPic",
+                        new List<CardAttribute>()
+                        {
+                            new CardAttribute(AttributeEnum.ChangePlace)
+                        }),
+                SelectedAttribute = new CardAttribute(AttributeEnum.ChangePlace)
+            };
+            Assert.AreEqual(true, Validation.ValidateMove(meepleMove, cardMove));
+        }
+
+        [Test]
+        public void TestChangeMeepleNegativeStartField()
+        {
+            GameTable gameTable = _hub.GetGeneratedGameTable();
+            PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
+            PlayerFieldArea blueArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
+            StandardField startField = greenArea.Fields[10] as StandardField;
+            StartField endField = greenArea.Fields.Find(field => field.FieldType.Contains("StartField")) as StartField;
+            Meeple meeple1 = greenArea.Meeples[0];
+            Meeple meeple2 = blueArea.Meeples[0];
+            meeple2.IsStartFieldBlocked = true;
+            startField.CurrentMeeple = meeple1;
+            endField.CurrentMeeple = meeple2;
+            MeepleMove meepleMove = new MeepleMove()
+            {
+                Meeple = meeple1,
+                MoveDestination = endField
+            };
+            CardMove cardMove = new CardMove()
+            {
+                Card = new Card("cardChangePlace", 14, "testCardWithoutPic",
+                        new List<CardAttribute>()
+                        {
+                            new CardAttribute(AttributeEnum.ChangePlace)
+                        }),
+                SelectedAttribute = new CardAttribute(AttributeEnum.ChangePlace)
+            };
+            Assert.AreEqual(false, Validation.ValidateMove(meepleMove, cardMove));
+        }
+
         #endregion
     }
 }

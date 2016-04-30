@@ -1,6 +1,7 @@
 ﻿using dog2go.Backend.Hubs;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
+using dog2go.Backend.Services;
 using NUnit.Framework;
 
 namespace dog2go.Tests.Backend
@@ -29,7 +30,7 @@ namespace dog2go.Tests.Backend
             redMeeple.IsStartFieldBlocked = true;
             startField.CurrentMeeple = redMeeple;
 
-            Assert.That(_hub.HasBlockedField(standardField, 13), Is.EqualTo(true));
+            Assert.That(Validation.HasBlockedField(standardField, 13), Is.EqualTo(true));
         }
 
         [Test]
@@ -49,7 +50,7 @@ namespace dog2go.Tests.Backend
             redMeeple.IsStartFieldBlocked = false;
             startField.CurrentMeeple = redMeeple;
 
-            Assert.That(_hub.HasBlockedField(standardField, 10), Is.EqualTo(false));
+            Assert.That(Validation.HasBlockedField(standardField, 10), Is.EqualTo(false));
         }
 
         [Test]
@@ -69,7 +70,7 @@ namespace dog2go.Tests.Backend
             redMeeple.IsStartFieldBlocked = true;
             startField.CurrentMeeple = redMeeple;
 
-            Assert.That(_hub.HasBlockedField(standardField, -4), Is.EqualTo(false));
+            Assert.That(Validation.HasBlockedField(standardField, -4), Is.EqualTo(false));
         }
         #endregion
     }

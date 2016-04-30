@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using dog2go.Backend.Model;
 
 namespace dog2go.Backend.Services
@@ -23,6 +24,88 @@ namespace dog2go.Backend.Services
             int nr = CurrentRound == 0 ? 6 : CurrentRound % 4 + 2;
             CurrentRound++;
             return nr;
+        }
+
+        public void CardExchange(User actualUser, ref GameTable actualGameTable, HandCard selectedCard)
+        {
+            User partner = GameServices.GetPartner(actualUser, actualGameTable.Participations);
+            List<HandCard> actualHand = GetActualHandCards(actualUser, actualGameTable);
+            actualHand.Remove(selectedCard);
+            List<HandCard> partnerHandCards = GetActualHandCards(partner, actualGameTable);
+            partnerHandCards.Add(selectedCard);
+        }
+
+        private List<Meeple> GetOtherMeeples(GameTable gameTable, List<Meeple> myMeeples)
+        {
+            List<Meeple> otherMeeples = new List<Meeple>();
+            foreach (var playFieldArea in gameTable.PlayerFieldAreas)
+            {
+                otherMeeples.AddRange(playFieldArea.Meeples);
+            }
+
+            otherMeeples.RemoveAll(myMeeples.Contains);
+            return otherMeeples;
+        }
+
+        private List<Meeple> GetOpenMeeples(List<Meeple> myMeeples)
+        {
+            return myMeeples.FindAll(
+                    meeple =>
+                        Validation.IsValidStartField(meeple.CurrentPosition) ||
+                        meeple.CurrentPosition.FieldType.Contains("StandardField"));
+        }
+
+        private bool ProveLeaveKennel(List<Meeple> myMeeples)
+        {
+            List<Meeple> proveMeeples = myMeeples.FindAll(meeple => meeple.CurrentPosition.FieldType.Contains("KennelField"));
+            Meeple proveStartMeeple = myMeeples.Find(startMeeple => !Validation.IsValidStartField(startMeeple.CurrentPosition));
+
+            return proveMeeples != null && proveStartMeeple == null;
+        }
+        private bool ProveChangePlace(List<Meeple> myMeeples, List<Meeple> otherMeeples)
+        {
+            List<Meeple> myOpenMeeples = GetOpenMeeples(myMeeples);
+
+            List<Meeple> otherOpenMeeples = GetOpenMeeples(otherMeeples);
+
+            return myOpenMeeples.Count > 0 && otherOpenMeeples.Count > 0;
+        }
+
+        private bool ProveValueCard(List<Meeple> myMeeples, int value)
+        {
+            List<Meeple> myMovableMeeples = myMeeples.FindAll(meeple => Validation.IsMovableField(meeple.CurrentPosition));
+            return myMovableMeeples.Any(meeple => !Validation.HasBlockedField(meeple.CurrentPosition, value) || Validation.CanMoveToEndFields(meeple.CurrentPosition, value));
+        }
+
+        private bool IsCardAlreadyUsed(HandCard card, List<HandCard> handCards)
+        {
+            HandCard duplicatedCard = handCards.Find(validCard => validCard != null && validCard.ImageIdentifier == card.ImageIdentifier);
+            return duplicatedCard != null;
+        }
+        private List<HandCard> ProveCards(List<HandCard> actualHandCards, GameTable actualGameTable, User actualUser)
+        {
+            PlayerFieldArea actualArea = actualGameTable.PlayerFieldAreas.Find(
+                area => area.Participation.Participant.Identifier == actualUser.Identifier);
+            List<Meeple> myMeeples = actualArea.Meeples;
+
+            return (from card in actualHandCards
+                let validAttribute = card.Attributes.Find(attribute =>
+                {
+                    if (attribute.Attribute == AttributeEnum.LeaveKennel)
+                    {
+                        return ProveLeaveKennel(myMeeples);
+                    }
+                    return attribute.Attribute == AttributeEnum.ChangePlace ? ProveChangePlace(myMeeples, GetOtherMeeples(actualGameTable, myMeeples)) 
+                                                                            : ProveValueCard(myMeeples, (int) attribute.Attribute);
+                })
+                select card).ToList();
+        }
+
+        public List<HandCard> GetActualHandCards(User actualUser, GameTable actualGameTable)
+        {
+            return actualGameTable.Participations.Find(
+                participation =>
+                    participation.Participant.Identifier == actualUser.Identifier).ActualPlayRound.Cards;
         }
 
         private static void Shuffle()

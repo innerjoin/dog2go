@@ -8,5 +8,10 @@ namespace dog2go.Backend.Model
         public int RoundNumber { get; set; }
         public int CardCounter { get; set; }
         public List<CardMove> CardMoves { get; set; }
+        public PlayRound(int roundNumber, int cardCounter)
+        {
+            RoundNumber = roundNumber;
+            CardCounter = cardCounter;
+        }
     }
 }
