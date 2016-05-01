@@ -169,6 +169,10 @@ namespace dog2go.Backend.Hubs
 
         public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
         {
+            //Clients.Caller.notifyActualPlayer(null);
+            //Clients.Caller.sendMeeplePositions(null);
+            //Clients.Caller.dropCards();
+            
             if (Validation.ValidateMove(meepleMove, cardMove))
             {
                 GameTable actualGameTable = GetActualGameTable();
