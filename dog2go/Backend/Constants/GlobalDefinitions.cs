@@ -1,4 +1,4 @@
-﻿namespace dog2go.Backend
+﻿namespace dog2go.Backend.Constants
 {
     internal static class GlobalDefinitions
     {

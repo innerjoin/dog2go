@@ -39,7 +39,6 @@ namespace dog2go.Backend.Services
         public int GetNumberOfCardsPerUser()
         {
             int nr = 6 - ((CurrentRound - 1) % 5);
-            CurrentRound++;
             return nr;
         }
 
@@ -99,7 +98,7 @@ namespace dog2go.Backend.Services
             HandCard duplicatedCard = handCards.Find(validCard => validCard != null && validCard.ImageIdentifier == card.ImageIdentifier);
             return duplicatedCard != null;
         }
-        private List<HandCard> ProveCards(List<HandCard> actualHandCards, GameTable actualGameTable, User actualUser)
+        public List<HandCard> ProveCards(List<HandCard> actualHandCards, GameTable actualGameTable, User actualUser)
         {
             PlayerFieldArea actualArea = actualGameTable.PlayerFieldAreas.Find(
                 area => area.Participation.Participant.Identifier == actualUser.Identifier);
@@ -116,6 +115,15 @@ namespace dog2go.Backend.Services
                                                                             : ProveValueCard(myMeeples, (int) attribute.Attribute);
                 })
                 select card).ToList();
+        }
+
+        public bool RemoveCardFromUserHand(GameTable table, User actualUser,Card removeCard)
+        {
+            List<HandCard> handCards =
+                table.Participations.Find(participation => participation.Participant.Nickname == actualUser.Nickname)
+                    .ActualPlayRound.Cards;
+            HandCard handCard = handCards.Find(card => card.Id == removeCard.Id);
+            return handCards.Remove(handCard);
         }
 
         public List<HandCard> GetActualHandCards(User actualUser, GameTable actualGameTable)

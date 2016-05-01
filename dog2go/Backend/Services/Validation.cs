@@ -8,7 +8,7 @@ namespace dog2go.Backend.Services
 {
     public class Validation
     {
-        private static bool ProveChangePlace(Meeple moveMeeple, MoveDestinationField destinationField)
+        public static bool ProveChangePlace(Meeple moveMeeple, MoveDestinationField destinationField)
         {
             if (moveMeeple == null || destinationField.CurrentMeeple == null)
                 return false;
@@ -25,7 +25,7 @@ namespace dog2go.Backend.Services
             return true;
         }
 
-        private static bool ProveLeaveKennel(Meeple moveMeeple, MoveDestinationField destinationField)
+        public static bool ProveLeaveKennel(Meeple moveMeeple, MoveDestinationField destinationField)
         {
             if (!moveMeeple.CurrentPosition.FieldType.Contains("KennelField"))
                 return false;
@@ -37,7 +37,7 @@ namespace dog2go.Backend.Services
             return destinationField.CurrentMeeple == null || IsValidStartField(destinationField);
         }
 
-        private static bool ProveValueCard(Meeple moveMeeple, MoveDestinationField destinationField, int value)
+        public static bool ProveValueCard(Meeple moveMeeple, MoveDestinationField destinationField, int value)
         {
             MoveDestinationField currentPos = moveMeeple.CurrentPosition;
             if (HasBlockedField(currentPos, value))
@@ -107,6 +107,7 @@ namespace dog2go.Backend.Services
                     if (startField != null)
                     {
                         EndField endField = startField.EndFieldEntry;
+                        fieldCount--;
                         for (var j = fieldCount - i; j >= 0; j--)
                         {
                             endField = (EndField)endField.Next;
@@ -117,7 +118,6 @@ namespace dog2go.Backend.Services
                     }
                 }
             }
-
             return false;
         }
 
@@ -125,6 +125,12 @@ namespace dog2go.Backend.Services
         {
             if (fieldCount < 0)
             {
+                if (startCountField.FieldType.Contains("StartField"))
+                {
+                    startCountField = startCountField.Previous;
+                    fieldCount--;
+                }
+
                 for (var i = 0; i > fieldCount; i--)
                 {
                     while (startCountField.FieldType.Contains("EndField"))
@@ -132,7 +138,9 @@ namespace dog2go.Backend.Services
                     StartField startField = startCountField as StartField;
                     if (startField != null)
                     {
-                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
+                        if (startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked)
+                            return true;
+                        return false;
                     }
 
                     startCountField = startCountField.Previous;
@@ -143,6 +151,12 @@ namespace dog2go.Backend.Services
 
             else
             {
+                if (startCountField.FieldType.Contains("StartField"))
+                {
+                    startCountField = startCountField.Next;
+                    fieldCount++;
+                }
+
                 for (var i = 0; i <= fieldCount; i++)
                 {
                     while (startCountField.FieldType.Contains("EndField"))
@@ -151,7 +165,9 @@ namespace dog2go.Backend.Services
                     StartField startField = startCountField as StartField;
                     if (startField != null)
                     {
-                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
+                        if (startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked)
+                            return true;
+                        return false;
                     }
 
                     startCountField = startCountField.Next;
