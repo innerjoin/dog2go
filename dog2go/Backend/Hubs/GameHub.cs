@@ -8,6 +8,7 @@ using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
 using dog2go.Backend.Services;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 using WebGrease.Css.Extensions;
 
 namespace dog2go.Backend.Hubs
@@ -40,11 +41,15 @@ namespace dog2go.Backend.Hubs
             {
                 table.Participations.ForEach(participation =>
                 {
+                    // Player allready connected to a running table
                     if (participation.Participant.Nickname.Equals(curUser))
                     {
-                        // TODO Send Cards, when they are saved in Repo
                         isParticipating = true;
-                        Clients.Client(Context.ConnectionId).backToGame(table, null);
+                        List<HandCard> cards = table.cardServiceData.GetActualHandCards(participation.Participant, table);
+                        Clients.Client(Context.ConnectionId).backToGame(table, cards);
+
+                        // TODO: only during development: Notify any caller als actualplayer:
+                        NotifyActualPlayer(participation.Participant, cards);
                     }
                 });
                 if (isParticipating)
@@ -53,7 +58,7 @@ namespace dog2go.Backend.Hubs
                 }
                 else
                 {
-                throw new Exception("Table already full");
+                    throw new Exception("Table already full");
                 }
 
             }
@@ -77,8 +82,11 @@ namespace dog2go.Backend.Hubs
 
             Clients.Client(Context.ConnectionId).createGameTable(table);
 
-            if(table.Participations.Count >= GlobalDefinitions.NofParticipantsPerTable)
+            if (table.Participations.Count >= GlobalDefinitions.NofParticipantsPerTable)
+            {
                 AllConnected(table);
+
+            }
             return table;
         }
 
@@ -125,6 +133,14 @@ namespace dog2go.Backend.Hubs
                 Clients.Client(id).assignHandCards(cards);
             });
         }
+        private void NotifyActualPlayer(User user, List<HandCard> validCards)
+        {
+            user.ConnectionIds.ForEach(cId =>
+            {
+                // TODO: get Cards, that are possible.
+                Clients.Client(cId).notifyActualPlayer(validCards);
+            });
+        }
 
         public void AllConnected(GameTable table)
         {
@@ -147,10 +163,17 @@ namespace dog2go.Backend.Hubs
                 SendCards(cards, user.Participant);
                 actualPlayRound.Cards = cards;
                 user.ActualPlayRound = actualPlayRound;
+
+                // TODO: Notify the realy ActualPlayer
+                if (users.IndexOf(user) == 0)
+                {
+                    NotifyActualPlayer(user.Participant, cards);
+                }
             }
             //User actualUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Identifier == Context.User.Identity.Name).Value;
             //Clients.Client(Context.ConnectionId).notifyActualPlayer(table.cardServiceData.ProveCards(actualHandCard, actualUser, table));
         }
+        
 
         private bool HasBlockedField(MoveDestinationField startCountField, int fieldCount)
         {
