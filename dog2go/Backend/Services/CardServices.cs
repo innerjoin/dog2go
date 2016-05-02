@@ -11,6 +11,7 @@ namespace dog2go.Backend.Services
         private static readonly List<Card> Deck = new List<Card>();
 
         public int CurrentRound;
+        public int ProveCardsCount;
 
         private static readonly Random Rng = new Random();
 
@@ -100,9 +101,13 @@ namespace dog2go.Backend.Services
         }
         public List<HandCard> ProveCards(List<HandCard> actualHandCards, GameTable actualGameTable, User actualUser)
         {
+            if (actualHandCards == null || actualGameTable == null || actualUser == null)
+                return null;
             PlayerFieldArea actualArea = actualGameTable.PlayerFieldAreas.Find(
                 area => area.Participation.Participant.Identifier == actualUser.Identifier);
             List<Meeple> myMeeples = actualArea.Meeples;
+
+            ProveCardsCount++;
 
             return (from card in actualHandCards
                 let validAttribute = card.Attributes.Find(attribute =>
@@ -131,6 +136,19 @@ namespace dog2go.Backend.Services
             return actualGameTable.Participations.Find(
                 participation =>
                     participation.Participant.Identifier == actualUser.Identifier).ActualPlayRound.Cards;
+        }
+
+        public bool AreCardsOnHand(GameTable actualGameTable)
+        {
+            foreach (var participation in actualGameTable.Participations)
+            {
+                if (GetActualHandCards(participation.Participant, actualGameTable) != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static void Shuffle()
