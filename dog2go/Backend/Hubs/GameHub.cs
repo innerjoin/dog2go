@@ -137,13 +137,23 @@ namespace dog2go.Backend.Hubs
                 Clients.Client(id).assignHandCards(cards);
             });
         }
-        private void NotifyActualPlayer(User user, List<HandCard> validCards)
+        private void NotifyActualPlayer(User user, List<HandCard> handCards)
         {
-            user.ConnectionIds.ForEach(cId =>
+            GameTable actualGameTable = GetActualGameTable();
+            List<HandCard> validCards = actualGameTable.cardServiceData.ProveCards(handCards, actualGameTable, user);
+            if (validCards != null)
             {
-                // TODO: get Cards, that are possible.
-                Clients.Client(cId).notifyActualPlayer(validCards);
-            });
+                user.ConnectionIds.ForEach(cId =>
+                {
+                    // TODO: get Cards, that are possible.
+                    Clients.Client(cId).notifyActualPlayer(validCards, GetColorCodeForUser(user.Nickname));
+                });
+            }
+
+            else
+            {
+                NotifyNextPlayer();
+            }
         }
 
         public void AllConnected(GameTable table)
@@ -218,6 +228,14 @@ namespace dog2go.Backend.Hubs
                 .Value;
         }
 
+        private ColorCode GetColorCodeForUser(string userName)
+        {
+            GameTable actualGameTable = GetActualGameTable();
+            return
+                actualGameTable.PlayerFieldAreas.Find(area => area.Participation.Participant.Nickname == userName)
+                    .ColorCode;
+        }
+
         private void NotifyNextPlayer()
         {
             GameTable actualGameTable = GetActualGameTable();
@@ -228,7 +246,7 @@ namespace dog2go.Backend.Hubs
             nextUser.ConnectionIds.ForEach(id =>
             {
                 if(validHandCards != null)
-                    Clients.Client(id).notifyActualPlayer(validHandCards);
+                    Clients.Client(id).notifyActualPlayer(validHandCards, GetColorCodeForUser(nextUser.Nickname));
                 else
                 {
                     foreach (var card in actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable))
