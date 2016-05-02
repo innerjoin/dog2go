@@ -169,10 +169,6 @@ namespace dog2go.Backend.Hubs
 
         public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
         {
-            //Clients.Caller.notifyActualPlayer(null);
-            //Clients.Caller.sendMeeplePositions(null);
-            //Clients.Caller.dropCards();
-            
             if (Validation.ValidateMove(meepleMove, cardMove))
             {
                 GameTable actualGameTable = GetActualGameTable();
@@ -205,9 +201,28 @@ namespace dog2go.Backend.Hubs
             string nextPlayerNickname = GameServices.GetNextPlayer(actualGameTable, Context.User.Identity.Name);
             User nextUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Nickname == nextPlayerNickname).Value;
             List<HandCard> cards = actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable);
+            List<HandCard> validHandCards = actualGameTable.cardServiceData.ProveCards(cards, actualGameTable, nextUser);
             nextUser.ConnectionIds.ForEach(id =>
             {
-                Clients.Client(id).notifyActualPlayer(actualGameTable.cardServiceData.ProveCards(cards, actualGameTable, nextUser));
+                if(validHandCards != null)
+                    Clients.Client(id).notifyActualPlayer(validHandCards);
+                else
+                {
+                    foreach (var card in actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable))
+                    {
+                        actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GetActualUser(), card);
+                    }
+
+                    Clients.Client(id).dropCards();
+
+                    if (actualGameTable.cardServiceData.ProveCardsCount % GlobalDefinitions.NofParticipantsPerTable == 0)
+                    {
+                        if (!actualGameTable.cardServiceData.AreCardsOnHand(actualGameTable))
+                        {
+                            SendCardsForRound(actualGameTable);
+                        }
+                    }
+                }
             });
         }
 
