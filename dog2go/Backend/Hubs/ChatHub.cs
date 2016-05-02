@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
+using dog2go.Backend.Constants;
 using dog2go.Backend.Repos;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;

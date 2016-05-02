@@ -18,16 +18,27 @@ namespace dog2go.Tests.Backend
         public void GetNumberOfCardsPerUser()
         {
             Assert.AreEqual(6, cs.GetNumberOfCardsPerUser());
+            cs.CurrentRound++;
             Assert.AreEqual(5, cs.GetNumberOfCardsPerUser());
+            cs.CurrentRound++;
             Assert.AreEqual(4, cs.GetNumberOfCardsPerUser());
+            cs.CurrentRound++;
             Assert.AreEqual(3, cs.GetNumberOfCardsPerUser());
+            cs.CurrentRound++;
             Assert.AreEqual(2, cs.GetNumberOfCardsPerUser());
+            cs.CurrentRound++;
             Assert.AreEqual(6, cs.GetNumberOfCardsPerUser());
+            cs.CurrentRound++;
             Assert.AreEqual(5, cs.GetNumberOfCardsPerUser());
+            cs.CurrentRound++;
             Assert.AreEqual(4, cs.GetNumberOfCardsPerUser());
+            cs.CurrentRound++;
             Assert.AreEqual(3, cs.GetNumberOfCardsPerUser());
+            cs.CurrentRound++;
             Assert.AreEqual(2, cs.GetNumberOfCardsPerUser());
+            cs.CurrentRound++;
             Assert.AreEqual(6, cs.GetNumberOfCardsPerUser());
+            cs.CurrentRound++;
             Assert.AreEqual(5, cs.GetNumberOfCardsPerUser());
             // ... and so on...
         }
