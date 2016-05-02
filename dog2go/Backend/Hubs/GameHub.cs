@@ -161,6 +161,12 @@ namespace dog2go.Backend.Hubs
                 SendCards(participation.ActualPlayRound.Cards, participation.Participant);
                 if (participation.Participant.Nickname == Context.User.Identity.Name)
                     validateHandCards = participation.ActualPlayRound.Cards;
+
+                // TODO: Notify the realy ActualPlayer
+                if (table.Participations.IndexOf(participation) == 0)
+                {
+                    NotifyActualPlayer(participation.Participant, participation.ActualPlayRound.Cards);
+                }
             }
             User actualUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Identifier == Context.User.Identity.Name).Value;
             Clients.Client(Context.ConnectionId).notifyActualPlayer(table.cardServiceData.ProveCards(validateHandCards, table, actualUser));
@@ -194,6 +200,7 @@ namespace dog2go.Backend.Hubs
                 GameTable actualGameTable = GetActualGameTable();
                 GameServices.UpdateMeeplePosition(meepleMove, actualGameTable);
                 List<Meeple> allMeeples = new List<Meeple>();
+
                 foreach (var area in actualGameTable.PlayerFieldAreas)
                 {
                     allMeeples.AddRange(area.Meeples);
