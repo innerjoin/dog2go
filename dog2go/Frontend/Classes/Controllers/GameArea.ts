@@ -6,7 +6,6 @@ import cc = require("./CardsController");
 import mc = require("./MeepleController");
 
 import MeepleController = mc.MeepleController;
-
 import CardsController = cc.CardsController;
 import GameFieldController = gfc.GameFieldController;
 import GameFieldService = Gfs.GameFieldService;

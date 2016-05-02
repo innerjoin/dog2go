@@ -32,6 +32,7 @@ export class MeepleController {
 
     public notifyActualPlayer(possibleCards: ICard[]) {
         console.log("notifyActualPlayer(), poss Cards: ", possibleCards);
+        
     }
 
     public sendMeeplesPositions(meeples: IMeeple[]) {

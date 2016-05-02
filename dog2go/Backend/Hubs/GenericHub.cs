@@ -41,7 +41,6 @@ namespace dog2go.Backend.Hubs
 
         public override Task OnReconnected()
         {
-            bool isHungry = true;
             return base.OnReconnected();
         }
 
