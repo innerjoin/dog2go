@@ -75,6 +75,4 @@ describe("GameFieldService - ", () => {
         expect(callbackCreate.assign).toHaveBeenCalled();
         expect(callbackCreate.assign).toHaveBeenCalledWith(cards);
     });
-
-
 });

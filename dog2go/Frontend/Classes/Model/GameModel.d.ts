@@ -6,7 +6,7 @@ interface IHandCard extends ICard {
 
 interface ICardMove {
     Card: ICard;
-    SelectedAttribute: AttributeEnum;
+    SelectedAttribute: ICardAttribute;
 }
 
 interface ICard {

@@ -5,7 +5,6 @@ import TurnService = ts.TurnService;
 import gm = require("../Model/GameModel");
 import AreaColor = gm.AreaColor;
 
-
 import gfc = require("./GameFieldsController");
 import GameFieldController = gfc.GameFieldController;
 
@@ -13,9 +12,13 @@ export class MeepleController {
     private turnService: TurnService;
     private game: Phaser.Game;
 
-    //private allKennelFields: IKennelField[] = [];
     private fields: Phaser.Graphics[] = [];
     private gameFieldController: GameFieldController;
+
+    private allMeeples: IMeeple[];
+
+    private playerMeepleColor: number;
+    private turnCardMove: ICardMove;
 
     private scaleFactor: number;
 
@@ -25,14 +28,16 @@ export class MeepleController {
         this.game = game;
 
         this.turnService = TurnService.getInstance();
-        this.turnService.notifyActualPlayerCB = this.notifyActualPlayer;
-        this.turnService.sendMeeplePositionsCB = this.sendMeeplesPositions;
+        this.turnService.notifyActualPlayerCB = this.notifyActualPlayer.bind(this);
+        this.turnService.sendMeeplePositionsCB = this.sendMeeplesPositions.bind(this);
 
+        this.allMeeples = [];
     }
 
-    public notifyActualPlayer(possibleCards: ICard[]) {
+    public notifyActualPlayer(possibleCards: ICard[], meepleColor: number) {
         console.log("notifyActualPlayer(), poss Cards: ", possibleCards);
-        
+        this.playerMeepleColor = meepleColor;
+
     }
 
     public sendMeeplesPositions(meeples: IMeeple[]) {
@@ -41,21 +46,31 @@ export class MeepleController {
 
     public initializeMeeples(gameTable: IGameTable) {
         console.log("Initializing Meeples", this.game);
+        this.allMeeples = [];
         for (var player of gameTable.PlayerFieldAreas) {
             for (var meeple of player.Meeples) {
                 var coordinates: Phaser.Point = this.getMeeplePosition(meeple);
-                //  console.log("Meeple: ", meeple, this.getSpriteNameForColorCode(meeple.ColorCode), coordinates);
                 var spriteName: string = this.getSpriteNameForColorCode(meeple.ColorCode);
-                //this.game.add.sprite()
-                const meepleSprite = this.game.add.sprite(coordinates.x, coordinates.y, spriteName);
+
+                var meepleSprite: Phaser.Sprite = this.game.add.sprite(coordinates.x, coordinates.y, spriteName);
                 meepleSprite.anchor.setTo(0.5, 0.5);
                 meepleSprite.scale.setTo(this.scaleFactor * 0.13, this.scaleFactor * 0.13);
                 meepleSprite.inputEnabled = true;
-                //meepleSprite.scale.
-                meepleSprite.input.enableDrag();
-                meepleSprite.input.enableSnap(this.scaleFactor * 40, this.scaleFactor * 40, false, true);
-                meepleSprite.events.onDragStop.add(this.dropLimiter, this);
+
+                meeple.spriteRepresentation = meepleSprite;
+                this.allMeeples.push(meeple);
             }
+        }
+    }
+
+    public proceedMeepleTurn(turnCardMove: ICardMove) {
+        this.turnCardMove = turnCardMove;
+        var meeples: IMeeple[] = this.getMeeplesByColor(this.playerMeepleColor);
+        for (var meeple of meeples) {
+            // TODO: add distinction for blocked meeples
+            meeple.spriteRepresentation.input.enableDrag();
+            meeple.spriteRepresentation.input.enableSnap(this.scaleFactor * 40, this.scaleFactor * 40, false, true);
+            meeple.spriteRepresentation.events.onDragStop.add(this.dropLimiter, this, 0, meeple);
         }
     }
 
@@ -77,6 +92,16 @@ export class MeepleController {
         return result;
     }
 
+    private getMeeplesByColor(color: number): IMeeple[] {
+        var result: IMeeple[] = [];
+        for (var meeple of this.allMeeples) {
+            if (meeple.ColorCode === color) {
+                result.push(meeple);
+            }
+        }
+        return result;
+    }
+
     getSpriteNameForColorCode(colorCode: number): string {
         switch (colorCode) {
             case AreaColor.Blue:
@@ -92,12 +117,12 @@ export class MeepleController {
         }
     }
 
-    dropLimiter(item: Phaser.Sprite) {
-        var nearest: Phaser.Graphics;
+    dropLimiter(item: Phaser.Sprite, pointer: Phaser.Pointer, meeple: IMeeple) {
+        var nearest: IMoveDestinationField;
         var smallest = Number.MAX_VALUE;
         var pos = item.world;
         this.gameFieldController.getAllFields.forEach((field) => {
-            var fieldPos = field.world;
+            var fieldPos = field.viewRepresentation.world;
             var dist = fieldPos.distance(pos, true);
             if (!(smallest < dist)) {
                 smallest = dist;
@@ -105,8 +130,15 @@ export class MeepleController {
             }
         });
         if (nearest != null) {
-            item.x = nearest.x;
-            item.y = nearest.y;
+            item.x = nearest.viewRepresentation.x;
+            item.y = nearest.viewRepresentation.y;
+
+            var cardMoove: ICardMove;
+            var meepleMove: IMeepleMove = {Meeple: meeple, MoveDestination: nearest};
+
+            console.log(nearest);
+            this.turnService.validateMove(meepleMove, this.turnCardMove);
+            this.turnCardMove = null;
         }
     }
 

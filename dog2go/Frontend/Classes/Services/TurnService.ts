@@ -1,7 +1,7 @@
 ﻿
 export class TurnService {
     private static instance: TurnService = null;
-    public notifyActualPlayerCB: (possibleCards: ICard[]) => any;
+    public notifyActualPlayerCB: (possibleCards: ICard[], meepleColor: number) => any;
     public dropCardsCB: () => any;
     public sendMeeplePositionsCB: (meeples: IMeeple[]) => any;
 
@@ -13,8 +13,8 @@ export class TurnService {
         }
         var gameHub = $.connection.gameHub;
 
-        gameHub.client.notifyActualPlayer = (possibleCards) => {
-            this.notifyActualPlayerCB(possibleCards);
+        gameHub.client.notifyActualPlayer = (possibleCards, meepleColor) => {
+            this.notifyActualPlayerCB(possibleCards, meepleColor);
         }
         gameHub.client.sendMeeplePositions = (meeples) => {
             this.sendMeeplePositionsCB(meeples);
@@ -35,9 +35,16 @@ export class TurnService {
     }
 
     public validateMove(meepleMove: IMeepleMove, cardMove: ICardMove) {
+        var mMoveReady: IMeepleMove = $.extend({}, meepleMove);
+        mMoveReady.Meeple = $.extend({}, meepleMove.Meeple);
+        mMoveReady.Meeple.CurrentPosition = $.extend({}, meepleMove.Meeple.CurrentPosition);
+        mMoveReady.MoveDestination = $.extend({}, meepleMove.MoveDestination);
+        mMoveReady.Meeple.spriteRepresentation = null;
+        mMoveReady.MoveDestination.viewRepresentation = null;
+        console.log("Going to Send out: ", mMoveReady, cardMove);
         var gameHub = $.connection.gameHub;
         $.connection.hub.start().done(() => {
-            var test = gameHub.server.ValidateMove(meepleMove, cardMove);
+            var test = gameHub.server.validateMove(mMoveReady, cardMove);
         });
     }
 }

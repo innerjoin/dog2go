@@ -1,14 +1,17 @@
 /// <reference path="../Model/TableModel.d.ts"/>
 import _phaser = require("phaser");
-import Gfs = require("../Services/GameFieldsService");
-import gfc = require("./GameFieldsController");
-import cc = require("./CardsController");
-import mc = require("./MeepleController");
 
-import MeepleController = mc.MeepleController;
-import CardsController = cc.CardsController;
+import gfs = require("../Services/GameFieldsService");
+import GameFieldService = gfs.GameFieldService;
+
+import gfc = require("./GameFieldsController");
 import GameFieldController = gfc.GameFieldController;
-import GameFieldService = Gfs.GameFieldService;
+
+import cc = require("./CardsController");
+import CardsController = cc.CardsController;
+
+import mc = require("./MeepleController");
+import MeepleController = mc.MeepleController;
 
 const scaleFactor = 2;
 
@@ -31,10 +34,9 @@ export class GameArea {
             this.gameFieldService = GameFieldService.getInstance();
             this.gameFieldService.createGameTableCB = this.buildFields.bind(this);
             this.gameFieldController = new GameFieldController(this.game, scaleFactor);
-            this.cardsController = new CardsController();
             this.meepleController = new MeepleController(this.game, this.gameFieldController, scaleFactor);
+            this.cardsController = new CardsController(this.meepleController);
         }
-        
     }
     
     /* load game assets here, but not objects */
