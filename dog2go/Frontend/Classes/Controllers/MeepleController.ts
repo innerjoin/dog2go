@@ -35,7 +35,7 @@ export class MeepleController {
     }
 
     public notifyActualPlayer(possibleCards: ICard[], meepleColor: number) {
-        console.log("notifyActualPlayer(), poss Cards: ", possibleCards);
+        console.log("notifyActualPlayer(), poss Cards: ", possibleCards, meepleColor);
         this.playerMeepleColor = meepleColor;
 
     }
@@ -45,7 +45,7 @@ export class MeepleController {
     }
 
     public initializeMeeples(gameTable: IGameTable) {
-        console.log("Initializing Meeples", this.game);
+        console.log("Initializing Meeples", gameTable);
         this.allMeeples = [];
         for (var player of gameTable.PlayerFieldAreas) {
             for (var meeple of player.Meeples) {
