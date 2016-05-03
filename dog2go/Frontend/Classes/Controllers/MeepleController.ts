@@ -134,7 +134,7 @@ export class MeepleController {
             item.y = nearest.viewRepresentation.y;
 
             var cardMoove: ICardMove;
-            var meepleMove: IMeepleMove = {Meeple: meeple, MoveDestination: nearest};
+            var meepleMove: IMeepleMove = {Meeple: meeple, MoveDestination: nearest, DestinationFieldId: nearest.Identifier};
 
             console.log(nearest);
             this.turnService.validateMove(meepleMove, this.turnCardMove);
