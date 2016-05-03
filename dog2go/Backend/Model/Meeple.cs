@@ -8,6 +8,8 @@
 
         public MoveDestinationField CurrentPosition;
 
+        public int CurrentFieldId;
+
         public bool IsStartFieldBlocked { get; set; }
 
         public Meeple(KennelField kennelField)

@@ -6,5 +6,6 @@
 
         public MoveDestinationField MoveDestination { get; set; }
 
+        public int DestinationFieldId;
     }
 }

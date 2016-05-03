@@ -54,8 +54,10 @@ namespace dog2go.Backend.Services
             partnerHandCards.Add(selectedCard);
         }
 
-        private List<Meeple> GetOtherMeeples(GameTable gameTable, List<Meeple> myMeeples)
+        public List<Meeple> GetOtherMeeples(GameTable gameTable, List<Meeple> myMeeples)
         {
+            if (gameTable == null)
+                return null;
             List<Meeple> otherMeeples = new List<Meeple>();
             foreach (var playFieldArea in gameTable.PlayerFieldAreas)
             {
@@ -66,23 +68,27 @@ namespace dog2go.Backend.Services
             return otherMeeples;
         }
 
-        private List<Meeple> GetOpenMeeples(List<Meeple> myMeeples)
+        public List<Meeple> GetOpenMeeples(List<Meeple> myMeeples)
         {
-            return myMeeples.FindAll(
-                    meeple =>
-                        Validation.IsValidStartField(meeple.CurrentPosition) ||
-                        meeple.CurrentPosition.FieldType.Contains("StandardField"));
+            return myMeeples?.FindAll(
+                meeple =>
+                    Validation.IsValidStartField(meeple.CurrentPosition) ||
+                    meeple.CurrentPosition.FieldType.Contains("StandardField"));
         }
 
-        private bool ProveLeaveKennel(List<Meeple> myMeeples)
+        public bool ProveLeaveKennel(List<Meeple> myMeeples)
         {
+            if (myMeeples == null)
+                return false;
             List<Meeple> proveMeeples = myMeeples.FindAll(meeple => meeple.CurrentPosition.FieldType.Contains("KennelField"));
-            Meeple proveStartMeeple = myMeeples.Find(startMeeple => !Validation.IsValidStartField(startMeeple.CurrentPosition));
+            Meeple proveStartMeeple = myMeeples.Find(startMeeple => startMeeple.CurrentPosition.FieldType.Contains("StartField") && !Validation.IsValidStartField(startMeeple.CurrentPosition));
 
-            return proveMeeples != null && proveStartMeeple == null;
+            return proveMeeples.Count > 0 && proveStartMeeple == null;
         }
-        private bool ProveChangePlace(List<Meeple> myMeeples, List<Meeple> otherMeeples)
+        public bool ProveChangePlace(List<Meeple> myMeeples, List<Meeple> otherMeeples)
         {
+            if (myMeeples == null)
+                return false;
             List<Meeple> myOpenMeeples = GetOpenMeeples(myMeeples);
 
             List<Meeple> otherOpenMeeples = GetOpenMeeples(otherMeeples);
@@ -92,13 +98,15 @@ namespace dog2go.Backend.Services
 
         private bool ProveValueCard(List<Meeple> myMeeples, int value)
         {
+            if (myMeeples == null)
+                return false;
             List<Meeple> myMovableMeeples = myMeeples.FindAll(meeple => Validation.IsMovableField(meeple.CurrentPosition));
             return myMovableMeeples.Any(meeple => !Validation.HasBlockedField(meeple.CurrentPosition, value) || Validation.CanMoveToEndFields(meeple.CurrentPosition, value));
         }
 
         private bool IsCardAlreadyUsed(HandCard card, List<HandCard> handCards)
         {
-            HandCard duplicatedCard = handCards.Find(validCard => validCard != null && validCard.ImageIdentifier == card.ImageIdentifier);
+            HandCard duplicatedCard = handCards?.Find(validCard => validCard != null && validCard.ImageIdentifier == card.ImageIdentifier);
             return duplicatedCard != null;
         }
         public List<HandCard> ProveCards(List<HandCard> actualHandCards, GameTable actualGameTable, User actualUser)

@@ -67,7 +67,11 @@ namespace dog2go.Backend.Services
         public static bool IsValidStartField(MoveDestinationField field)
         {
             StartField startField = field as StartField;
-            return startField != null && !startField.CurrentMeeple.IsStartFieldBlocked;
+            if(startField != null && startField.CurrentMeeple != null)
+                return !startField.CurrentMeeple.IsStartFieldBlocked;
+            if (startField != null && startField.CurrentMeeple == null)
+                return true;
+            return false;
         }
         private static bool IsSimpleInvalidChangeField(MoveDestinationField field)
         {
@@ -76,10 +80,27 @@ namespace dog2go.Backend.Services
 
             return kennelField != null || endField != null;
         }
+
+        public static MoveDestinationField GetFieldById(GameTable actualTable, int fieldId)
+        {
+            MoveDestinationField moveDestinationField = null;
+            var playerFieldArea = actualTable.PlayerFieldAreas.Find(area => area.Fields.Find(field =>
+            {
+                if (field.Identifier == fieldId)
+                {
+                    moveDestinationField = field;
+                    return true;
+                }
+                return false;
+            }) != null);
+
+            return moveDestinationField;
+        }
         public static bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
         {
             Meeple movedMeeple = meepleMove.Meeple;
             MoveDestinationField destinationField = meepleMove.MoveDestination;
+
 
             if (movedMeeple == null || cardMove.SelectedAttribute == null)
                 return false;

@@ -3,8 +3,6 @@ namespace dog2go.Backend.Model
 {
     public abstract class MoveDestinationField
     {
-        public MoveDestinationField() { }
-
         private int _previousIdentifier;
         private int _nextIdentifier;
         private Meeple _currentMeeple;

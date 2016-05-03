@@ -201,6 +201,12 @@ namespace dog2go.Backend.Hubs
 
         public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
         {
+            if (meepleMove == null)
+                return false;
+            meepleMove.Meeple.CurrentPosition = meepleMove.Meeple.CurrentPosition ??
+                                                Validation.GetFieldById(GetActualGameTable(),
+                                                    meepleMove.Meeple.CurrentFieldId);
+            meepleMove.MoveDestination = meepleMove.MoveDestination ?? Validation.GetFieldById(GetActualGameTable(), meepleMove.DestinationFieldId);
             if (Validation.ValidateMove(meepleMove, cardMove))
             {
                 GameTable actualGameTable = GetActualGameTable();
