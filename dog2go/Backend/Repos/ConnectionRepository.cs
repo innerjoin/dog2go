@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
@@ -13,12 +14,23 @@ namespace dog2go.Backend.Repos
     public class ConnectionRepository : IConnectionRepository
     {
         private readonly ConcurrentDictionary<string, HashSet<string>> _connections;
-
+        private static ConnectionRepository _instance;
+        private static readonly Object LockObj = new Object();
         private ConnectionRepository()
         {
             _connections = new ConcurrentDictionary<string, HashSet<string>>();
         } 
-        public static ConnectionRepository Instance { get; } = new ConnectionRepository();
+        public static ConnectionRepository Instance {
+            get
+            {
+                if (_instance != null) return _instance;
+                Monitor.Enter(LockObj);
+                ConnectionRepository temp = new ConnectionRepository();
+                Interlocked.Exchange(ref _instance, temp);
+                Monitor.Exit(LockObj);
+                return _instance;
+            }
+        }
 
         public int Count => _connections.Count;
 
