@@ -24,7 +24,7 @@ export class GameFieldService {
     public static getInstance() {
         // Create new instance if callback is given
         if (GameFieldService.instance === null) {
-            GameFieldService.instance = new GameFieldService();
+            var temp = new GameFieldService();
         }
         return GameFieldService.instance;
     }
@@ -32,8 +32,7 @@ export class GameFieldService {
     public getGameFieldData():void {
         var gameHub = $.connection.gameHub;
         $.connection.hub.start().done(() => {
-            var test = gameHub.server.connectToTable();
-            console.log("Got Table back: ", test);
+            gameHub.server.connectToTable();
         });
     }
 }

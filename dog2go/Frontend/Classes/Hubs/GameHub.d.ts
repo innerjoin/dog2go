@@ -12,12 +12,12 @@ interface IGameHubClient {
     backToGame(table: IGameTable, cards: ICard[]);
     assignHandCards(cards: ICard[]);
 
-    notifyActualPlayer(possibleCards: ICard[]);
+    notifyActualPlayer(possibleCards: ICard[], meepleColor: number);
     sendMeeplePositions(meeples: IMeeple[]);
     dropCards();
 }
 
 interface IGameHubServer {
     connectToTable(): IGameTable;
-    ValidateMove(meepleMove: IMeepleMove, cardMove: ICardMove): boolean;
+    validateMove(meepleMove: IMeepleMove, cardMove: ICardMove): boolean;
 }

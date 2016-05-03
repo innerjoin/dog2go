@@ -1,22 +1,28 @@
 define(["require", "exports", "jquery", "../../../Frontend/Classes/Services/GameFieldsService"], function (require, exports, $, gfs) {
     "use strict";
+    var GameFieldService = gfs.GameFieldService;
     describe("GameFieldService - ", function () {
         var gameTable;
+        var cards;
         //var $ = null;
         var callbackCreate, callbackDone;
-        beforeEach(function () {
+        beforeAll(function () {
             gameTable = { testdata: 12345 };
+            cards = [{ testdata: 88838 }];
             callbackDone = {
                 done: function (callback) {
                     callback();
                 }
             };
             callbackCreate = {
-                fn: function (ev) {
+                createGametable: function (ev) {
                     gameTable = ev;
+                },
+                assign: function (cards) {
                 }
             };
-            spyOn(callbackCreate, "fn");
+            spyOn(callbackCreate, "createGametable");
+            spyOn(callbackCreate, "assign");
             //spyOn(callbackDone, "done"); // Does not work, because of direct call
             spyOn($.connection.hub, "start").and.callFake(function () {
                 return callbackDone;
@@ -27,15 +33,29 @@ define(["require", "exports", "jquery", "../../../Frontend/Classes/Services/Game
             };
         });
         it("get Instance", function () {
-            gfs.GameFieldService.bind($);
-            gfs.GameFieldService.getInstance.bind($);
-            var gameFieldService = gfs.GameFieldService.getInstance();
-            gameFieldService.createGameTableCB = callbackCreate.fn;
+            var gameFieldService = GameFieldService.getInstance();
+            expect(gameFieldService).toBe(GameFieldService.getInstance());
+        });
+        it("getGameFieldData", function () {
+            var gameFieldService = GameFieldService.getInstance();
+            gameFieldService.createGameTableCB = callbackCreate.createGametable;
             gameFieldService.getGameFieldData();
-            // Allways check if Hub has been started correctly
+            // uppon calling server Methods: Allways check if Hub has been started correctly
             expect($.connection.hub.start).toHaveBeenCalled();
-            expect(callbackCreate.fn).toHaveBeenCalled();
-            expect(callbackCreate.fn).toHaveBeenCalledWith(gameTable);
+            expect(callbackCreate.createGametable).toHaveBeenCalled();
+            expect(callbackCreate.createGametable).toHaveBeenCalledWith(gameTable);
+        });
+        it("Client: backToGame", function () {
+            var gameFieldService = GameFieldService.getInstance();
+            gameFieldService.createGameTableCB = callbackCreate.createGametable;
+            gameFieldService.assignHandCardsCB = callbackCreate.assign;
+            callbackCreate.createGametable.calls.reset();
+            callbackCreate.assign.calls.reset();
+            $.connection.gameHub.client.backToGame(gameTable, cards);
+            expect(callbackCreate.createGametable).toHaveBeenCalled();
+            expect(callbackCreate.createGametable).toHaveBeenCalledWith(gameTable);
+            expect(callbackCreate.assign).toHaveBeenCalled();
+            expect(callbackCreate.assign).toHaveBeenCalledWith(cards);
         });
     });
 });

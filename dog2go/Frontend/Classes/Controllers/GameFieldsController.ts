@@ -14,7 +14,7 @@ export class GameFieldController {
     private fieldCoordinates: FieldCoordinatesData;
     private scaleFactor: number;
 
-    private allFields: Phaser.Graphics[] = [];
+    private allFields: IMoveDestinationField[] = [];
     private kennelFields: IKennelField[] = [];
     private endFiedls: IEndField[] = [];
 
@@ -22,7 +22,7 @@ export class GameFieldController {
         return this.kennelFields;
     }
 
-    get getAllFields(): Phaser.Graphics[] {
+    get getAllFields(): IMoveDestinationField[] {
         return this.allFields;
     }
 
@@ -67,10 +67,13 @@ export class GameFieldController {
                         ex += areaPos.xAltOffset;
                         ey += areaPos.yAltOffset;
                         finalField.viewRepresentation = this.addField(ex, ey, color, finalField.Identifier);
+                        this.allFields.push(finalField);
+
                         finalField = this.getFieldById(finalField.NextIdentifier, area.Fields);
                     }
                 }
                 current.viewRepresentation = this.addField(areaPos.x, areaPos.y, color, current.Identifier);
+                this.allFields.push(current);
                 // Calculate Position for next field 
                 if (fieldNr < 8 || fieldNr > 11) {
                     areaPos.x += areaPos.xOffset;
@@ -79,6 +82,7 @@ export class GameFieldController {
                     areaPos.x += areaPos.xAltOffset;
                     areaPos.y += areaPos.yAltOffset;
                 }
+
                 current = this.getFieldById(current.NextIdentifier, area.Fields);
                 fieldNr++;
             }
@@ -111,6 +115,7 @@ export class GameFieldController {
                     break;
             }
             kennelField.viewRepresentation = this.addField(kennelX + xx, kennelY + yy, color, kennelField.Identifier);
+            this.allFields.push(kennelField);
             this.kennelFields.push(kennelField);
         }
     }
@@ -124,7 +129,6 @@ export class GameFieldController {
         var style = { font: "20px Arial", fill: "#000000", align: "center" };
         var text = this.game.make.text(2, 2, id + "", style);
         graphics.addChild(text);
-        this.allFields.push(graphics);
         return graphics;
     }
 

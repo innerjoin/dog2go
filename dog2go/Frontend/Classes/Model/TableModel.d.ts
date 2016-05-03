@@ -32,6 +32,8 @@ interface IMeeple {
     ColorCode: number;
     CurrentPosition: IMoveDestinationField;
     IsStartFieldBlocked: boolean;
+
+    spriteRepresentation: Phaser.Sprite;
 }
 
 interface IMoveDestinationField {

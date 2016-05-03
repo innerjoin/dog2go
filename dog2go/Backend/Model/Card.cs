@@ -5,6 +5,7 @@ namespace dog2go.Backend.Model
 {
     public class Card
     {
+        public Card() { }
         public string Name { get; set; }
         public int Id { get; set; }
         public string ImageIdentifier { get; private set; }

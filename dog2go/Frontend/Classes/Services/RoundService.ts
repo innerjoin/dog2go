@@ -2,7 +2,7 @@
 export class RoundService {
     private static instance: RoundService = null;
     public assignHandCardsCB: (cards: ICard[]) => any;
-
+    
     constructor() {
         if (RoundService.instance) {
             // ReSharper disable once TsNotResolved

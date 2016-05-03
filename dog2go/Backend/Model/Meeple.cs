@@ -2,6 +2,8 @@
 {
     public class Meeple
     {
+        public Meeple() { }
+
         public ColorCode ColorCode { get; set; }
 
         public MoveDestinationField CurrentPosition;
