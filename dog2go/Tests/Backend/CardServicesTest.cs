@@ -237,5 +237,160 @@ namespace dog2go.Tests.Backend
         {
             Assert.AreEqual(false, cs.ProveLeaveKennel(null));
         }
+
+        [Test]
+        public void TestProveChangeFieldWrongColorCodeStandardField()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[7].CurrentMeeple = myMeeples.First();
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[8].CurrentMeeple = myMeeples.Last();
+            Assert.AreEqual(false, cs.ProveChangePlace(myMeeples, myMeeples));
+        }
+
+        [Test]
+        public void TestProveChangeFieldWrongColorCodeEndField()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).EndFields[0].CurrentMeeple = myMeeples.First();
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).EndFields[1].CurrentMeeple = myMeeples.Last();
+            Assert.AreEqual(false, cs.ProveChangePlace(myMeeples, myMeeples));
+        }
+
+        [Test]
+        public void TestProveChangeFieldWrongColorCodeKennelField()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).KennelFields[0].CurrentMeeple = myMeeples.First();
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).KennelFields[1].CurrentMeeple = myMeeples.Last();
+            Assert.AreEqual(false, cs.ProveChangePlace(myMeeples, myMeeples));
+        }
+
+        [Test]
+        public void TestProveChangeFieldCorrectColorCodeStandardField()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            List<Meeple> otherMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green).Meeples;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[7].CurrentMeeple = myMeeples.First();
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[8].CurrentMeeple = otherMeeples.First();
+            Assert.AreEqual(true, cs.ProveChangePlace(myMeeples, otherMeeples));
+        }
+
+        [Test]
+        public void TestProveChangeFieldCorrectColorCodeEndField()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            List<Meeple> otherMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green).Meeples;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).EndFields[0].CurrentMeeple = myMeeples.First();
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).EndFields[1].CurrentMeeple = otherMeeples.First();
+            Assert.AreEqual(false, cs.ProveChangePlace(myMeeples, otherMeeples));
+        }
+
+        [Test]
+        public void TestProveChangeFieldCorrectColorCodeKennelField()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            List<Meeple> otherMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green).Meeples;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).KennelFields[0].CurrentMeeple = myMeeples.First();
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).KennelFields[1].CurrentMeeple = otherMeeples.First();
+            Assert.AreEqual(false, cs.ProveChangePlace(myMeeples, otherMeeples));
+        }
+
+        [Test]
+        public void TestProveChangeFieldCorrectColorCodeStartField()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            List<Meeple> otherMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green).Meeples;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).StartField.CurrentMeeple = myMeeples.First();
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green).StartField.CurrentMeeple = otherMeeples.First();
+            Assert.AreEqual(false, cs.ProveChangePlace(myMeeples, otherMeeples));
+        }
+
+        [Test]
+        public void TestProveChangeFieldCorrectColorCodeStartFieldNotBlocked()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            List<Meeple> otherMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green).Meeples;
+            myMeeples.First().IsStartFieldBlocked = false;
+            otherMeeples.First().IsStartFieldBlocked = false;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).StartField.CurrentMeeple = myMeeples.First();
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green).StartField.CurrentMeeple = otherMeeples.First();
+            Assert.AreEqual(true, cs.ProveChangePlace(myMeeples, otherMeeples));
+        }
+
+        [Test]
+        public void TestProveChangeFieldNotInitialized()
+        {
+            Assert.AreEqual(false, cs.ProveChangePlace(null, null));
+        }
+
+        [Test]
+        public void TestProveValueCard()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            Assert.AreEqual(false, cs.ProveValueCard(myMeeples, 3));
+        }
+
+        [Test]
+        public void TestProveValueCardEndField()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).EndFields[0].CurrentMeeple = myMeeples.First();
+            Assert.AreEqual(true, cs.ProveValueCard(myMeeples, 2));
+        }
+
+        [Test]
+        public void TestProveValueCardKennelFieldWrong()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).KennelFields[0].CurrentMeeple = myMeeples.First();
+            Assert.AreEqual(false, cs.ProveValueCard(myMeeples, 2));
+        }
+
+        [Test]
+        public void TestProveValueCardStartField()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).StartField.CurrentMeeple = myMeeples.First();
+            Assert.AreEqual(true, cs.ProveValueCard(myMeeples, 2));
+        }
+
+        [Test]
+        public void TestProveValueCardStandardField()
+        {
+            GameTable actualGameTable = MakeInitialGameTable;
+            List<Meeple> myMeeples =
+                actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples;
+            actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[7].CurrentMeeple = myMeeples.First();
+            Assert.AreEqual(true, cs.ProveValueCard(myMeeples, 2));
+        }
     }
 }

@@ -96,8 +96,8 @@ namespace dog2go.Tests.Backend
         private static readonly CardAttribute CardAttributeTwoFields = new CardAttribute(AttributeEnum.TwoFields);
         private static readonly CardAttribute CardAttributeThreeFields = new CardAttribute(AttributeEnum.ThreeFields);
         private static readonly CardAttribute CardAttributeFourFields = new CardAttribute(AttributeEnum.FourFields);
-        private static readonly CardAttribute CardAttributeFiveFields = new CardAttribute(AttributeEnum.FiveFields);
         private static readonly CardAttribute CardAttributeFourFieldsBack = new CardAttribute(AttributeEnum.FourFieldsBack);
+        private static readonly CardAttribute CardAttributeFiveFields = new CardAttribute(AttributeEnum.FiveFields);
         private static readonly CardAttribute CardAttributeSixFields = new CardAttribute(AttributeEnum.SixFields);
         private static readonly CardAttribute CardAttributeSevenFields = new CardAttribute(AttributeEnum.SevenFields);
         private static readonly CardAttribute CardAttributeEightFields = new CardAttribute(AttributeEnum.EightFields);
@@ -263,44 +263,10 @@ namespace dog2go.Tests.Backend
             };
             CardMove cardMove = new CardMove()
             {
-                Card = new Card("cardChangePlace", 14, "testCardWithoutPic",
-                        new List<CardAttribute>()
-                        {
-                            new CardAttribute(AttributeEnum.ChangePlace)
-                        }),
-                SelectedAttribute = new CardAttribute(AttributeEnum.ChangePlace)
+                Card = _cardJoker,
+                SelectedAttribute = CardAttributeChangePlace
             };
             Assert.AreEqual(true, Validation.ValidateMove(meepleMove, cardMove));
-        }
-
-        [Test]
-        public void TestChangeMeepleNegativeStartField()
-        {
-            GameTable gameTable = _hub.GetGeneratedGameTable();
-            PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
-            PlayerFieldArea blueArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
-            StandardField startField = greenArea.Fields[10] as StandardField;
-            StartField endField = greenArea.Fields.Find(field => field.FieldType.Contains("StartField")) as StartField;
-            Meeple meeple1 = greenArea.Meeples[0];
-            Meeple meeple2 = blueArea.Meeples[0];
-            meeple2.IsStartFieldBlocked = true;
-            startField.CurrentMeeple = meeple1;
-            endField.CurrentMeeple = meeple2;
-            MeepleMove meepleMove = new MeepleMove()
-            {
-                Meeple = meeple1,
-                MoveDestination = endField
-            };
-            CardMove cardMove = new CardMove()
-            {
-                Card = new Card("cardChangePlace", 14, "testCardWithoutPic",
-                        new List<CardAttribute>()
-                        {
-                            new CardAttribute(AttributeEnum.ChangePlace)
-                        }),
-                SelectedAttribute = new CardAttribute(AttributeEnum.ChangePlace)
-            };
-            Assert.AreEqual(false, Validation.ValidateMove(meepleMove, cardMove));
         }
 
         #endregion
@@ -404,6 +370,81 @@ namespace dog2go.Tests.Backend
             StandardField field = new StandardField(2) { CurrentMeeple = meeple };
             StartField field2 = new StartField(3, ColorCode.Blue) { CurrentMeeple = meeple2 };
             Assert.AreEqual(true, Validation.ProveChangePlace(meeple, field2));
+        }
+
+        [Test]
+        public void TestChangeMeeplePositive()
+        {
+            GameTable gameTable = _hub.GetGeneratedGameTable();
+            PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
+            PlayerFieldArea blueArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
+            StandardField startField = greenArea.Fields[10] as StandardField;
+            StandardField endField = greenArea.Fields[14] as StandardField;
+            Meeple meeple1 = greenArea.Meeples[0];
+            Meeple meeple2 = blueArea.Meeples[0];
+            startField.CurrentMeeple = meeple1;
+            endField.CurrentMeeple = meeple2;
+            MeepleMove meepleMove = new MeepleMove()
+            {
+                Meeple = meeple1,
+                MoveDestination = endField
+            };
+            CardMove cardMove = new CardMove()
+            {
+                Card = _cardJoker,
+                SelectedAttribute = CardAttributeChangePlace
+            };
+            Assert.AreEqual(true, Validation.ValidateMove(meepleMove, cardMove));
+        }
+
+        [Test]
+        public void TestChangeMeepleNegativeSameColor()
+        {
+            GameTable gameTable = _hub.GetGeneratedGameTable();
+            PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
+            StandardField startField = greenArea.Fields[10] as StandardField;
+            StandardField endField = greenArea.Fields[14] as StandardField;
+            Meeple meeple1 = greenArea.Meeples[0];
+            Meeple meeple2 = greenArea.Meeples[1];
+            startField.CurrentMeeple = meeple1;
+            endField.CurrentMeeple = meeple2;
+            MeepleMove meepleMove = new MeepleMove()
+            {
+                Meeple = meeple1,
+                MoveDestination = endField
+            };
+            CardMove cardMove = new CardMove()
+            {
+                Card = _cardJoker,
+                SelectedAttribute = CardAttributeChangePlace
+            };
+            Assert.AreEqual(false, Validation.ValidateMove(meepleMove, cardMove));
+        }
+
+        [Test]
+        public void TestChangeMeepleNegativeStartField()
+        {
+            GameTable gameTable = _hub.GetGeneratedGameTable();
+            PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
+            PlayerFieldArea blueArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
+            StandardField startField = greenArea.Fields[10] as StandardField;
+            StartField endField = greenArea.Fields.Find(field => field.FieldType.Contains("StartField")) as StartField;
+            Meeple meeple1 = greenArea.Meeples[0];
+            Meeple meeple2 = blueArea.Meeples[0];
+            meeple2.IsStartFieldBlocked = true;
+            startField.CurrentMeeple = meeple1;
+            endField.CurrentMeeple = meeple2;
+            MeepleMove meepleMove = new MeepleMove()
+            {
+                Meeple = meeple1,
+                MoveDestination = endField
+            };
+            CardMove cardMove = new CardMove()
+            {
+                Card = _cardJoker,
+                SelectedAttribute = CardAttributeChangePlace
+            };
+            Assert.AreEqual(false, Validation.ValidateMove(meepleMove, cardMove));
         }
         #endregion
 
@@ -650,5 +691,6 @@ namespace dog2go.Tests.Backend
             Assert.AreEqual(false, Validation.HasBlockedField(startField, -4));
         }
         #endregion 
+        
     }
 }

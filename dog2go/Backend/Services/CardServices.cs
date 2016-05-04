@@ -87,16 +87,18 @@ namespace dog2go.Backend.Services
         }
         public bool ProveChangePlace(List<Meeple> myMeeples, List<Meeple> otherMeeples)
         {
-            if (myMeeples == null)
+            if (myMeeples == null || otherMeeples == null)
                 return false;
             List<Meeple> myOpenMeeples = GetOpenMeeples(myMeeples);
 
             List<Meeple> otherOpenMeeples = GetOpenMeeples(otherMeeples);
 
-            return myOpenMeeples.Count > 0 && otherOpenMeeples.Count > 0;
+            if (myOpenMeeples.Count == 0 || otherOpenMeeples.Count == 0)
+                return false;
+            return myOpenMeeples.Where((t, i) => otherOpenMeeples.Exists(meeple => !Validation.IsSameColorCode(t.ColorCode, meeple.ColorCode))).Any();
         }
 
-        private bool ProveValueCard(List<Meeple> myMeeples, int value)
+        public bool ProveValueCard(List<Meeple> myMeeples, int value)
         {
             if (myMeeples == null)
                 return false;
