@@ -88,6 +88,19 @@ namespace dog2go.Backend.Services
                 moveDestinationField = field;
                 return true;
             }) != null);
+
+            if (moveDestinationField == null)
+            {
+                var playerFieldAreaKennel = actualTable.PlayerFieldAreas.Find(area => area.KennelFields.Find(field =>
+                {
+                    if (field.Identifier == fieldId)
+                    {
+                        moveDestinationField = field;
+                        return true;
+                    }
+                    return false;
+                }) != null);
+            }
             return moveDestinationField;
         }
         public static bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
@@ -138,6 +151,8 @@ namespace dog2go.Backend.Services
                     startCountField = startCountField.Previous;
                     fieldCount--;
                 }
+                if (startCountField == null)
+                    return false;
 
                 for (var i = 0; i > fieldCount; i--)
                 {
@@ -166,7 +181,8 @@ namespace dog2go.Backend.Services
                     startCountField = startCountField.Next;
                     fieldCount++;
                 }
-
+                if (startCountField == null)
+                    return false;
                 for (var i = 0; i <= fieldCount; i++)
                 {
                     while (startCountField.FieldType.Contains("EndField"))

@@ -140,13 +140,18 @@ namespace dog2go.Backend.Hubs
         {
             GameTable actualGameTable = GetActualGameTable();
             List<HandCard> validCards = actualGameTable.cardServiceData.ProveCards(handCards, actualGameTable, user);
+            var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             if (validCards != null)
             {
+                context.Clients.Group(GlobalDefinitions.GroupName).broadcastMessage(Context.User.Identity.Name, ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
                 user.ConnectionIds.ForEach(cId =>
                 {
                     // TODO: get Cards, that are possible.
+                    context.Clients.Client(cId).broadcastMessage(Context.User.Identity.Name, ServerMessages.NofityActualPlayer);
+                    
                     Clients.Client(cId).notifyActualPlayer(validCards, GetColorCodeForUser(user.Nickname));
                 });
+
             }
             else
             {
@@ -162,7 +167,7 @@ namespace dog2go.Backend.Hubs
 
         private void SendCardsForRound(GameTable table)
         {
-            GameServices.UpdateActualRoundCards(table);
+            table = GameServices.UpdateActualRoundCards(table);
             List<HandCard> validateHandCards = null;
             foreach (var participation in table.Participations)
             {
@@ -177,6 +182,7 @@ namespace dog2go.Backend.Hubs
                 }
             }
             User actualUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Identifier == Context.User.Identity.Name).Value;
+            var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             Clients.Client(Context.ConnectionId).notifyActualPlayer(table.cardServiceData.ProveCards(validateHandCards, table, actualUser));
         }
 
@@ -247,10 +253,18 @@ namespace dog2go.Backend.Hubs
             User nextUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Nickname == nextPlayerNickname).Value;
             List<HandCard> cards = actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable);
             List<HandCard> validHandCards = actualGameTable.cardServiceData.ProveCards(cards, actualGameTable, nextUser);
+            var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             nextUser.ConnectionIds.ForEach(id =>
             {
-                if(validHandCards != null)
+                context.Clients.Group(GlobalDefinitions.GroupName).broadcastMessage(Context.User.Identity.Name, ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
+                if (validHandCards != null)
+                {
+                    context.Clients.Client(id).broadcastMessage(Context.User.Identity.Name, ServerMessages.NofityActualPlayer);
+                    
                     Clients.Client(id).notifyActualPlayer(validHandCards, GetColorCodeForUser(nextUser.Nickname));
+                }    
+                    
+
                 else
                 {
                     foreach (var card in actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable))
