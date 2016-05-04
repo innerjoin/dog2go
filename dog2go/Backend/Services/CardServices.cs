@@ -152,15 +152,7 @@ namespace dog2go.Backend.Services
 
         public bool AreCardsOnHand(GameTable actualGameTable)
         {
-            foreach (var participation in actualGameTable.Participations)
-            {
-                if (GetActualHandCards(participation.Participant, actualGameTable) != null)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return actualGameTable.Participations.Any(participation => GetActualHandCards(participation.Participant, actualGameTable) != null);
         }
 
         private static void Shuffle()
