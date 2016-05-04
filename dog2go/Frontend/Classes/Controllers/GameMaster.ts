@@ -12,15 +12,14 @@ import GameFieldService = gfs.GameFieldService;
 
 
 export class GameMaster {
-    private sessionController: SessionController;
     private chatController: ChatController;
     private gameArea: GameArea;
-    private sessionContoller: SessionController;
+    //private sessionContoller: SessionController;
     
 
     constructor() {
-        var sessionController = new SessionController();
-        this.sessionController = sessionController;
+        //var sessionController = new SessionController();
+        //this.sessionController = sessionController;
 
         this.chatController = new ChatController();
         this.gameArea = new GameArea();

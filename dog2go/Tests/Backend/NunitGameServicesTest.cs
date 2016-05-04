@@ -40,11 +40,14 @@ namespace dog2go.Tests.Backend
                 participationsList.Add(participation3);
                 participationsList.Add(participation4);
 
+                gameTable.Participations = participationsList;
+
                 for (int i = 0; i < gameTable.PlayerFieldAreas.Count; i++)
                 {
                     PlayerFieldArea currentPlayerFieldArea = gameTable.PlayerFieldAreas[i];
                     currentPlayerFieldArea.Participation = participationsList[i];
                 }
+                gameTable.RegisterCardService(new CardServices());
                 return gameTable;
             }
         }
@@ -126,6 +129,152 @@ namespace dog2go.Tests.Backend
             Assert.AreEqual(false, _gameServices.IsGameFinished(gameTable));
         }
 
+
+
         #endregion
+
+        #region "Testmethods for GetPartner"
+
+        [Test]
+        public void TestGetPartnerCorrectlyInitialized()
+        {
+            GameTable table = MakeInitialGameTable;
+            User user1 = table.Participations.Find(participation => participation.Participant.Nickname == "user1").Participant;
+            User user3 = table.Participations.Find(participation => participation.Participant.Nickname == "user3").Participant;
+
+            User partner1 = GameServices.GetPartner(
+                table.Participations.Find(participation => participation.Participant.Nickname == "user1").Participant,
+                table.Participations);
+
+            User partner3 = GameServices.GetPartner(
+                table.Participations.Find(participation => participation.Participant.Nickname == "user3").Participant,
+                table.Participations);
+
+            if(user1.Identifier == partner3.Identifier && user3.Identifier == partner1.Identifier)
+                Assert.AreEqual(true, true);
+            else
+                Assert.AreEqual(true, false);
+        }
+
+        [Test]
+        public void TestGetPartnerNotInitializedParticipation()
+        {
+            User user = new User("test_user", "4");
+
+            User partner = GameServices.GetPartner(user,
+                null);
+            Assert.AreEqual(null, partner);
+        }
+
+        [Test]
+        public void TestGetPartnerNotInitializedUser()
+        {
+
+            User partner = GameServices.GetPartner(null,
+                null);
+            Assert.AreEqual(null, partner);
+        }
+        #endregion
+
+        #region "Testmethods for GetNextPlayer"
+
+        [Test]
+        public void TestGetNextPlayerCorrectlyInitialized()
+        {
+            GameTable table = MakeInitialGameTable;
+            string user2 = GameServices.GetNextPlayer(table, "user1");
+            Assert.AreEqual(true, user2.Equals("user2"));
+            string user3 = GameServices.GetNextPlayer(table, "user2");
+            Assert.AreEqual(true, user3.Equals("user3"));
+            string user4 = GameServices.GetNextPlayer(table, "user3");
+            Assert.AreEqual(true, user4.Equals("user4"));
+            string user1 = GameServices.GetNextPlayer(table, "user4");
+            Assert.AreEqual(true, user1.Equals("user1"));
+        }
+
+        [Test]
+        public void TestGetNextPlayerNonExistentUser()
+        {
+            GameTable table = MakeInitialGameTable;
+            string user = GameServices.GetNextPlayer(table, "user5");
+            Assert.AreEqual(true, user == null);
+        }
+
+        [Test]
+        public void TestGetNextPlayerNotInitalizedGameTable()
+        {
+            GameTable table = MakeInitialGameTable;
+            string user = GameServices.GetNextPlayer(null, "user1");
+            Assert.AreEqual(true, user == null);
+        }
+        #endregion
+
+        #region "Testmethods for UpdateMeeplePosition"
+
+        [Test]
+        public void TestUpdateMeeplePositionCorrectlyInitialized()
+        {
+            GameTable table = MakeInitialGameTable;
+            PlayerFieldArea redArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red);
+            Meeple redMeeple = redArea.Meeples.First();
+            MoveDestinationField currentField = redArea.Fields.Find(field => field.FieldType.Contains("StartField"));
+            currentField.CurrentMeeple = redMeeple;
+            MoveDestinationField moveField = redArea.Fields.Find(field => field.FieldType.Contains("StandardField"));
+            GameServices.UpdateMeeplePosition(new MeepleMove() {Meeple = redMeeple, MoveDestination = moveField}, table);
+            Assert.AreEqual(moveField, table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red).Fields.Find(field => field.CurrentMeeple == redMeeple));
+        }
+
+        [Test]
+        public void TestUpdateMeeplePositionNoMeepleMove()
+        {
+            GameTable table = MakeInitialGameTable;
+            PlayerFieldArea redArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red);
+            Meeple redMeeple = redArea.Meeples.First();
+            MoveDestinationField currentField = redArea.Fields.Find(field => field.FieldType.Contains("StartField"));
+            currentField.CurrentMeeple = redMeeple;
+            MoveDestinationField moveField = redArea.Fields.Find(field => field.FieldType.Contains("StandardField"));
+            GameTable notModified = table;
+            GameServices.UpdateMeeplePosition(null, table);
+            Assert.AreEqual(table, notModified);
+        }
+
+        [Test]
+        public void TestUpdateMeeplePositionNoTable()
+        {
+            GameServices.UpdateMeeplePosition(null,null);
+            Assert.AreEqual(true, true);
+        }
+        #endregion
+
+        #region "Testmethods for UpdateActualRoundCards"
+
+        [Test]
+        public void TestUpdateActualRoundCardsCorrectlyInitialized()
+        {
+            GameTable table = MakeInitialGameTable;
+            GameServices.UpdateActualRoundCards(table);
+            Assert.AreEqual(4,
+                table.Participations.FindAll(participation => participation.ActualPlayRound.Cards.Count() == 6).Count);
+
+            GameServices.UpdateActualRoundCards(table);
+            Assert.AreEqual(4,
+                table.Participations.FindAll(participation => participation.ActualPlayRound.Cards.Count() == 5).Count);
+        }
+
+        [Test]
+        public void TestUpdateActualRoundCardsNonGameTable()
+        {
+            GameServices.UpdateActualRoundCards(null);
+            Assert.AreEqual(true, true);
+        }
+
+        [Test]
+        public void TestUpdateActualRoundCardsNonInitializedGameTable()
+        {
+            GameServices.UpdateActualRoundCards(new GameTable(new List<PlayerFieldArea>(), 4));
+            Assert.AreEqual(true, true);
+        }
+        #endregion
+
     }
 }

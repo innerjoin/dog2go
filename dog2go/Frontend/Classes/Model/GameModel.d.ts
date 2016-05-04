@@ -4,6 +4,11 @@ interface IHandCard extends ICard {
     IsPlayed: boolean;
 }
 
+interface ICardMove {
+    Card: ICard;
+    SelectedAttribute: ICardAttribute;
+}
+
 interface ICard {
         Name: string;
         Value: number;

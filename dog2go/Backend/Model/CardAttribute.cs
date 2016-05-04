@@ -2,6 +2,7 @@
 {
     public class CardAttribute
     {
+        public CardAttribute() { }
         public string Name { get; set; }
         public AttributeEnum Attribute { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
@@ -36,6 +37,20 @@ namespace dog2go.Backend.Hubs
                 }
             }
             return base.OnConnected();
+        }
+
+        public override Task OnReconnected()
+        {
+            return base.OnReconnected();
+        }
+
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            Console.WriteLine(stopCalled
+                ? $"Client {Context.ConnectionId} explicitly closed the connection."
+                : $"Client {Context.ConnectionId} timed out .");
+
+            return base.OnDisconnected(stopCalled);
         }
     }
 }

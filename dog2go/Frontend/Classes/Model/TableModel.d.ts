@@ -32,6 +32,9 @@ interface IMeeple {
     ColorCode: number;
     CurrentPosition: IMoveDestinationField;
     IsStartFieldBlocked: boolean;
+    CurrentFieldId: number;
+
+    spriteRepresentation: Phaser.Sprite;
 }
 
 interface IMoveDestinationField {
@@ -45,6 +48,12 @@ interface IMoveDestinationField {
     PreviousIdentifier: number;
 
     viewRepresentation: Phaser.Graphics;
+}
+
+interface IMeepleMove {
+    Meeple: IMeeple;
+    MoveDestination: IMoveDestinationField;
+    DestinationFieldId: number;
 }
 
 interface IKennelField extends IMoveDestinationField {

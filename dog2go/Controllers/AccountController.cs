@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Security;
 using dog2go.Backend;
+using dog2go.Backend.Constants;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
 using dog2go.Models;

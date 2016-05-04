@@ -1,4 +1,4 @@
-﻿
+﻿/*
 class GameTable implements IGameTable {
 
     public Name: string;
@@ -8,7 +8,7 @@ class GameTable implements IGameTable {
     public Stop: Date;
     PlayerFieldAreas: IPlayerFieldArea[] = [];
     /*        public List < PlayerFieldArea > PlayerFieldAreas;
-        public List < Participation > Participations; */
+        public List < Participation > Participations; *//*
 }
 
 class HandCard extends Card implements IHandCard {
@@ -25,4 +25,11 @@ class Card implements ICard {
 class CardAttribute implements ICardAttribute {
     public Name: string;
     public Attribute: AttributeEnum;
+}*/
+
+export enum AreaColor {
+    Red = 0xff0000,
+    Blue = 0x0000ff,
+    Green = 0x00ff00,
+    Yellow = 0xedc613
 }

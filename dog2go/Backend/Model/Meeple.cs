@@ -2,9 +2,13 @@
 {
     public class Meeple
     {
+        public Meeple() { }
+
         public ColorCode ColorCode { get; set; }
 
         public MoveDestinationField CurrentPosition;
+
+        public int CurrentFieldId;
 
         public bool IsStartFieldBlocked { get; set; }
 
