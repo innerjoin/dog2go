@@ -48,14 +48,14 @@ namespace dog2go.Backend.Services
             return currentPos.Identifier == destinationField.Identifier;
         }
 
-        private static bool IsSameColorCode(ColorCode firstColorCode, ColorCode secondColorCode)
+        public static bool IsSameColorCode(ColorCode firstColorCode, ColorCode secondColorCode)
         {
             return firstColorCode == secondColorCode;
         }
 
         public static bool IsMovableField(MoveDestinationField field)
         {
-            return IsValidStartField(field) || field.FieldType.Contains("EndField") ||
+            return field.FieldType.Contains("StartField") || field.FieldType.Contains("EndField") ||
                    field.FieldType.Contains("StandardField");
         }
 
@@ -155,7 +155,12 @@ namespace dog2go.Backend.Services
                 for (var i = 0; i > fieldCount; i--)
                 {
                     while (startCountField.FieldType.Contains("EndField"))
+                    {
                         startCountField = startCountField.Previous;
+                        if (startCountField == null)
+                            return fieldCount == i;
+                    }
+                        
                     StartField startField = startCountField as StartField;
                     if (startField != null)
                     {
@@ -181,7 +186,12 @@ namespace dog2go.Backend.Services
                 for (var i = 0; i <= fieldCount; i++)
                 {
                     while (startCountField.FieldType.Contains("EndField"))
+                    {
                         startCountField = startCountField.Next;
+                        if (startCountField == null)
+                            return fieldCount == i;
+                    }
+                        
                     
                     StartField startField = startCountField as StartField;
                     if (startField != null)
