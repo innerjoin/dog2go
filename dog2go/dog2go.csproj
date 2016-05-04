@@ -355,7 +355,6 @@
     <TypeScriptCompile Include="Frontend\Classes\Controllers\CardsController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameFieldsController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\MeepleController.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\TurnController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\LoginStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\GameStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
@@ -389,6 +388,8 @@
     <TypeScriptCompile Include="Frontend\Library\JQuery\jqueryui.d.ts" />
     <TypeScriptCompile Include="Tests\Frontend\Controllers\GameArea.test.ts" />
     <TypeScriptCompile Include="Tests\Frontend\Services\GameFieldService.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Services\RoundService.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Services\TurnService.test.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

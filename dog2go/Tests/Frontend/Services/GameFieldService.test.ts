@@ -7,7 +7,7 @@ describe("GameFieldService - ", () => {
     var gameTable: IGameTable;
     var cards: ICard[];
     //var $ = null;
-    var callbackCreate, callbackDone;
+    var callbacks, callbackDone;
     beforeAll(() => {
         gameTable = <any>{ testdata: 12345 };
         cards = [<any>{ testdata: 88838 }];
@@ -18,16 +18,16 @@ describe("GameFieldService - ", () => {
             }
         };
 
-        callbackCreate = {
+        callbacks = {
             createGametable: (ev: IGameTable) => {
-                gameTable = ev;
+                //gameTable = ev;
             },
-            assign: (cards: ICard[]) => {
+            assignHandCards: (cards: ICard[]) => {
                 
             }
         };
-        spyOn(callbackCreate, "createGametable");
-        spyOn(callbackCreate, "assign");
+        spyOn(callbacks, "createGametable");
+        spyOn(callbacks, "assignHandCards");
         //spyOn(callbackDone, "done"); // Does not work, because of direct call
 
         spyOn($.connection.hub, "start").and.callFake(() => {
@@ -45,34 +45,34 @@ describe("GameFieldService - ", () => {
         expect(gameFieldService).toBe(GameFieldService.getInstance());
     });
     
-    it("getGameFieldData", () => {
+    it("Server: getGameFieldData", () => {
         
         var gameFieldService = GameFieldService.getInstance();
-        gameFieldService.createGameTableCB = callbackCreate.createGametable;
+        gameFieldService.createGameTableCB = callbacks.createGametable;
 
         gameFieldService.getGameFieldData();
 
         // uppon calling server Methods: Allways check if Hub has been started correctly
         expect($.connection.hub.start).toHaveBeenCalled();
 
-        expect(callbackCreate.createGametable).toHaveBeenCalled();
-        expect(callbackCreate.createGametable).toHaveBeenCalledWith(gameTable);
+        expect(callbacks.createGametable).toHaveBeenCalled();
+        expect(callbacks.createGametable).toHaveBeenCalledWith(gameTable);
     });
 
     it("Client: backToGame", () => {
         var gameFieldService = GameFieldService.getInstance();
-        gameFieldService.createGameTableCB = callbackCreate.createGametable;
-        gameFieldService.assignHandCardsCB = callbackCreate.assign;
+        gameFieldService.createGameTableCB = callbacks.createGametable;
+        gameFieldService.assignHandCardsCB = callbacks.assignHandCards;
 
-        callbackCreate.createGametable.calls.reset();
-        callbackCreate.assign.calls.reset();
+        callbacks.createGametable.calls.reset();
+        callbacks.assignHandCards.calls.reset();
 
         $.connection.gameHub.client.backToGame(gameTable, cards);
 
-        expect(callbackCreate.createGametable).toHaveBeenCalled();
-        expect(callbackCreate.createGametable).toHaveBeenCalledWith(gameTable);
+        expect(callbacks.createGametable).toHaveBeenCalled();
+        expect(callbacks.createGametable).toHaveBeenCalledWith(gameTable);
 
-        expect(callbackCreate.assign).toHaveBeenCalled();
-        expect(callbackCreate.assign).toHaveBeenCalledWith(cards);
+        expect(callbacks.assignHandCards).toHaveBeenCalled();
+        expect(callbacks.assignHandCards).toHaveBeenCalledWith(cards);
     });
 });

@@ -88,9 +88,6 @@ export class GameFieldController {
             }
             currentPos++;
         }
-        //this.initializeMeeples(gameTable);
-        
-        return;
     }
 
     public addKennelFields(kennelFields: IKennelField[], areaPos: AreaCoordinates, color: number) {
