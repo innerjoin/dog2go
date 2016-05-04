@@ -113,7 +113,6 @@ namespace dog2go.Backend.Services
             Meeple movedMeeple = meepleMove.Meeple;
             MoveDestinationField destinationField = meepleMove.MoveDestination;
 
-
             if (movedMeeple == null || cardMove.SelectedAttribute == null)
                 return false;
 
