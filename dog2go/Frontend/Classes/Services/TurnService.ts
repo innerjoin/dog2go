@@ -37,14 +37,13 @@ export class TurnService {
     public validateMove(meepleMove: IMeepleMove, cardMove: ICardMove) {
         var mMoveReady: any = $.extend({}, meepleMove);
         mMoveReady.Meeple = $.extend({}, meepleMove.Meeple);
-        mMoveReady.Meeple.CurrentPosition = $.extend({}, meepleMove.Meeple.CurrentPosition);
-        mMoveReady.Meeple.spriteRepresentation = null;
-        mMoveReady.MoveDestination = $.extend({}, meepleMove.MoveDestination);
-        mMoveReady.MoveDestination.viewRepresentation = null;
-        if (mMoveReady.MoveDestination.EndFieldEntry) {
-            mMoveReady.MoveDestination.EndFieldEntry = null;
-        }
-        console.log("Going to Send out: ", mMoveReady, cardMove);
+        mMoveReady.Meeple.CurrentFieldId = meepleMove.Meeple.CurrentPosition.Identifier;
+        delete mMoveReady.Meeple.spriteRepresentation;
+        delete mMoveReady.Meeple.CurrentPosition;
+
+        delete mMoveReady.MoveDestination;
+        
+        console.log("Validating, Going to Send out: ", mMoveReady, cardMove);
         var gameHub = $.connection.gameHub;
         $.connection.hub.start().done(() => {
             var test = gameHub.server.validateMove(mMoveReady, cardMove);
