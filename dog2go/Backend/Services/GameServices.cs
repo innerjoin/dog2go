@@ -59,17 +59,18 @@ namespace dog2go.Backend.Services
             }
         }
 
-        public static void UpdateActualRoundCards(GameTable table)
+        public static GameTable UpdateActualRoundCards(GameTable table)
         {
             if (table?.cardServiceData == null ||table.Participations == null )
-                return;
+                return null;
             int nr = table.cardServiceData.GetNumberOfCardsPerUser();
             table.cardServiceData.CurrentRound++;
-            PlayRound actualPlayRound = new PlayRound(table.cardServiceData.CurrentRound - 1, nr);
+            
             List<Participation> participations = table.Participations;
             List<HandCard> cards = null;
             foreach (Participation participation in participations)
             {
+                PlayRound actualPlayRound = new PlayRound(table.cardServiceData.CurrentRound - 1, nr);
                 cards = new List<HandCard>();
                 for (int i = 0; i < nr; i++)
                 {
@@ -79,6 +80,8 @@ namespace dog2go.Backend.Services
                 actualPlayRound.Cards = cards;
                 participation.ActualPlayRound = actualPlayRound;
             }
+
+            return table;
         } 
 
     }
