@@ -1,5 +1,6 @@
 /// <reference path="../Model/TableModel.d.ts"/>
 import _phaser = require("phaser");
+import _savecpu = require("savecpu");
 
 import gfs = require("../Services/GameFieldsService");
 import GameFieldService = gfs.GameFieldService;
@@ -13,7 +14,7 @@ import CardsController = cc.CardsController;
 import mc = require("./MeepleController");
 import MeepleController = mc.MeepleController;
 
-const scaleFactor = 2;
+const scaleFactor = 1.5;
 
 export class GameArea {
     private gameFieldService: GameFieldService;
@@ -23,12 +24,16 @@ export class GameArea {
     private game: Phaser.Game;
 
     constructor(isTesting?: boolean) {
-        console.log(_phaser);
+        console.log(_phaser, _savecpu);
         const gameStates = {
+            init: this.init.bind(this),
             preload: this.preload.bind(this),
             create: this.create.bind(this)
         };
         this.game = new Phaser.Game(scaleFactor * 700, scaleFactor * 700, Phaser.AUTO, "gameContent", gameStates, true);
+
+        //this.game.plugins.add(new Phaser.Plugin.SaveCPU(this.game, null));
+        //this.game.plugins.add(Phaser.Plugin.SaveCPU);
 
         if (!isTesting) {
             this.gameFieldService = GameFieldService.getInstance();
@@ -38,7 +43,13 @@ export class GameArea {
             this.cardsController = new CardsController(this.meepleController);
         }
     }
-    
+
+    init() {
+        console.log("this.game.plugins", this.game.plugins);
+        console.log("Phaser.Plugin", Phaser.Plugin.SaveCPU);
+        this.game.plugins.add(Phaser.Plugin.SaveCPU);
+    }
+
     /* load game assets here, but not objects */
     preload() {
         

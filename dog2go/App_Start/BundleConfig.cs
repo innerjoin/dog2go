@@ -12,7 +12,8 @@ namespace dog2go
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Frontend/Library/JQuery/jquery-{version}.js"));
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Frontend/Library/JQuery/jquery-ui-{version}-dnd-only.js"));
+                        "~/Frontend/Library/JQuery/jquery-ui-{version}-dnd-only.js",
+                        "~/Frontend/Library/JQuery/jquery.ui.touch-punch.min.js"));
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Frontend/Library/JQuery/jquery.validate.min.js",
                         "~/Frontend/Library/JQuery/jquery.validate.unobtrusive.min.js"));
