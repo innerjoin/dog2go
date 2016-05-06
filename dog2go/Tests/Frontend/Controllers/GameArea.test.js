@@ -1,5 +1,4 @@
 define(["require", "exports", "phaser", "../../../Frontend/Classes/Controllers/GameArea"], function (require, exports, _phaser, Area) {
-    "use strict";
     describe("GameArea - ", function () {
         var timerCallback;
         var game;

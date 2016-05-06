@@ -19,8 +19,8 @@ namespace dog2go.Backend.Services
         private static readonly CardAttribute CardAttributeTwoFields = new CardAttribute(AttributeEnum.TwoFields);
         private static readonly CardAttribute CardAttributeThreeFields = new CardAttribute(AttributeEnum.ThreeFields);
         private static readonly CardAttribute CardAttributeFourFields = new CardAttribute(AttributeEnum.FourFields);
-        private static readonly CardAttribute CardAttributeFiveFields = new CardAttribute(AttributeEnum.FiveFields);
         private static readonly CardAttribute CardAttributeFourFieldsBack = new CardAttribute(AttributeEnum.FourFieldsBack);
+        private static readonly CardAttribute CardAttributeFiveFields = new CardAttribute(AttributeEnum.FiveFields);
         private static readonly CardAttribute CardAttributeSixFields = new CardAttribute(AttributeEnum.SixFields);
         private static readonly CardAttribute CardAttributeSevenFields = new CardAttribute(AttributeEnum.SevenFields);
         private static readonly CardAttribute CardAttributeEightFields = new CardAttribute(AttributeEnum.EightFields);
@@ -152,15 +152,7 @@ namespace dog2go.Backend.Services
 
         public bool AreCardsOnHand(GameTable actualGameTable)
         {
-            foreach (var participation in actualGameTable.Participations)
-            {
-                if (GetActualHandCards(participation.Participant, actualGameTable) != null)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return actualGameTable.Participations.Any(participation => GetActualHandCards(participation.Participant, actualGameTable) != null);
         }
 
         private static void Shuffle()
