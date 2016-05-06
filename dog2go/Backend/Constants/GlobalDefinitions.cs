@@ -4,5 +4,6 @@
     {
         public static readonly string GroupName = "TheOneAndOnlyGroupAvailableForDog2GoAtTheMoment";
         public static readonly int NofParticipantsPerTable = 4;
+        public static readonly string SystemName = "System";
     }
 }
