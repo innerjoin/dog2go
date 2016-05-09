@@ -1,15 +1,11 @@
 ﻿///<reference path="../../Library/JQuery/jqueryui.d.ts"/>
 
-import gfs = require("../Services/GameFieldsService");
-import GameFieldService = gfs.GameFieldService;
-
 import coords = require("./FieldCoordinates");
 import FieldCoordinates = coords.FieldCoordinates;
 import FieldCoordinatesData = coords.FieldCoordinatesData;
 import AreaCoordinates = coords.AreaCoordinates;
 
 export class GameFieldController {
-    private gameFieldService: GameFieldService;
     private game: Phaser.Game;
     private fieldCoordinates: FieldCoordinatesData;
     private scaleFactor: number;
@@ -31,8 +27,7 @@ export class GameFieldController {
     constructor(game: Phaser.Game, scaleFactor: number) {
         this.scaleFactor = scaleFactor;
         this.game = game;
-
-        this.gameFieldService = GameFieldService.getInstance();
+        
 
         const fc = new FieldCoordinates(scaleFactor);
         this.fieldCoordinates = fc.FOUR_PlAYERS;
