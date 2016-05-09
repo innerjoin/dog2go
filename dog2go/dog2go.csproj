@@ -210,6 +210,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Backend\Hubs\ChatHub.cs" />
+    <Compile Include="Backend\Services\GameFactory.cs" />
     <Compile Include="Backend\Hubs\GenericHub.cs" />
     <Compile Include="Backend\Hubs\GameHub.cs" />
     <Compile Include="Backend\Interfaces\IChatRepository.cs" />

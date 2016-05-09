@@ -24,7 +24,7 @@ namespace dog2go.Backend.Hubs
         private int CreateGameTable()
         {
             int newIdentifier = Games.Get().Count;
-            GameTable generatedTable = GenerateNewGameTable(newIdentifier);
+            GameTable generatedTable = GameFactory.GenerateNewGameTable(newIdentifier);
             Games.Add(generatedTable);
             return generatedTable.Identifier;
         }
@@ -95,38 +95,7 @@ namespace dog2go.Backend.Hubs
         // for test method calls only
         public GameTable GetGeneratedGameTable()
         {
-            return GenerateNewGameTable(-1);
-        }
-
-        private static GameTable GenerateNewGameTable(int gameId)
-        {
-            List<PlayerFieldArea> areas = new List<PlayerFieldArea>();
-
-            int id = 0;
-
-            const int fieldId = 0;
-            PlayerFieldArea areaTop = new PlayerFieldArea(++id, ColorCode.Blue, fieldId);
-            PlayerFieldArea areaLeft = new PlayerFieldArea(++id, ColorCode.Red, areaTop.FieldId);
-            PlayerFieldArea areaBottom = new PlayerFieldArea(++id, ColorCode.Green, areaLeft.FieldId);
-            PlayerFieldArea areaRight = new PlayerFieldArea(++id, ColorCode.Yellow, areaBottom.FieldId);
-
-            // Connection between PlayFieldAreas
-            areaTop.Next = areaLeft;
-            areaTop.Previous = areaRight;
-            areaRight.Next = areaTop;
-            areaRight.Previous = areaBottom;
-            areaLeft.Next = areaBottom;
-            areaLeft.Previous = areaTop;
-            areaBottom.Next = areaRight;
-            areaBottom.Previous = areaLeft;
-
-            areas.Add(areaTop);
-            areas.Add(areaLeft);
-            areas.Add(areaBottom);
-            areas.Add(areaRight);
-
-            GameTable table = new GameTable(areas, gameId);
-            return table;
+            return GameFactory.GenerateNewGameTable(-1);
         }
 
         public void SendCards(List<HandCard> cards, User user)
@@ -211,24 +180,21 @@ namespace dog2go.Backend.Hubs
                                                 Validation.GetFieldById(GetActualGameTable(),
                                                     meepleMove.Meeple.CurrentFieldId);
             meepleMove.MoveDestination = meepleMove.MoveDestination ?? Validation.GetFieldById(GetActualGameTable(), meepleMove.DestinationFieldId);
-            if (Validation.ValidateMove(meepleMove, cardMove))
-            {
-                GameTable actualGameTable = GetActualGameTable();
-                GameServices.UpdateMeeplePosition(meepleMove, actualGameTable);
-                List<Meeple> allMeeples = new List<Meeple>();
+            if (!Validation.ValidateMove(meepleMove, cardMove)) return false;
+            GameTable actualGameTable = GetActualGameTable();
+            GameServices.UpdateMeeplePosition(meepleMove, actualGameTable);
+            List<Meeple> allMeeples = new List<Meeple>();
 
-                foreach (var area in actualGameTable.PlayerFieldAreas)
-                {
-                    allMeeples.AddRange(area.Meeples);
-                }
-                List<HandCard> actualCards = actualGameTable.cardServiceData.GetActualHandCards(
-                   GetActualUser() , actualGameTable);
-                actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GetActualUser(), cardMove.Card);
-                Clients.All.sendMeeplePositions(allMeeples);
-                NotifyNextPlayer();
-                return true;
+            foreach (var area in actualGameTable.PlayerFieldAreas)
+            {
+                allMeeples.AddRange(area.Meeples);
             }
-            return false;
+            List<HandCard> actualCards = actualGameTable.cardServiceData.GetActualHandCards(
+                GetActualUser() , actualGameTable);
+            actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GetActualUser(), cardMove.Card);
+            Clients.All.sendMeeplePositions(allMeeples);
+            NotifyNextPlayer();
+            return true;
         }
 
         private User GetActualUser()
