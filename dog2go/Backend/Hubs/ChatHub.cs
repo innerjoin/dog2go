@@ -4,6 +4,7 @@ using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Constants;
 using dog2go.Backend.Repos;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -23,7 +24,7 @@ namespace dog2go.Backend.Hubs
         public override Task OnConnected()
         {
             JoinGroup(GlobalDefinitions.GroupName);
-            SendMessage(ServerMessages.JoinedGame);
+            SendSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name));
             return base.OnConnected();
         }
 
@@ -44,6 +45,14 @@ namespace dog2go.Backend.Hubs
             }
 
             Clients.Group(newMessage.Group).broadcastMessage(Context.User.Identity.Name, message);
+        }
+
+        public void SendSystemMessage(string message)
+        {
+            if (! message.IsNullOrWhiteSpace())
+            {
+                Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(message);
+            }
         }
 
         private void JoinGroup(string groupName)

@@ -85,8 +85,8 @@ namespace dog2go.Backend.Services
             var playerFieldArea = actualTable.PlayerFieldAreas.Find(area => area.Fields.Find(field =>
             {
                 if (field.Identifier != fieldId) return false;
-                moveDestinationField = field;
-                return true;
+                    moveDestinationField = field;
+                    return true;
             }) != null);
 
             if (moveDestinationField == null)
@@ -114,7 +114,7 @@ namespace dog2go.Backend.Services
             switch (cardMove.SelectedAttribute.Attribute)
             {
                 case AttributeEnum.ChangePlace:
-                    return ProveChangePlace(movedMeeple, destinationField);
+               return ProveChangePlace(movedMeeple, destinationField);
                 case AttributeEnum.LeaveKennel:
                     return ProveLeaveKennel(movedMeeple, destinationField);
             }
@@ -124,21 +124,21 @@ namespace dog2go.Backend.Services
         public static bool CanMoveToEndFields(MoveDestinationField startCountField, int fieldCount)
         {
             if (HasBlockedField(startCountField, fieldCount)) return false;
-            for (var i = 0; i <= fieldCount; i++)
-            {
-                startCountField = startCountField.Next;
-                StartField startField = startCountField as StartField;
-                if (startField == null) continue;
-                EndField endField = startField.EndFieldEntry;
-                fieldCount--;
-                for (var j = fieldCount - i; j >= 0; j--)
+                for (var i = 0; i <= fieldCount; i++)
                 {
-                    endField = (EndField)endField.Next;
-                    if (endField == null)
-                        return false;
-                }
-                return true;
-            }
+                    startCountField = startCountField.Next;
+                    StartField startField = startCountField as StartField;
+                if (startField == null) continue;
+                        EndField endField = startField.EndFieldEntry;
+                        fieldCount--;
+                        for (var j = fieldCount - i; j >= 0; j--)
+                        {
+                            endField = (EndField)endField.Next;
+                            if (endField == null)
+                                return false;
+                        }
+                        return true;
+                    }
             return false;
         }
 
@@ -191,7 +191,7 @@ namespace dog2go.Backend.Services
                         if (startCountField == null)
                             return fieldCount == i;
                     }
-                    
+                        
                     StartField startField = startCountField as StartField;
                     if (startField != null)
                     {

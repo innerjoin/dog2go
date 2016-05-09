@@ -5,7 +5,7 @@ import ChatService = Service.ChatService;
 export class ChatController {
     private chatService: ChatService;
     constructor() {
-        this.chatService = ChatService.getInstance(this.putMessage);
+        this.chatService = ChatService.getInstance(this.putMessage, this.putSystemMessage);
         $("#message").keypress((e) => {
             if (e.which === 13) this.sendChat();
         });
@@ -28,6 +28,14 @@ export class ChatController {
         const encodedMsg = $("<div />").text(message).html();
         // Add the message to the page. 
         $("#chatBox").append(`<li><strong>${encodedName}</strong>:&nbsp;&nbsp;${encodedMsg}</li>`);
+        // auto scroll chat to bottom
+        $('#chatBox').animate({ scrollTop: $(document).height() }, "slow");
+    }
+
+    public putSystemMessage(message: string) {
+        const encodedMsg = $("<div />").text(message).html();
+        // Add the message to the page. 
+        $("#chatBox").append(`<li><strong>${encodedMsg}</strong></li>`);
         // auto scroll chat to bottom
         $('#chatBox').animate({ scrollTop: $(document).height() }, "slow");
     }

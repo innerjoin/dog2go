@@ -112,12 +112,10 @@ namespace dog2go.Backend.Hubs
             var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             if (validCards != null)
             {
-                context.Clients.Group(GlobalDefinitions.GroupName).broadcastMessage(Context.User.Identity.Name, ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
+                context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
                 user.ConnectionIds.ForEach(cId =>
                 {
-                    // TODO: get Cards, that are possible.
-                    context.Clients.Client(cId).broadcastMessage(Context.User.Identity.Name, ServerMessages.NofityActualPlayer);
-                    
+                    context.Clients.Client(cId).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
                     Clients.Client(cId).notifyActualPlayer(validCards, GetColorCodeForUser(user.Nickname));
                 });
 
@@ -136,7 +134,7 @@ namespace dog2go.Backend.Hubs
 
         private void SendCardsForRound(GameTable table)
         {
-            table = GameServices.UpdateActualRoundCards(table);
+            GameServices.UpdateActualRoundCards(table);
             List<HandCard> validateHandCards = null;
             foreach (var participation in table.Participations)
             {
@@ -151,7 +149,6 @@ namespace dog2go.Backend.Hubs
                 }
             }
             User actualUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Identifier == Context.User.Identity.Name).Value;
-            var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             Clients.Client(Context.ConnectionId).notifyActualPlayer(table.cardServiceData.ProveCards(validateHandCards, table, actualUser));
         }
 
@@ -222,10 +219,10 @@ namespace dog2go.Backend.Hubs
             var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             nextUser.ConnectionIds.ForEach(id =>
             {
-                context.Clients.Group(GlobalDefinitions.GroupName).broadcastMessage(Context.User.Identity.Name, ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
+                context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
                 if (validHandCards != null)
                 {
-                    context.Clients.Client(id).broadcastMessage(Context.User.Identity.Name, ServerMessages.NofityActualPlayer);
+                    context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
                     
                     Clients.Client(id).notifyActualPlayer(validHandCards, GetColorCodeForUser(nextUser.Nickname));
                 }    
