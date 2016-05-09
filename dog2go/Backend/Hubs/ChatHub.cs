@@ -4,6 +4,7 @@ using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Constants;
 using dog2go.Backend.Repos;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -23,59 +24,9 @@ namespace dog2go.Backend.Hubs
         public override Task OnConnected()
         {
             JoinGroup(GlobalDefinitions.GroupName);
-            //string userName = Context.User.Identity.Name;
-            SendMessage(ServerMessages.JoinedGame);
+            SendSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name));
             return base.OnConnected();
         }
-
-        //public override Task OnDisconnected(bool stopCalled)
-        //{
-        //    string userName = Context.User.Identity.Name;
-
-        //    HashSet<string> connections;
-        //    connections = _connectionRepository.GetConnections(userName);
-
-        //    if (connections != null)
-        //    {
-
-        //        lock (connections)
-        //        {
-
-        //            connections.RemoveWhere(cid => cid.Equals(Context.ConnectionId));
-
-        //            if (!connections.Any())
-        //            {
-
-        //                HashSet<string> removedConnectionSet;
-        //                _connectionRepository.Remove(userName);
-
-        //                // Could be used to show other users that a new has been connected
-        //                //Clients.Others.userConnected(userName);
-        //            }
-        //        }
-        //    }
-
-        //    LeaveGroup("session_group");
-
-        //    return base.OnDisconnected(stopCalled);
-        //}
-
-        //private HashSet<string> GetConnections(string username)
-        //{
-        //    return _connectionRepository.GetConnections(username); ;
-        //}
-
-        //public override Task OnReconnected()
-        //{
-        //    string name = Context.User.Identity.Name;
-
-        //    if (!_connectionRepository.GetConnections(name).Contains(Context.ConnectionId))
-        //    {
-        //        _connectionRepository.Add(name, Context.ConnectionId);
-        //    }
-
-        //    return base.OnReconnected();
-        //}
 
         public void SendMessage(string message)
         {
@@ -96,14 +47,17 @@ namespace dog2go.Backend.Hubs
             Clients.Group(newMessage.Group).broadcastMessage(Context.User.Identity.Name, message);
         }
 
+        public void SendSystemMessage(string message)
+        {
+            if (! message.IsNullOrWhiteSpace())
+            {
+                Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(message);
+            }
+        }
+
         private void JoinGroup(string groupName)
         {
             Groups.Add(Context.ConnectionId, groupName);
         }
-
-        //private void LeaveGroup(string groupName)
-        //{
-        //    Groups.Remove(Context.ConnectionId, groupName);
-        //}
     }
 }

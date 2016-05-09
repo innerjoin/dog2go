@@ -278,7 +278,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Blue);
-            StandardField field = new StandardField(2) {CurrentMeeple = meeple};
+            meeple.CurrentPosition = new StandardField(2);
             StandardField field2 = new StandardField(3) { CurrentMeeple = meeple2 };
             Assert.AreEqual(false, Validation.ProveChangePlace(meeple, field2));
         }
@@ -288,7 +288,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Blue);
-            EndField field = new EndField(2) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new EndField(2);
             EndField field2 = new EndField(3) { CurrentMeeple = meeple2 };
             Assert.AreEqual(false, Validation.ProveChangePlace(meeple, field2));
         }
@@ -298,7 +298,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Green);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Blue);
-            EndField field = new EndField(2) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new EndField(2);
             EndField field2 = new EndField(3) { CurrentMeeple = meeple2 };
             Assert.AreEqual(false, Validation.ProveChangePlace(meeple, field2));
         }
@@ -308,7 +308,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Green);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Blue);
-            KennelField field = new KennelField(2) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new KennelField(2);
             KennelField field2 = new KennelField(3) { CurrentMeeple = meeple2 };
             Assert.AreEqual(false, Validation.ProveChangePlace(meeple, field2));
         }
@@ -318,8 +318,8 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Green) {IsStartFieldBlocked = true};
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Blue) { IsStartFieldBlocked = false };
-            StartField field = new StartField(1, ColorCode.Green) { CurrentMeeple = meeple };
-            StartField field2 = new StartField(1,ColorCode.Blue) { CurrentMeeple = meeple2 };
+            StartField field = new StartField(1, ColorCode.Green) {CurrentMeeple =  meeple};
+            StartField field2 = new StartField(2,ColorCode.Blue) { CurrentMeeple = meeple2 };
             Assert.AreEqual(false, Validation.ProveChangePlace(meeple, field2));
         }
 
@@ -328,7 +328,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Green) { IsStartFieldBlocked = false };
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Blue) { IsStartFieldBlocked = true };
-            StartField field = new StartField(1, ColorCode.Green) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new StartField(1, ColorCode.Green);
             StartField field2 = new StartField(1, ColorCode.Blue) { CurrentMeeple = meeple2 };
             Assert.AreEqual(false, Validation.ProveChangePlace(meeple, field2));
         }
@@ -337,7 +337,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Green) { IsStartFieldBlocked = false }; 
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Blue) { IsStartFieldBlocked = false };
-            StartField field = new StartField(1, ColorCode.Blue) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new StartField(1, ColorCode.Blue);
             StartField field2 = new StartField(2, ColorCode.Green) { CurrentMeeple = meeple2 };
             Assert.AreEqual(true, Validation.ProveChangePlace(meeple, field2));
         }
@@ -347,7 +347,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Green);
-            StandardField field = new StandardField(2) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new StandardField(2);
             StandardField field2 = new StandardField(3) { CurrentMeeple = meeple2 };
             Assert.AreEqual(true, Validation.ProveChangePlace(meeple, field2));
         }
@@ -357,7 +357,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Green) {IsStartFieldBlocked = false};
-            StandardField field = new StandardField(2) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new StandardField(2);
             StartField field2 = new StartField(3, ColorCode.Blue) { CurrentMeeple = meeple2 };
             Assert.AreEqual(true, Validation.ProveChangePlace(meeple, field2));
         }
@@ -367,7 +367,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue) { IsStartFieldBlocked = false };
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Green) { IsStartFieldBlocked = false };
-            StandardField field = new StandardField(2) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new StandardField(2);
             StartField field2 = new StartField(3, ColorCode.Blue) { CurrentMeeple = meeple2 };
             Assert.AreEqual(true, Validation.ProveChangePlace(meeple, field2));
         }
@@ -455,7 +455,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Blue);
-            StartField field = new StartField(2, ColorCode.Blue) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new StartField(2, ColorCode.Blue);
             StartField field2 = new StartField(3, ColorCode.Blue) { CurrentMeeple = meeple2 };
             Assert.AreEqual(false, Validation.ProveLeaveKennel(meeple, field2));
         }
@@ -465,7 +465,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Blue);
-            KennelField field = new KennelField(2) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new KennelField(2);
             KennelField field2 = new KennelField(3) { CurrentMeeple = meeple2 };
             Assert.AreEqual(false, Validation.ProveLeaveKennel(meeple, field2));
         }
@@ -475,7 +475,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Green);
-            KennelField field = new KennelField(2) { CurrentMeeple = meeple };
+             meeple2.CurrentPosition = new KennelField(2);
             StartField field2 = new StartField(3, ColorCode.Blue) { CurrentMeeple = meeple2 };
             Assert.AreEqual(true, Validation.ProveLeaveKennel(meeple, field2));
         }
@@ -485,7 +485,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Red);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Green);
-            KennelField field = new KennelField(2) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new KennelField(2);
             StartField field2 = new StartField(3, ColorCode.Blue) { CurrentMeeple = meeple2 };
             Assert.AreEqual(false, Validation.ProveLeaveKennel(meeple, field2));
         }
@@ -495,7 +495,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Green);
-            KennelField field = new KennelField(2) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new KennelField(2);
             StartField field2 = new StartField(3, ColorCode.Blue);
             Assert.AreEqual(true, Validation.ProveLeaveKennel(meeple, field2));
         }
@@ -505,7 +505,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Red);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Green) {IsStartFieldBlocked = true};
-            KennelField field = new KennelField(2) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new KennelField(2);
             StartField field2 = new StartField(3, ColorCode.Red) {CurrentMeeple = meeple2};
             Assert.AreEqual(false, Validation.ProveLeaveKennel(meeple, field2));
         }
@@ -515,7 +515,7 @@ namespace dog2go.Tests.Backend
         {
             Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Green);
-            KennelField field = new KennelField(2) { CurrentMeeple = meeple };
+            meeple.CurrentPosition = new KennelField(2);
             StartField field2 = new StartField(3, ColorCode.Blue) { CurrentMeeple = meeple2 };
             Assert.AreEqual(true, Validation.ProveLeaveKennel(meeple, field2));
         }
@@ -659,7 +659,7 @@ namespace dog2go.Tests.Backend
         public void TestHasBlockedFieldForwardsFromStart()
         {
             GameTable table = MakeInitialGameTable;
-            Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
+            //Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Blue) { IsStartFieldBlocked = true };
             StartField startField = (StartField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields.Find(field => field.FieldType.Contains("StartField"));
             startField.CurrentMeeple = meeple2;
@@ -684,7 +684,7 @@ namespace dog2go.Tests.Backend
         public void TestHasBlockedFieldBackwardsFromStart()
         {
             GameTable table = MakeInitialGameTable;
-            Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
+            //Meeple meeple = new Meeple(new KennelField(1), ColorCode.Blue);
             Meeple meeple2 = new Meeple(new KennelField(2), ColorCode.Blue) { IsStartFieldBlocked = true };
             StartField startField = (StartField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields.Find(field => field.FieldType.Contains("StartField"));
             startField.CurrentMeeple = meeple2;

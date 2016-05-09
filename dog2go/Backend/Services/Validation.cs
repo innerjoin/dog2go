@@ -32,7 +32,7 @@ namespace dog2go.Backend.Services
             if (!destinationField.FieldType.Contains("StartField"))
                 return false;
             StartField startField = destinationField as StartField;
-            if (!IsSameColorCode(startField.ColorCode, moveMeeple.ColorCode))
+            if (startField != null && !IsSameColorCode(startField.ColorCode, moveMeeple.ColorCode))
                 return false;
             return destinationField.CurrentMeeple == null || IsValidStartField(destinationField);
         }
@@ -67,11 +67,9 @@ namespace dog2go.Backend.Services
         public static bool IsValidStartField(MoveDestinationField field)
         {
             StartField startField = field as StartField;
-            if(startField != null && startField.CurrentMeeple != null)
+            if(startField?.CurrentMeeple != null)
                 return !startField.CurrentMeeple.IsStartFieldBlocked;
-            if (startField != null && startField.CurrentMeeple == null)
-                return true;
-            return false;
+            return startField != null && startField.CurrentMeeple == null;
         }
         private static bool IsSimpleInvalidChangeField(MoveDestinationField field)
         {
@@ -86,12 +84,9 @@ namespace dog2go.Backend.Services
             MoveDestinationField moveDestinationField = null;
             var playerFieldArea = actualTable.PlayerFieldAreas.Find(area => area.Fields.Find(field =>
             {
-                if (field.Identifier == fieldId)
-                {
+                if (field.Identifier != fieldId) return false;
                     moveDestinationField = field;
                     return true;
-                }
-                return false;
             }) != null);
 
             if (moveDestinationField == null)
@@ -116,28 +111,24 @@ namespace dog2go.Backend.Services
             if (movedMeeple == null || cardMove.SelectedAttribute == null)
                 return false;
 
-            if (cardMove.SelectedAttribute.Attribute == AttributeEnum.ChangePlace)
+            switch (cardMove.SelectedAttribute.Attribute)
             {
+                case AttributeEnum.ChangePlace:
                return ProveChangePlace(movedMeeple, destinationField);
-            }
-
-            if (cardMove.SelectedAttribute.Attribute == AttributeEnum.LeaveKennel)
-            {
-                return ProveLeaveKennel(movedMeeple, destinationField);               
+                case AttributeEnum.LeaveKennel:
+                    return ProveLeaveKennel(movedMeeple, destinationField);
             }
             return ProveValueCard(movedMeeple, destinationField, (int)cardMove.SelectedAttribute.Attribute);
         }
 
         public static bool CanMoveToEndFields(MoveDestinationField startCountField, int fieldCount)
         {
-            if (!HasBlockedField(startCountField, fieldCount))
-            {
+            if (HasBlockedField(startCountField, fieldCount)) return false;
                 for (var i = 0; i <= fieldCount; i++)
                 {
                     startCountField = startCountField.Next;
                     StartField startField = startCountField as StartField;
-                    if (startField != null)
-                    {
+                if (startField == null) continue;
                         EndField endField = startField.EndFieldEntry;
                         fieldCount--;
                         for (var j = fieldCount - i; j >= 0; j--)
@@ -148,8 +139,6 @@ namespace dog2go.Backend.Services
                         }
                         return true;
                     }
-                }
-            }
             return false;
         }
 
@@ -177,14 +166,11 @@ namespace dog2go.Backend.Services
                     StartField startField = startCountField as StartField;
                     if (startField != null)
                     {
-                        if (startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked)
-                            return true;
-                        return false;
+                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
                     }
 
                     startCountField = startCountField.Previous;
                 }
-
                 return false;
             }
 
@@ -206,18 +192,13 @@ namespace dog2go.Backend.Services
                             return fieldCount == i;
                     }
                         
-                    
                     StartField startField = startCountField as StartField;
                     if (startField != null)
                     {
-                        if (startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked)
-                            return true;
-                        return false;
+                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
                     }
-
                     startCountField = startCountField.Next;
                 }
-
                 return false;
             }
         }
@@ -242,7 +223,6 @@ namespace dog2go.Backend.Services
                         value++;
                 }
             }
-
             return currentPos;
         }
     }

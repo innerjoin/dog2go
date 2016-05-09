@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using dog2go.Backend.Constants;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
 using dog2go.Backend.Services;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Hubs;
 using WebGrease.Css.Extensions;
 
 namespace dog2go.Backend.Hubs
@@ -17,6 +13,8 @@ namespace dog2go.Backend.Hubs
     [Authorize]
     public class GameHub : GenericHub
     {
+        private static readonly object Locker = new object();
+
         public GameHub(IGameRepository repos): base(repos){}
 
         public GameHub() {}
@@ -24,43 +22,37 @@ namespace dog2go.Backend.Hubs
         private int CreateGameTable()
         {
             int newIdentifier = Games.Get().Count;
-            GameTable generatedTable = GenerateNewGameTable(newIdentifier);
+            GameTable generatedTable = GameFactory.GenerateNewGameTable(newIdentifier);
             Games.Add(generatedTable);
             return generatedTable.Identifier;
         }
 
         public GameTable ConnectToTable()
         {
-            int gameId = 0;
-            if (Games.Get().Count == 0)
-                gameId = CreateGameTable();
-            string curUser = Context.User.Identity.Name;
-
-            GameTable table = Games.Get().Find(x => x.Identifier == gameId);
-            bool isParticipating = false;
-            if (table?.Participations == null || table.Participations.Count >= GlobalDefinitions.NofParticipantsPerTable)
+            lock (Locker)
             {
-                table.Participations.ForEach(participation =>
+                GameTable table = GetTable();
+                string curUser = Context.User.Identity.Name;
+                if (AlreadyConnected(table, curUser))
                 {
-                    // Player allready connected to a running table
-                    if (participation.Participant.Nickname.Equals(curUser))
-                    {
-                        isParticipating = true;
-                        List<HandCard> cards = table.cardServiceData.GetActualHandCards(participation.Participant, table);
-                        Clients.Client(Context.ConnectionId).backToGame(table, cards);
-
-                        // TODO: only during development: Notify any caller als actualplayer:
-                        NotifyActualPlayer(participation.Participant, cards);
-                    }
-                });
-                if (isParticipating)
-                {
-                    return table;
+                    Participation participation = GetParticipation(table, curUser);
+                    List<HandCard> cards = table.cardServiceData?.GetActualHandCards(participation.Participant, table);
+                    Clients.Client(Context.ConnectionId).backToGame(table, cards);
                 }
-                throw new Exception("Table already full");
+                else
+                {
+                    AddParticipation(table, curUser);
 
+                    if (table.Participations.Count == GlobalDefinitions.NofParticipantsPerTable)
+                        AllConnected(table);
+                }
+                Clients.Client(Context.ConnectionId).createGameTable(table);
+                return table;
             }
+        }
 
+        private static void AddParticipation(GameTable table, string curUser)
+        {
             Participation newParticipation;
             if (table.Participations.Count() % 2 == 1)
             {
@@ -72,62 +64,39 @@ namespace dog2go.Backend.Hubs
                         Partner = table.Participations.Last().Participant
                     };
                 table.Participations.Last().Partner = actualUser;
-                table.PlayerFieldAreas.Find(area => area.Identifier == table.Participations.Count()+1).Participation =
-                    newParticipation;
             }
             else
             {
                 newParticipation = new Participation(UserRepository.Instance.Get().First(user => user.Value.Nickname == curUser).Value);
-                table.PlayerFieldAreas.Find(area => area.Identifier == table.Participations.Count()+1).Participation =
-                    newParticipation;
             }
-
+            table.PlayerFieldAreas.Find(area => area.Identifier == table.Participations.Count() + 1).Participation = newParticipation;
             table.Participations.Add(newParticipation);
+        }
 
-            Clients.Client(Context.ConnectionId).createGameTable(table);
+        private GameTable GetTable()
+        {
+            int gameId = GlobalDefinitions.GameId;
+            if (Games.Get().Count == 0)
+                gameId = CreateGameTable();
+            return Games.Get().Find(x => x.Identifier == gameId);
+        }
 
-            if (table.Participations.Count >= GlobalDefinitions.NofParticipantsPerTable)
-            {
-                AllConnected(table);
+        private static bool AlreadyConnected(GameTable table, string curUser)
+        {
+            return table?.Participations != null && 
+                (table.Participations).Any(part => 
+                        curUser.Equals(part.Participant.Nickname));
+        }
 
-            }
-            return table;
+        private static Participation GetParticipation(GameTable table, string curUser)
+        {
+            return table?.Participations?.FirstOrDefault(part => curUser.Equals(part.Participant.Nickname));
         }
 
         // for test method calls only
         public GameTable GetGeneratedGameTable()
         {
-            return GenerateNewGameTable(-1);
-        }
-
-        private GameTable GenerateNewGameTable(int gameId)
-        {
-            List<PlayerFieldArea> areas = new List<PlayerFieldArea>();
-
-            int id = 0;
-
-            int fieldId = 0;
-            PlayerFieldArea areaTop = new PlayerFieldArea(++id, ColorCode.Blue, fieldId);
-            PlayerFieldArea areaLeft = new PlayerFieldArea(++id, ColorCode.Red, areaTop.FieldId);
-            PlayerFieldArea areaBottom = new PlayerFieldArea(++id, ColorCode.Green, areaLeft.FieldId);
-            PlayerFieldArea areaRight = new PlayerFieldArea(++id, ColorCode.Yellow, areaBottom.FieldId);
-            // Connection between PlayFieldAreas
-            areaTop.Next = areaLeft;
-            areaTop.Previous = areaRight;
-            areaRight.Next = areaTop;
-            areaRight.Previous = areaBottom;
-            areaLeft.Next = areaBottom;
-            areaLeft.Previous = areaTop;
-            areaBottom.Next = areaRight;
-            areaBottom.Previous = areaLeft;
-
-            areas.Add(areaTop);
-            areas.Add(areaLeft);
-            areas.Add(areaBottom);
-            areas.Add(areaRight);
-
-            GameTable table = new GameTable(areas, gameId);
-            return table;
+            return GameFactory.GenerateNewGameTable(-1);
         }
 
         public void SendCards(List<HandCard> cards, User user)
@@ -141,20 +110,17 @@ namespace dog2go.Backend.Hubs
         {
             GameTable actualGameTable = GetActualGameTable();
             List<HandCard> validCards = actualGameTable.cardServiceData.ProveCards(handCards, actualGameTable, user);
-            var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             if (validCards != null)
             {
-                context.Clients.Group(GlobalDefinitions.GroupName).broadcastMessage(Context.User.Identity.Name, ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
+                context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
                 user.ConnectionIds.ForEach(cId =>
                 {
-                    // TODO: get Cards, that are possible.
-                    context.Clients.Client(cId).broadcastMessage(Context.User.Identity.Name, ServerMessages.NofityActualPlayer);
-                    
+                    context.Clients.Client(cId).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
                     Clients.Client(cId).notifyActualPlayer(validCards, GetColorCodeForUser(user.Nickname));
                 });
 
             }
-
             else
             {
                 NotifyNextPlayer();
@@ -169,7 +135,7 @@ namespace dog2go.Backend.Hubs
 
         private void SendCardsForRound(GameTable table)
         {
-            table = GameServices.UpdateActualRoundCards(table);
+            GameServices.UpdateActualRoundCards(table);
             List<HandCard> validateHandCards = null;
             foreach (var participation in table.Participations)
             {
@@ -184,7 +150,6 @@ namespace dog2go.Backend.Hubs
                 }
             }
             User actualUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Identifier == Context.User.Identity.Name).Value;
-            var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             Clients.Client(Context.ConnectionId).notifyActualPlayer(table.cardServiceData.ProveCards(validateHandCards, table, actualUser));
         }
 
@@ -202,7 +167,10 @@ namespace dog2go.Backend.Hubs
 
         private GameTable GetActualGameTable()
         {
-            return Games.Get().Find(table => table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name) != null);
+            lock (Locker)
+            {
+                return Games.Get().Find(table => table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name) != null);
+            }
         }
 
         public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
@@ -213,24 +181,21 @@ namespace dog2go.Backend.Hubs
                                                 Validation.GetFieldById(GetActualGameTable(),
                                                     meepleMove.Meeple.CurrentFieldId);
             meepleMove.MoveDestination = meepleMove.MoveDestination ?? Validation.GetFieldById(GetActualGameTable(), meepleMove.DestinationFieldId);
-            if (Validation.ValidateMove(meepleMove, cardMove))
-            {
-                GameTable actualGameTable = GetActualGameTable();
-                GameServices.UpdateMeeplePosition(meepleMove, actualGameTable);
-                List<Meeple> allMeeples = new List<Meeple>();
+            if (!Validation.ValidateMove(meepleMove, cardMove)) return false;
+            GameTable actualGameTable = GetActualGameTable();
+            GameServices.UpdateMeeplePosition(meepleMove, actualGameTable);
+            List<Meeple> allMeeples = new List<Meeple>();
 
-                foreach (var area in actualGameTable.PlayerFieldAreas)
-                {
-                    allMeeples.AddRange(area.Meeples);
-                }
-                List<HandCard> actualCards = actualGameTable.cardServiceData.GetActualHandCards(
-                   GetActualUser() , actualGameTable);
-                actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GetActualUser(), cardMove.Card);
-                Clients.All.sendMeeplePositions(allMeeples);
-                NotifyNextPlayer();
-                return true;
+            foreach (var area in actualGameTable.PlayerFieldAreas)
+            {
+                allMeeples.AddRange(area.Meeples);
             }
-            return false;
+            actualGameTable.cardServiceData.GetActualHandCards(
+                GetActualUser() , actualGameTable);
+            actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GetActualUser(), cardMove.Card);
+            Clients.All.sendMeeplePositions(allMeeples);
+            NotifyNextPlayer();
+            return true;
         }
 
         private User GetActualUser()
@@ -258,15 +223,13 @@ namespace dog2go.Backend.Hubs
             var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             nextUser.ConnectionIds.ForEach(id =>
             {
-                context.Clients.Group(GlobalDefinitions.GroupName).broadcastMessage(Context.User.Identity.Name, ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
+                context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
                 if (validHandCards != null)
                 {
-                    context.Clients.Client(id).broadcastMessage(Context.User.Identity.Name, ServerMessages.NofityActualPlayer);
+                    context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
                     
                     Clients.Client(id).notifyActualPlayer(validHandCards, GetColorCodeForUser(nextUser.Nickname));
-                }    
-                    
-
+                }
                 else
                 {
                     foreach (var card in actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable))
@@ -276,111 +239,14 @@ namespace dog2go.Backend.Hubs
 
                     Clients.Client(id).dropCards();
 
-                    if (actualGameTable.cardServiceData.ProveCardsCount % GlobalDefinitions.NofParticipantsPerTable == 0)
+                    if (actualGameTable.cardServiceData.ProveCardsCount%GlobalDefinitions.NofParticipantsPerTable != 0)
+                        return;
+                    if (!actualGameTable.cardServiceData.AreCardsOnHand(actualGameTable))
                     {
-                        if (!actualGameTable.cardServiceData.AreCardsOnHand(actualGameTable))
-                        {
-                            SendCardsForRound(actualGameTable);
-                        }
+                        SendCardsForRound(actualGameTable);
                     }
                 }
             });
         }
-
-        /*
-         * Server Methoden
-         * public void SendCards(List<HandCard> cards);
-         * public void CheckHasOpportunity();// true notifyActualPlayer | false dropCards
-         * public void ChooseCard(HandCard card);
-         * public void ChooseCardExchange(HandCard card);
-         * public void ChooseMove(MeepleMove move);
-         */
-
-        //public void UpdateOpenGames()
-        //{
-        //    Clients.Client(Context.ConnectionId).updateOpenGames(GameRepository.Instance.Get().Find(game => game.Participations.Count < 4));
-        //}
-        //public void BackToGame()
-        //{
-        //    foreach (var table in GameRepository.Instance.Get().Where(table => table.Participations.Any(participation => participation.Participant.Nickname == Context.User.Identity.Name)))
-        //    {
-        //        Clients.Client(Context.ConnectionId).backToGame(table, table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name).ActualPlayRound.Cards);
-        //    }
-        //}
-        //public void SendGameTable()
-        //{
-        //    Clients.All.createGameTable(GenerateNewGameTable());
-        //}
-
-        /*public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
-        {
-            Task.Factory.StartNew(() =>
-            {
-                Thread.Sleep(2000);
-                GameRepository repo = GameRepository.Instance;
-                //repo.Get()[0].Participations.
-            });
-            Clients.Caller.notifyActualPlayer(null);
-            Clients.Caller.sendMeeplePositions(null);
-            Clients.Caller.dropCards();
-
-            return true;
-            //return Validation.ValidateMove(meepleMove, cardMove);
-        }*/
-
-        //public void CreateGame()
-        //{
-        //    if (singleGameTableIdentification < 0)
-        //    {
-
-
-        //    /*DefaultHubManager hd = new DefaultHubManager(GlobalHost.DependencyResolver);
-        //    var hub = hd.ResolveHub("sessionHub") as SessionHub;*/
-
-        //        GameTable table = GenerateNewGameTable();
-        //    //User selectedUser = UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId);
-        //    //Task task = JoinGroup(selectedUser.Nickname + "_group");
-        //    //Task task = hub.JoinGroup(selectedUser.Nickname + "_group");
-
-        //    //table.Cookie = "dog2go_group=" + selectedUser.Nickname + "_group;expires" + new DateTime().AddSeconds(24 * 60 * 60).ToString("d", CultureInfo.CurrentCulture);
-        //        singleGameTableIdentification = table.Identifier;
-        //    }
-        //    JoinGame(singleGameTableIdentification);
-        //    //table.Participations.Add(new Participation(UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId)));
-        //    ////await task;
-        //    //Clients.Client(Context.ConnectionId).createGameTable(table);
-        //}
-
-        //public void JoinGame(int gameId)
-        //{
-
-        //    var el = _games.Get();
-        //    GameTable selectedGameTable = el.Find(table => table.Identifier == gameId);
-        //    if (selectedGameTable.Participations.Count >= MaxPlayers)
-        //        throw new Exception("Gameteable already full");
-
-        //    string cookie = selectedGameTable.Cookie;
-        //    var userRes = UserRepository.Instance.Get().Find(
-        //        user => user.Identifier == Context.ConnectionId
-        //        );
-        //    var grpName = userRes.GroupName;
-        //    var something = cookie.Substring(cookie.IndexOf("=", StringComparison.CurrentCulture) + 1, cookie.IndexOf("_group;", StringComparison.CurrentCulture) - cookie.IndexOf("=", StringComparison.CurrentCulture) + 1);
-        //    grpName = something;
-        //    Participation newParticipation = selectedGameTable.Participations.Count() % 2 == 1
-        //        ? new Participation(UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId))
-        //        {
-        //            Partner = selectedGameTable.Participations.Last().Participant
-        //        }
-        //        : new Participation(UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId));
-        //    //Task task = JoinGroup(UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId).GroupName);
-        //   // Task task = hub.JoinGroup(UserRepository.Instance.Get().Find(user => user.Identifier == Context.ConnectionId).GroupName);
-        //    selectedGameTable.Participations.Add(newParticipation);         
-        //    selectedGameTable.Participations.Find((participation => participation.Participant == selectedGameTable.Participations.Last().Partner)).Partner = newParticipation.Participant;
-        //    //await task;
-        //    Clients.Client(Context.ConnectionId).creatGameTable(selectedGameTable);
-
-        //    if(selectedGameTable.Participations.Count == MaxPlayers)
-        //        AllConnected(selectedGameTable);
-        //}
     }
 }

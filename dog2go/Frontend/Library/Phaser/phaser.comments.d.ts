@@ -19275,6 +19275,10 @@ declare module Phaser {
 
         }
 
+        class SaveCPU extends Phaser.Plugin {
+
+        }
+
         class TilemapWalker extends Phaser.Plugin {
 
             constructor(game: Phaser.Game, map: Phaser.Tilemap, layer?: any, x?: number, y?: number);

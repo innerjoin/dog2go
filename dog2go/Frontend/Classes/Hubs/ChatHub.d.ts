@@ -5,7 +5,8 @@
 
 
 interface IChatHubClient {
-    broadcastMessage(name:string, message: string);
+    broadcastMessage(name: string, message: string);
+    broadcastSystemMessage(message: string);
     doSomeShit();
 }
 
