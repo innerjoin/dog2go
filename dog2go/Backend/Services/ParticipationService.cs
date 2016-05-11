@@ -35,6 +35,19 @@ namespace dog2go.Backend.Services
         {
             return table?.Participations?.FirstOrDefault(part => curUser.Equals(part.Participant.Nickname));
         }
+
+        public static User GetPartner(User user, List<Participation> participations)
+        {
+            if (user == null || participations == null)
+                return null;
+            return participations.Find(participation => participation.Participant.Identifier == user.Identifier)?.Partner;
+        }
+
+        public static string GetNextPlayer(GameTable actualGameTable, string userName)
+        {
+            int? identifier = actualGameTable?.PlayerFieldAreas.Find(area => area.Participation.Participant.Nickname == userName)?.NextIdentifier;
+            return actualGameTable?.PlayerFieldAreas.Find(area => area.Identifier == identifier)?.Participation?.Participant.Nickname;
+        }
     }
 
 

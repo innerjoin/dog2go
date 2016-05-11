@@ -48,6 +48,44 @@ namespace dog2go.Backend.Services
                 .FirstOrDefault(user => user.Value.Nickname == userName)
                 .Value;
         }
+        public static void UpdateMeeplePosition(MeepleMove meepleMove, GameTable gameTable)
+        {
+            if (gameTable == null || meepleMove == null)
+                return;
+            foreach (var area in gameTable.PlayerFieldAreas)
+            {
+                MoveDestinationField updateField = area.Fields.Find(field => field.Identifier == meepleMove.MoveDestination.Identifier);
+                if (updateField != null)
+                {
+                    updateField.CurrentMeeple = meepleMove.Meeple;
+                }
+            }
+        }
+
+        public static GameTable UpdateActualRoundCards(GameTable table)
+        {
+            if (table?.cardServiceData == null || table.Participations == null)
+                return null;
+            int nr = table.cardServiceData.GetNumberOfCardsPerUser();
+            table.cardServiceData.CurrentRound++;
+
+            List<Participation> participations = table.Participations;
+            List<HandCard> cards = null;
+            foreach (Participation participation in participations)
+            {
+                PlayRound actualPlayRound = new PlayRound(table.cardServiceData.CurrentRound - 1, nr);
+                cards = new List<HandCard>();
+                for (int i = 0; i < nr; i++)
+                {
+                    cards.Add(new HandCard(table.cardServiceData.GetCard()));
+                }
+
+                actualPlayRound.Cards = cards;
+                participation.ActualPlayRound = actualPlayRound;
+            }
+
+            return table;
+        }
     }
 
 }

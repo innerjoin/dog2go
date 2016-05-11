@@ -47,7 +47,7 @@ namespace dog2go.Backend.Services
         {
             if (actualUser == null || actualGameTable == null || selectedCard == null)
                 return;
-            User partner = GameServices.GetPartner(actualUser, actualGameTable.Participations);
+            User partner = ParticipationService.GetPartner(actualUser, actualGameTable.Participations);
             List<HandCard> actualHand = GetActualHandCards(actualUser, actualGameTable);
             actualHand.Remove(selectedCard);
             List<HandCard> partnerHandCards = GetActualHandCards(partner, actualGameTable);

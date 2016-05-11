@@ -91,7 +91,7 @@ namespace dog2go.Backend.Hubs
 
         private void SendCardsForRound(GameTable table)
         {
-            GameServices.UpdateActualRoundCards(table);
+            GameTableService.UpdateActualRoundCards(table);
             foreach (var participation in table.Participations)
             {
                 SendCards(participation.ActualPlayRound.Cards, participation.Participant);
@@ -109,7 +109,7 @@ namespace dog2go.Backend.Hubs
             GameTable actualGameTable = GameTableService.GetActualGameTable(Locker, Games, Context.User.Identity.Name);
             User actualUser = actualGameTable.Participations.Find(participation => participation.Participant.Identifier == Context.User.Identity.Name).Participant;
             actualGameTable.cardServiceData.CardExchange(actualUser, ref actualGameTable, selectedCard);
-            User partnerUser = GameServices.GetPartner(actualUser, actualGameTable.Participations);
+            User partnerUser = ParticipationService.GetPartner(actualUser, actualGameTable.Participations);
             partnerUser.ConnectionIds.ForEach(id =>
             {
                 Clients.Client(id).exchangeCard(selectedCard);
@@ -123,11 +123,13 @@ namespace dog2go.Backend.Hubs
             meepleMove.Meeple.CurrentPosition = meepleMove.Meeple.CurrentPosition ??
                                                 Validation.GetFieldById(GameTableService.GetActualGameTable(Locker, Games, Context.User.Identity.Name),
                                                     meepleMove.Meeple.CurrentFieldId);
-            meepleMove.MoveDestination = meepleMove.MoveDestination ?? Validation.GetFieldById(GameTableService.GetActualGameTable(Locker, Games, Context.User.Identity.Name), meepleMove.DestinationFieldId);
+            meepleMove.MoveDestination = meepleMove.MoveDestination ??
+                                                Validation.GetFieldById(GameTableService.GetActualGameTable(Locker, Games, 
+                                                Context.User.Identity.Name), meepleMove.DestinationFieldId);
             if (Validation.ValidateMove(meepleMove, cardMove))
             {
                 GameTable actualGameTable = GameTableService.GetActualGameTable(Locker, Games, Context.User.Identity.Name);
-                GameServices.UpdateMeeplePosition(meepleMove, actualGameTable);
+                GameTableService.UpdateMeeplePosition(meepleMove, actualGameTable);
                 List<Meeple> allMeeples = new List<Meeple>();
                 foreach (var area in actualGameTable.PlayerFieldAreas)
                 {
@@ -138,7 +140,6 @@ namespace dog2go.Backend.Hubs
                 actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GameTableService.GetActualUser(Context.User.Identity.Name), cardMove.Card);
                 Clients.All.sendMeeplePositions(allMeeples);
                 NotifyNextPlayer();
-                return;
             }
             else
             {
@@ -149,7 +150,7 @@ namespace dog2go.Backend.Hubs
         private void NotifyNextPlayer()
         {
             GameTable actualGameTable = GameTableService.GetActualGameTable(Locker, Games, Context.User.Identity.Name);
-            string nextPlayerNickname = GameServices.GetNextPlayer(actualGameTable, Context.User.Identity.Name);
+            string nextPlayerNickname = ParticipationService.GetNextPlayer(actualGameTable, Context.User.Identity.Name);
             User nextUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Nickname == nextPlayerNickname).Value;
             List<HandCard> cards = actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable);
             List<HandCard> validHandCards = actualGameTable.cardServiceData.ProveCards(cards, actualGameTable, nextUser);
