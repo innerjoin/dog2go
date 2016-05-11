@@ -223,9 +223,9 @@ namespace dog2go.Backend.Hubs
             List<HandCard> cards = actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable);
             List<HandCard> validHandCards = actualGameTable.cardServiceData.ProveCards(cards, actualGameTable, nextUser);
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname));
             nextUser.ConnectionIds.ForEach(id =>
             {
-                context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
                 actualGameTable.ActualParticipation = GetParticipation(actualGameTable, nextUser.Nickname);
                 if (validHandCards != null)
                 {
