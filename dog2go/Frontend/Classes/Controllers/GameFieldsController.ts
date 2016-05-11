@@ -123,6 +123,14 @@ export class GameFieldController {
         return graphics;
     }
 
+
+    public isValidTargetField(targetField: IMoveDestinationField): boolean {
+        if (this.kennelFields.indexOf(targetField) > -1) {
+            return false;
+        }
+        return true;
+    }
+
     private getFieldById(id: number, fields: IMoveDestinationField[]): IMoveDestinationField {
         for (let field of fields) {
             if (id === field.Identifier) {
