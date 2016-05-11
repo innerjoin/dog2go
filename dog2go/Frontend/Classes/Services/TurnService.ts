@@ -1,10 +1,11 @@
 ﻿
 export class TurnService {
     private static instance: TurnService = null;
-    public notifyActualPlayerCB: (possibleCards: ICard[], meepleColor: number) => any;
+    public notifyActualPlayerCB: (possibleCards: IHandCard[], meepleColor: number) => any;
+    public notifyActualPlayerCardsCB: (possibleCards: IHandCard[], meepleColor: number) => any;
     public dropCardsCB: () => any;
     public sendMeeplePositionsCB: (meeples: IMeeple[]) => any;
-
+    public returnMoveCB: () => any;
 
     constructor() {
         if (TurnService.instance) {
@@ -15,12 +16,16 @@ export class TurnService {
 
         gameHub.client.notifyActualPlayer = (possibleCards, meepleColor) => {
             this.notifyActualPlayerCB(possibleCards, meepleColor);
+            this.notifyActualPlayerCardsCB(possibleCards, meepleColor);
         }
         gameHub.client.sendMeeplePositions = (meeples) => {
             this.sendMeeplePositionsCB(meeples);
         }
         gameHub.client.dropCards = () => {
             this.dropCardsCB();
+        }
+        gameHub.client.returnMove = () => {
+            this.returnMoveCB();
         }
         
         TurnService.instance = this;
@@ -41,12 +46,13 @@ export class TurnService {
         delete mMoveReady.Meeple.spriteRepresentation;
         delete mMoveReady.Meeple.CurrentPosition;
 
+        mMoveReady.DestinationFieldId = meepleMove.MoveDestination.Identifier;
         delete mMoveReady.MoveDestination;
         
         console.log("Validating, Going to Send out: ", mMoveReady, cardMove);
         var gameHub = $.connection.gameHub;
         $.connection.hub.start().done(() => {
-            var test = gameHub.server.validateMove(mMoveReady, cardMove);
+            gameHub.server.validateMove(mMoveReady, cardMove);
         });
     }
 }

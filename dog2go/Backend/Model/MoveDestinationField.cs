@@ -12,6 +12,7 @@ namespace dog2go.Backend.Model
         public int NextIdentifier => _nextIdentifier;
         public int Identifier { get; }
         // generate identifier on run time (UUID)
+        [IgnoreDataMember]
         public Meeple CurrentMeeple {
             get { return _currentMeeple; }
             set

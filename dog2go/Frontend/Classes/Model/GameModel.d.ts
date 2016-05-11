@@ -2,6 +2,7 @@
 
 interface IHandCard extends ICard {
     IsPlayed: boolean;
+    IsValid: boolean;
 }
 
 interface ICardMove {

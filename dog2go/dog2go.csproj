@@ -241,6 +241,8 @@
     <Compile Include="Backend\Constants\ServerMessages.cs" />
     <Compile Include="Backend\Services\CardServices.cs" />
     <Compile Include="Backend\Services\GameServices.cs" />
+    <Compile Include="Backend\Services\GameTableService.cs" />
+    <Compile Include="Backend\Services\ParticipationService.cs" />
     <Compile Include="Backend\Services\Validation.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GameController.cs" />
@@ -390,7 +392,10 @@
     <TypeScriptCompile Include="Frontend\Library\requirejs\require.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\JQuery\jqueryui.d.ts" />
     <TypeScriptCompile Include="Tests\Frontend\Controllers\GameArea.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Controllers\GameFieldController.test.ts" />
     <TypeScriptCompile Include="Tests\Frontend\Services\GameFieldService.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Services\RoundService.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Services\TurnService.test.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

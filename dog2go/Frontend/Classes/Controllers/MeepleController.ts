@@ -132,13 +132,14 @@ export class MeepleController {
         if (nearest != null) {
             item.x = nearest.viewRepresentation.x;
             item.y = nearest.viewRepresentation.y;
+            if (meeple.CurrentPosition.Identifier !== nearest.Identifier) {
+                var cardMoove: ICardMove;
+                var meepleMove: IMeepleMove = { Meeple: meeple, MoveDestination: nearest, DestinationFieldId: nearest.Identifier };
 
-            var cardMoove: ICardMove;
-            var meepleMove: IMeepleMove = {Meeple: meeple, MoveDestination: nearest, DestinationFieldId: nearest.Identifier};
-
-            console.log(nearest);
-            this.turnService.validateMove(meepleMove, this.turnCardMove);
-            this.turnCardMove = null;
+                console.log(nearest);
+                this.turnService.validateMove(meepleMove, this.turnCardMove);
+                this.turnCardMove = null;
+            }
         }
     }
 

@@ -45,7 +45,7 @@ namespace dog2go.Backend.Services
             if (destinationField.FieldType.Contains("EndField"))
                 return CanMoveToEndFields(currentPos, value);
             currentPos = GetNextField(currentPos, value);
-            return currentPos.Identifier == destinationField.Identifier;
+            return currentPos?.Identifier == destinationField.Identifier;
         }
 
         public static bool IsSameColorCode(ColorCode firstColorCode, ColorCode secondColorCode)
@@ -107,18 +107,28 @@ namespace dog2go.Backend.Services
         {
             Meeple movedMeeple = meepleMove.Meeple;
             MoveDestinationField destinationField = meepleMove.MoveDestination;
+            var test = 0;
 
-            if (movedMeeple == null || cardMove.SelectedAttribute == null)
+            if (movedMeeple == null || cardMove?.SelectedAttribute == null)
                 return false;
-
-            switch (cardMove.SelectedAttribute.Attribute)
+            foreach (var attribute in cardMove.Card.Attributes)
             {
-                case AttributeEnum.ChangePlace:
-               return ProveChangePlace(movedMeeple, destinationField);
-                case AttributeEnum.LeaveKennel:
-                    return ProveLeaveKennel(movedMeeple, destinationField);
+                switch (attribute.Attribute)
+                {
+                    case AttributeEnum.ChangePlace:
+                        if (ProveChangePlace(movedMeeple, destinationField))
+                            test += 1;
+                        break;
+                    case AttributeEnum.LeaveKennel:
+                        if (ProveLeaveKennel(movedMeeple, destinationField))
+                            test += 1;
+                        break;
+                }
+
+                if (ProveValueCard(movedMeeple, destinationField, (int) attribute.Attribute))
+                    test += 1;
             }
-            return ProveValueCard(movedMeeple, destinationField, (int)cardMove.SelectedAttribute.Attribute);
+            return test > 0;
         }
 
         public static bool CanMoveToEndFields(MoveDestinationField startCountField, int fieldCount)
@@ -151,11 +161,12 @@ namespace dog2go.Backend.Services
                     startCountField = startCountField.Previous;
                     fieldCount--;
                 }
-                if (startCountField == null)
-                    return false;
+                
 
                 for (var i = 0; i > fieldCount; i--)
                 {
+                    if (startCountField == null)
+                        return false;
                     while (startCountField.FieldType.Contains("EndField"))
                     {
                         startCountField = startCountField.Previous;
@@ -181,10 +192,12 @@ namespace dog2go.Backend.Services
                     startCountField = startCountField.Next;
                     fieldCount++;
                 }
-                if (startCountField == null)
-                    return false;
+                
                 for (var i = 0; i <= fieldCount; i++)
                 {
+                    if (startCountField == null)
+                        return false;
+
                     while (startCountField.FieldType.Contains("EndField"))
                     {
                         startCountField = startCountField.Next;
@@ -205,6 +218,8 @@ namespace dog2go.Backend.Services
 
         public static MoveDestinationField GetNextField(MoveDestinationField currentPos, int value)
         {
+            if (currentPos.FieldType.Contains("KennelField"))
+                return null;
             if (value > 0)
             {
                 while (value > 0)
