@@ -11,6 +11,8 @@ namespace dog2go.Backend.Hubs
     [Authorize]
     public abstract class GenericHub : Hub
     {
+        private static readonly object Locker = new object();
+
         protected readonly IGameRepository Games;
 
         protected GenericHub(IGameRepository repos)
@@ -36,7 +38,7 @@ namespace dog2go.Backend.Hubs
             string connectionId = Context.ConnectionId;
             User user = UserRepository.Instance.Get(userName);
 
-            lock (user.ConnectionIds)
+            lock (Locker)
             {
                 if (user.ConnectionIds.Add(connectionId))
                 {
@@ -51,11 +53,6 @@ namespace dog2go.Backend.Hubs
                 }
             }
             return base.OnConnected();
-        }
-
-        public override Task OnReconnected()
-        {
-            return base.OnReconnected();
         }
 
         public override Task OnDisconnected(bool stopCalled)
