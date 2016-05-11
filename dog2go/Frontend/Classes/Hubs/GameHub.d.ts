@@ -12,7 +12,7 @@ interface IGameHubClient {
     backToGame(table: IGameTable, cards: ICard[]);
     assignHandCards(cards: ICard[]);
 
-    notifyActualPlayer(possibleCards: ICard[], meepleColor: number);
+    notifyActualPlayer(possibleCards: IHandCard[], meepleColor: number);
     sendMeeplePositions(meeples: IMeeple[]);
     dropCards();
 }

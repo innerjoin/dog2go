@@ -60,7 +60,7 @@ describe("TurnService - ", () => {
         var turnService = TurnService.getInstance();
         turnService.notifyActualPlayerCB = callbacks.notifyActualPlayer;
 
-        var cards: ICard[] = [<any>{ testData: 23883 }];
+        var cards: IHandCard[] = [<any>{ testData: 23883 }];
         var color: number = 844747;
 
         callbacks.notifyActualPlayer.calls.reset();

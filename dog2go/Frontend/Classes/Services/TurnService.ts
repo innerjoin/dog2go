@@ -1,7 +1,8 @@
 ﻿
 export class TurnService {
     private static instance: TurnService = null;
-    public notifyActualPlayerCB: (possibleCards: ICard[], meepleColor: number) => any;
+    public notifyActualPlayerCB: (possibleCards: IHandCard[], meepleColor: number) => any;
+    public notifyActualPlayerCardsCB: (possibleCards: IHandCard[], meepleColor: number) => any;
     public dropCardsCB: () => any;
     public sendMeeplePositionsCB: (meeples: IMeeple[]) => any;
 
@@ -15,6 +16,7 @@ export class TurnService {
 
         gameHub.client.notifyActualPlayer = (possibleCards, meepleColor) => {
             this.notifyActualPlayerCB(possibleCards, meepleColor);
+            this.notifyActualPlayerCardsCB(possibleCards, meepleColor);
         }
         gameHub.client.sendMeeplePositions = (meeples) => {
             this.sendMeeplePositionsCB(meeples);
