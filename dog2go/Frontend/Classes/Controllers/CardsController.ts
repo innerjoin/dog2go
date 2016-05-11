@@ -31,7 +31,6 @@ export class CardsController {
         this.turnService = TurnService.getInstance();
         this.turnService.notifyActualPlayerCardsCB = this.notifyActualPlayer.bind(this);
 
-        this.makeGamefieldDroppable();
     }
 
     public showHandCards(cards: ICard[]) {
@@ -45,6 +44,7 @@ export class CardsController {
                 this.disableDrag(cards[i]);
             }
         }
+        this.makeGamefieldDroppable();
     }
 
     public notifyActualPlayer(possibleCards: IHandCard[], meepleColor: number) {
@@ -59,12 +59,16 @@ export class CardsController {
 
     public addCard(card: ICard) {
         var container = $("#cardContainer");
-        container.append(`<img class="handcards" id="${card.Name}" src="/Frontend/Images/cards-min/${card.ImageIdentifier}" ></img>`);
+        container.append(`<img class="handcards ${card.Name}" id="${card.Name}" src="/Frontend/Images/cards-min/${card.ImageIdentifier}" ></img>`);
     }
 
     public makeGamefieldDroppable() {
         $("#gameContent > canvas").droppable({
-            accept: ".handcards",
+            accept: function(d) {
+                if (d.hasClass("handcards")) {
+                    return true;
+                }
+            },
             drop: (event, ui) => {
                 var id: string = ui.draggable.attr("id");
                 var card: ICard = this.getFirstCardsByName(id);
@@ -86,16 +90,16 @@ export class CardsController {
     }
 
     public disableDrag(card: ICard) {
-        $(`#${card.Name}`).draggable('disable');
+        $(`.handcards.${card.Name}`).draggable('disable');
     }
 
     public enableDrag(card: ICard) {
-        $(`#${card.Name}`).draggable('enable');
+        $(`.handcards.${card.Name}`).draggable('enable');
     }
 
     public setDragableOnCard(card: ICard) {
         // HowTo draggable: http://stackoverflow.com/questions/5735270/revert-a-jquery-draggable-object-back-to-its-original-container-on-out-event-of
-        $(`#${card.Name}`).draggable({
+        $(`.handcards.${card.Name}`).draggable({
             revert: function (event, ui) {
                 console.log($(this).data("ui-draggable"));
                 $(this).data("ui-draggable").originalPosition = {
