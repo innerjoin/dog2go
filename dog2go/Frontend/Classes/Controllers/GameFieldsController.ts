@@ -140,6 +140,15 @@ export class GameFieldController {
         return null;
     }
 
+    public getFieldByIdOfAll(id: number): IMoveDestinationField {
+        for (let field of this.allFields) {
+            if (id === field.Identifier) {
+                return field;
+            }
+        }
+        return null;
+    }
+
     private getEndFields(fields: IMoveDestinationField[]): IEndField[] {
         var result: IEndField[] = [];
         for (var field of fields) {

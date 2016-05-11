@@ -138,7 +138,13 @@ export class MeepleController {
 
                 console.log(nearest);
                 this.turnService.validateMove(meepleMove, this.turnCardMove);
-                this.turnCardMove = null;
+                //this.turnCardMove = null;
+            }
+        } else {
+            var currentField = this.gameFieldController.getFieldByIdOfAll(meeple.CurrentPosition.Identifier);
+            if (currentField !== null) {
+                item.x = currentField.viewRepresentation.x;
+                item.y = currentField.viewRepresentation.y;
             }
         }
     }
