@@ -25,16 +25,16 @@ namespace dog2go.Backend.Hubs
             lock (Locker)
             {
                 GameTable table = GameTableService.GetTable(Games);
-            string curUser = Context.User.Identity.Name;
+                string curUser = Context.User.Identity.Name;
                 if (GameTableService.AlreadyConnected(table, curUser))
-            {
+                {
                     Participation participation = ParticipationService.GetParticipation(table, curUser);
                     List<HandCard> cards = table.cardServiceData?.GetActualHandCards(participation.Participant, table);
                     Clients.Client(Context.ConnectionId).backToGame(table, cards);
-                if (table.ActualParticipation == participation)
-                {
-                     NotifyActualPlayer(participation.Participant, cards);
-                }
+                    if (table.ActualParticipation == participation)
+                    {
+                        NotifyActualPlayer(participation.Participant, cards);
+                    }
                 }
                 else
                 {
@@ -44,9 +44,9 @@ namespace dog2go.Backend.Hubs
                         AllConnected(table);
                 }
                 Clients.Client(Context.ConnectionId).createGameTable(table);
-                    return table;
-                }
+               return table;
             }
+        }
 
         // for test method calls only
         public GameTable GetGeneratedGameTable()
@@ -70,7 +70,7 @@ namespace dog2go.Backend.Hubs
             GameTable actualGameTable = GameTableService.GetActualGameTable(Locker, Games, Context.User.Identity.Name);
             List<HandCard> validCards = actualGameTable.cardServiceData.ProveCards(handCards, actualGameTable, user);
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-            if (validCards != null)
+            if (validCards.Find(card => card.IsValid) != null)
             {
                 context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", user.Nickname));
                 actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, user.Nickname);
@@ -83,7 +83,7 @@ namespace dog2go.Backend.Hubs
             }
             else
             {
-                NotifyNextPlayer();
+                NotifyNextPlayer("");
             }
         }
 
@@ -99,9 +99,14 @@ namespace dog2go.Backend.Hubs
             foreach (var participation in table.Participations)
             {
                 SendCards(participation.ActualPlayRound.Cards, participation.Participant);
+            }
 
-                // TODO: Notify the realy ActualPlayer
-                if (table.Participations.IndexOf(participation) == 0)
+            if (table.ActualParticipation != null)
+                NotifyActualPlayer(table.ActualParticipation.Participant, table.ActualParticipation.ActualPlayRound.Cards);
+            else
+            {
+                Participation participation = table.Participations.First();
+                if (participation != null)
                 {
                     NotifyActualPlayer(participation.Participant, participation.ActualPlayRound.Cards);
                 }
@@ -143,7 +148,7 @@ namespace dog2go.Backend.Hubs
                     GameTableService.GetActualUser(Context.User.Identity.Name), actualGameTable);
                 actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GameTableService.GetActualUser(Context.User.Identity.Name), cardMove.Card);
                 Clients.All.sendMeeplePositions(allMeeples);
-                NotifyNextPlayer();
+                NotifyNextPlayer("");
             }
             else
             {
@@ -151,10 +156,22 @@ namespace dog2go.Backend.Hubs
             }
         }
 
-        private void NotifyNextPlayer()
+        private void NotifyNextPlayer(string nextUserName)
         {
-            GameTable actualGameTable = GameTableService.GetActualGameTable(Locker, Games, Context.User.Identity.Name);
-            string nextPlayerNickname = ParticipationService.GetNextPlayer(actualGameTable, Context.User.Identity.Name);
+            GameTable actualGameTable;
+            string nextPlayerNickname = null;
+            if (string.IsNullOrWhiteSpace(nextUserName))
+            {
+                actualGameTable = GameTableService.GetActualGameTable(Locker, Games, Context.User.Identity.Name);
+                nextPlayerNickname = ParticipationService.GetNextPlayer(actualGameTable, Context.User.Identity.Name);
+            }
+
+            else
+            {
+                actualGameTable = GameTableService.GetActualGameTable(Locker, Games, nextUserName);
+                nextPlayerNickname = nextUserName;
+            }
+            
             User nextUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Nickname == nextPlayerNickname).Value;
             List<HandCard> cards = actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable);
             List<HandCard> validHandCards = actualGameTable.cardServiceData.ProveCards(cards, actualGameTable, nextUser);
@@ -163,22 +180,20 @@ namespace dog2go.Backend.Hubs
             nextUser.ConnectionIds.ForEach(id =>
             {
                 actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, nextUser.Nickname);
-                if (validHandCards != null)
+                if (validHandCards.Find(card => card.IsValid) != null)
                 {
                     context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
                     Clients.Client(id).notifyActualPlayer(validHandCards, GameTableService.GetColorCodeForUser(nextUser.Nickname, Locker, Games));
                 }    
                 else
                 {
-                    foreach (var card in actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable))
-                    {
-                        actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GameTableService.GetActualUser(Context.User.Identity.Name), card);
-                    }
-
+                    actualGameTable.cardServiceData.RemoveAllCardsFromUser(actualGameTable,nextUser );
                     Clients.Client(id).dropCards();
 
+                    context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NoValidCardAvailable);
+
                     if (actualGameTable.cardServiceData.ProveCardsCount%GlobalDefinitions.NofParticipantsPerTable != 0)
-                        return;
+                        NotifyNextPlayer(ParticipationService.GetNextPlayer(actualGameTable, nextUserName));
                     if (!actualGameTable.cardServiceData.AreCardsOnHand(actualGameTable))
                     {
                         SendCardsForRound(actualGameTable);

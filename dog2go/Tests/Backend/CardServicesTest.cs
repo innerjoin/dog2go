@@ -172,14 +172,14 @@ namespace dog2go.Tests.Backend
             allOtherMeeples.AddRange(actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green).Meeples);
             allOtherMeeples.AddRange(actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples);
             allOtherMeeples.AddRange(actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Yellow).Meeples);
-            List<Meeple> otherMeeples = cs.GetOtherMeeples(actualGameTable, myMeeples);
+            List<Meeple> otherMeeples = GameTableService.GetOtherMeeples(actualGameTable, myMeeples);
             Assert.AreEqual(otherMeeples.Count, allOtherMeeples.Count);
         }
 
         [Test]
         public void TestGetOtherMeeplesNotInitialized()
         {
-            List<Meeple> otherMeeples = cs.GetOtherMeeples(null, null);
+            List<Meeple> otherMeeples = GameTableService.GetOtherMeeples(null, null);
             Assert.AreEqual(otherMeeples, null);
         }
 
@@ -187,7 +187,7 @@ namespace dog2go.Tests.Backend
         public void TestGetOpenMeeplesNoAvailable()
         {
             GameTable actualGameTable = MakeInitialGameTable;
-            List<Meeple> openMeeples = cs.GetOpenMeeples(actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples);
+            List<Meeple> openMeeples = GameTableService.GetOpenMeeples(actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Meeples);
             Assert.AreEqual(0, openMeeples.Count);
         }
 
@@ -201,14 +201,14 @@ namespace dog2go.Tests.Backend
             meeple.IsStartFieldBlocked = false;
             meeple.CurrentPosition =
                 actualGameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[7];
-            List<Meeple> openMeeples = cs.GetOpenMeeples(myMeeples);
+            List<Meeple> openMeeples = GameTableService.GetOpenMeeples(myMeeples);
             Assert.AreEqual(1, openMeeples.Count);
         }
 
         [Test]
         public void TestGetOpenMeeplesNotInitialized()
         {
-            List<Meeple> otherMeeples = cs.GetOpenMeeples(null);
+            List<Meeple> otherMeeples = GameTableService.GetOpenMeeples(null);
             Assert.AreEqual(null, otherMeeples);
         }
 

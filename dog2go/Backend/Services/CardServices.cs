@@ -54,28 +54,6 @@ namespace dog2go.Backend.Services
             partnerHandCards.Add(selectedCard);
         }
 
-        public List<Meeple> GetOtherMeeples(GameTable gameTable, List<Meeple> myMeeples)
-        {
-            if (gameTable == null)
-                return null;
-            List<Meeple> otherMeeples = new List<Meeple>();
-            foreach (var playFieldArea in gameTable.PlayerFieldAreas)
-            {
-                otherMeeples.AddRange(playFieldArea.Meeples);
-            }
-
-            otherMeeples.RemoveAll(myMeeples.Contains);
-            return otherMeeples;
-        }
-
-        public List<Meeple> GetOpenMeeples(List<Meeple> myMeeples)
-        {
-            return myMeeples?.FindAll(
-                meeple =>
-                    Validation.IsValidStartField(meeple.CurrentPosition) ||
-                    meeple.CurrentPosition.FieldType.Contains("StandardField"));
-        }
-
         public bool ProveLeaveKennel(List<Meeple> myMeeples)
         {
             if (myMeeples == null)
@@ -89,9 +67,9 @@ namespace dog2go.Backend.Services
         {
             if (myMeeples == null || otherMeeples == null)
                 return false;
-            List<Meeple> myOpenMeeples = GetOpenMeeples(myMeeples);
+            List<Meeple> myOpenMeeples = GameTableService.GetOpenMeeples(myMeeples);
 
-            List<Meeple> otherOpenMeeples = GetOpenMeeples(otherMeeples);
+            List<Meeple> otherOpenMeeples = GameTableService.GetOpenMeeples(otherMeeples);
 
             if (myOpenMeeples.Count == 0 || otherOpenMeeples.Count == 0)
                 return false;
@@ -137,7 +115,7 @@ namespace dog2go.Backend.Services
                         return ProveLeaveKennel(myMeeples);
                     }
                     return attribute.Attribute == AttributeEnum.ChangePlace
-                        ? ProveChangePlace(myMeeples, GetOtherMeeples(actualGameTable, myMeeples))
+                        ? ProveChangePlace(myMeeples, GameTableService.GetOtherMeeples(actualGameTable, myMeeples))
                         : ProveValueCard(myMeeples, (int) attribute.Attribute);
                 })
                 where validAttribute != null
@@ -154,6 +132,16 @@ namespace dog2go.Backend.Services
                     .ActualPlayRound.Cards;
             HandCard handCard = handCards.Find(card => card.Id == removeCard.Id);
             return handCards.Remove(handCard);
+        }
+
+        public void RemoveAllCardsFromUser(GameTable actualGameTable, User actualUser)
+        {
+            HandCard[] cardArray = new HandCard[6];
+            actualGameTable.cardServiceData.GetActualHandCards(actualUser, actualGameTable).CopyTo(cardArray);
+            foreach (var card in cardArray)
+            {
+                actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, actualUser, card);
+            }
         }
 
         public List<HandCard> GetActualHandCards(User actualUser, GameTable actualGameTable)

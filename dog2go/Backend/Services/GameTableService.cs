@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using dog2go.Backend.Constants;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
@@ -48,6 +46,29 @@ namespace dog2go.Backend.Services
                 .FirstOrDefault(user => user.Value.Nickname == userName)
                 .Value;
         }
+
+        public static List<Meeple> GetOtherMeeples(GameTable gameTable, List<Meeple> myMeeples)
+        {
+            if (gameTable == null)
+                return null;
+            List<Meeple> otherMeeples = new List<Meeple>();
+            foreach (var playFieldArea in gameTable.PlayerFieldAreas)
+            {
+                otherMeeples.AddRange(playFieldArea.Meeples);
+            }
+
+            otherMeeples.RemoveAll(myMeeples.Contains);
+            return otherMeeples;
+        }
+
+        public static List<Meeple> GetOpenMeeples(List<Meeple> myMeeples)
+        {
+            return myMeeples?.FindAll(
+                meeple =>
+                    Validation.IsValidStartField(meeple.CurrentPosition) ||
+                    meeple.CurrentPosition.FieldType.Contains("StandardField"));
+        }
+
         public static void UpdateMeeplePosition(MeepleMove meepleMove, GameTable gameTable)
         {
             if (gameTable == null || meepleMove == null)
@@ -58,7 +79,11 @@ namespace dog2go.Backend.Services
                 if (updateField != null)
                 {
                     updateField.CurrentMeeple = meepleMove.Meeple;
+                    Meeple actualMeeple = area.Meeples.Find(meeple => meeple.CurrentFieldId == meepleMove.Meeple.CurrentFieldId);
+                    if (actualMeeple != null)
+                        actualMeeple = meepleMove.Meeple;
                 }
+                
             }
         }
 
@@ -70,7 +95,7 @@ namespace dog2go.Backend.Services
             table.cardServiceData.CurrentRound++;
 
             List<Participation> participations = table.Participations;
-            List<HandCard> cards = null;
+            List<HandCard> cards;
             foreach (Participation participation in participations)
             {
                 PlayRound actualPlayRound = new PlayRound(table.cardServiceData.CurrentRound - 1, nr);
