@@ -69,7 +69,7 @@ namespace dog2go.Backend.Hubs
             if (validCards != null)
             {
                 context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", user.Nickname));
-                actualGameTable.ActualParticipation = GetParticipation(actualGameTable, user.Nickname);
+                actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, user.Nickname);
                 user.ConnectionIds.ForEach(cId =>
                 {
                     context.Clients.Client(cId).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
@@ -157,7 +157,7 @@ namespace dog2go.Backend.Hubs
             context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname));
             nextUser.ConnectionIds.ForEach(id =>
             {
-                actualGameTable.ActualParticipation = GetParticipation(actualGameTable, nextUser.Nickname);
+                actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, nextUser.Nickname);
                 if (validHandCards != null)
                 {
                     context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
