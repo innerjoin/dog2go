@@ -357,7 +357,6 @@
     <TypeScriptCompile Include="Frontend\Classes\Controllers\CardsController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameFieldsController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\MeepleController.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\TurnController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\LoginStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\GameStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
