@@ -15,6 +15,7 @@ interface IGameHubClient {
     notifyActualPlayer(possibleCards: IHandCard[], meepleColor: number);
     sendMeeplePositions(meeples: IMeeple[]);
     dropCards();
+    returnMove();
 }
 
 interface IGameHubServer {

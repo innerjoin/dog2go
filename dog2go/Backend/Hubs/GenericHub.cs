@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using dog2go.Backend.Constants;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
@@ -22,6 +23,13 @@ namespace dog2go.Backend.Hubs
             Games = GameRepository.Instance;
         }
 
+        private async void JoinChatGroup(string chatGroup)
+        {
+            var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            Task test = context.Groups.Add(Context.ConnectionId, chatGroup);
+            await test;
+        }
+
         public override Task OnConnected()
         {
             string userName = Context.User.Identity.Name;
@@ -30,10 +38,16 @@ namespace dog2go.Backend.Hubs
 
             lock (user.ConnectionIds)
             {
-                user.ConnectionIds.Add(connectionId);
-                if (user.ConnectionIds.Count == 1)
+                if (user.ConnectionIds.Add(connectionId))
                 {
-                    Clients.Others.userConnected(userName);
+                    var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                    JoinChatGroup(GlobalDefinitions.GroupName);
+                    context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name));
+
+                    if (user.ConnectionIds.Count == 1)
+                    {
+                        Clients.Others.userConnected(userName);
+                    }
                 }
             }
             return base.OnConnected();

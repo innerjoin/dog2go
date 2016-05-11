@@ -102,7 +102,4 @@ export class CardsController {
         }
         return null;
     }
-    
-
-
 }

@@ -111,6 +111,14 @@ namespace dog2go.Backend.Services
             HandCard duplicatedCard = handCards?.Find(validCard => validCard != null && validCard.ImageIdentifier == card.ImageIdentifier);
             return duplicatedCard != null;
         }
+
+        private void SetCardValid(List<HandCard> cards, bool valid)
+        {
+            foreach (var card in cards)
+            {
+                card.IsValid = valid;
+            }
+        }
         public List<HandCard> ProveCards(List<HandCard> actualHandCards, GameTable actualGameTable, User actualUser)
         {
             if (actualHandCards == null || actualGameTable == null || actualUser == null)
@@ -121,17 +129,22 @@ namespace dog2go.Backend.Services
 
             ProveCardsCount++;
 
-            return (from card in actualHandCards
+            List<HandCard> validCards =  (from card in actualHandCards
                 let validAttribute = card.Attributes.Find(attribute =>
                 {
                     if (attribute.Attribute == AttributeEnum.LeaveKennel)
                     {
                         return ProveLeaveKennel(myMeeples);
                     }
-                    return attribute.Attribute == AttributeEnum.ChangePlace ? ProveChangePlace(myMeeples, GetOtherMeeples(actualGameTable, myMeeples)) 
-                                                                            : ProveValueCard(myMeeples, (int) attribute.Attribute);
+                    return attribute.Attribute == AttributeEnum.ChangePlace
+                        ? ProveChangePlace(myMeeples, GetOtherMeeples(actualGameTable, myMeeples))
+                        : ProveValueCard(myMeeples, (int) attribute.Attribute);
                 })
+                where validAttribute != null
                 select card).ToList();
+            SetCardValid(actualHandCards, false);
+            SetCardValid(validCards, true);
+            return actualHandCards;
         }
 
         public bool RemoveCardFromUserHand(GameTable table, User actualUser,Card removeCard)
