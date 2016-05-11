@@ -64,6 +64,12 @@ namespace dog2go.Tests.Backend
                 CardAttributeFourFields
             });
 
+        private readonly Card _cardChange = new Card("cardChange", 14, "testCardWithoutPic",
+            new List<CardAttribute>()
+            {
+                CardAttributeChangePlace,
+            });
+
         private readonly Card _card13 = new Card("card13", 13, "testCardWithoutPic", 
             new List<CardAttribute>()
             {
@@ -174,7 +180,7 @@ namespace dog2go.Tests.Backend
                 Card = _card4,
                 SelectedAttribute = CardAttributeFourFieldsBack
             };
-            Assert.AreEqual(false, Validation.ValidateMove(meepleMove, cardMove));
+            Assert.AreEqual(true, Validation.ValidateMove(meepleMove, cardMove));
         }
 
         [Test]
@@ -415,7 +421,7 @@ namespace dog2go.Tests.Backend
             };
             CardMove cardMove = new CardMove()
             {
-                Card = _cardJoker,
+                Card = _cardChange,
                 SelectedAttribute = CardAttributeChangePlace
             };
             Assert.AreEqual(false, Validation.ValidateMove(meepleMove, cardMove));
@@ -441,7 +447,7 @@ namespace dog2go.Tests.Backend
             };
             CardMove cardMove = new CardMove()
             {
-                Card = _cardJoker,
+                Card = _cardChange,
                 SelectedAttribute = CardAttributeChangePlace
             };
             Assert.AreEqual(false, Validation.ValidateMove(meepleMove, cardMove));
