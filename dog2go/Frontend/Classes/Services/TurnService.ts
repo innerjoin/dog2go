@@ -44,6 +44,7 @@ export class TurnService {
         delete mMoveReady.Meeple.spriteRepresentation;
         delete mMoveReady.Meeple.CurrentPosition;
 
+        mMoveReady.DestinationFieldId = meepleMove.MoveDestination.Identifier;
         delete mMoveReady.MoveDestination;
         
         console.log("Validating, Going to Send out: ", mMoveReady, cardMove);

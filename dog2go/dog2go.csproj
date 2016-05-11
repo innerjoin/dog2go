@@ -210,6 +210,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Backend\Hubs\ChatHub.cs" />
+    <Compile Include="Backend\Services\GameFactory.cs" />
     <Compile Include="Backend\Hubs\GenericHub.cs" />
     <Compile Include="Backend\Hubs\GameHub.cs" />
     <Compile Include="Backend\Interfaces\IChatRepository.cs" />
@@ -356,7 +357,6 @@
     <TypeScriptCompile Include="Frontend\Classes\Controllers\CardsController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameFieldsController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\MeepleController.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\TurnController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\LoginStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\GameStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
@@ -390,7 +390,10 @@
     <TypeScriptCompile Include="Frontend\Library\requirejs\require.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\JQuery\jqueryui.d.ts" />
     <TypeScriptCompile Include="Tests\Frontend\Controllers\GameArea.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Controllers\GameFieldController.test.ts" />
     <TypeScriptCompile Include="Tests\Frontend\Services\GameFieldService.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Services\RoundService.test.ts" />
+    <TypeScriptCompile Include="Tests\Frontend\Services\TurnService.test.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
