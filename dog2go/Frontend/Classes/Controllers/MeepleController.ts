@@ -117,6 +117,10 @@ export class MeepleController {
         }
     }
 
+    public isValidField(targetField: IMoveDestinationField): boolean {
+        return false;
+    }
+
     dropLimiter(item: Phaser.Sprite, pointer: Phaser.Pointer, meeple: IMeeple) {
         var nearest: IMoveDestinationField;
         var smallest = Number.MAX_VALUE;
