@@ -40,19 +40,26 @@ export class CardsController {
         
         if (cards !== null) {
             for (let i = 0; i < cards.length; i++) {
-                var container = $("#cardContainer");
-                container.append(`<img class="handcards" id="${cards[i].Name}" src="/Frontend/Images/cards-min/${cards[i].ImageIdentifier}" ></img>`);
-                this.makeCardDragable(cards[i]);
-                
+                this.addCard(cards[i]);
+                this.setDragableOnCard(cards[i]);
+                this.disableDrag(cards[i]);
             }
         }
     }
 
     public notifyActualPlayer(possibleCards: IHandCard[], meepleColor: number) {
+        this.dropAllCards();
+        this.showHandCards(possibleCards);
         for (var card of possibleCards) {
-            //if (card.is)
-            this.makeCardDragable(card);
+            if (card.IsValid) {
+                this.enableDrag(card);
+            }
         }
+    }
+
+    public addCard(card: ICard) {
+        var container = $("#cardContainer");
+        container.append(`<img class="handcards" id="${card.Name}" src="/Frontend/Images/cards-min/${card.ImageIdentifier}" ></img>`);
     }
 
     public makeGamefieldDroppable() {
@@ -70,26 +77,32 @@ export class CardsController {
         });
     }
 
-    public makeCardDragable(card: ICard) {
+    public dropAllCards() {
+        $(".handcards").remove();
+    }
+
+    public disableAllDrag() {
+        $(`.handcards`).draggable('disable');
+    }
+
+    public disableDrag(card: ICard) {
+        $(`#${card.Name}`).draggable('disable');
+    }
+
+    public enableDrag(card: ICard) {
+        $(`#${card.Name}`).draggable('enable');
+    }
+
+    public setDragableOnCard(card: ICard) {
+        // HowTo draggable: http://stackoverflow.com/questions/5735270/revert-a-jquery-draggable-object-back-to-its-original-container-on-out-event-of
         $(`#${card.Name}`).draggable({
-            // keep this as a function, else the scope gets broken.
             revert: function (event, ui) {
-                // on older version of jQuery use "draggable"
-                // $(this).data("draggable")
-                // 
-                // on 1.11.x versions of jQuery use "uiDraggable"
-                // $(this).data("uiDraggable")
-                // on 2.x versions of jQuery use "ui-draggable"
-                // $(this).data("ui-draggable")
                 console.log($(this).data("ui-draggable"));
                 $(this).data("ui-draggable").originalPosition = {
                     top: 0,
                     left: 0
                 };
-                // return boolean
                 return !event;
-                // that evaluate like this:
-                // return event !== false ? false : true;
             }
         });
     }

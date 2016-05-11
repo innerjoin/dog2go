@@ -11,10 +11,12 @@ define(["require", "exports", "jquery", "../../../Frontend/Classes/Services/Turn
             };
             callbacks = {
                 notifyActualPlayer: function (possibleCards, meepleColor) { },
+                notifyActualPlayerCards: function (possibleCards, meepleColor) { },
                 dropCards: function (ev) { },
                 sendMeeplePositions: function (meeples) { }
             };
             spyOn(callbacks, "notifyActualPlayer");
+            spyOn(callbacks, "notifyActualPlayerCards");
             spyOn(callbacks, "dropCards");
             spyOn(callbacks, "sendMeeplePositions");
             spyOn($.connection.hub, "start").and.callFake(function () {
@@ -49,12 +51,16 @@ define(["require", "exports", "jquery", "../../../Frontend/Classes/Services/Turn
         it("Client: CallbackMethod: NotifayActualPlayer", function () {
             var turnService = TurnService.getInstance();
             turnService.notifyActualPlayerCB = callbacks.notifyActualPlayer;
+            turnService.notifyActualPlayerCardsCB = callbacks.notifyActualPlayerCards;
             var cards = [{ testData: 23883 }];
             var color = 844747;
             callbacks.notifyActualPlayer.calls.reset();
+            callbacks.notifyActualPlayerCards.calls.reset();
             $.connection.gameHub.client.notifyActualPlayer(cards, color);
             expect(callbacks.notifyActualPlayer).toHaveBeenCalled();
             expect(callbacks.notifyActualPlayer).toHaveBeenCalledWith(cards, color);
+            expect(callbacks.notifyActualPlayerCards).toHaveBeenCalled();
+            expect(callbacks.notifyActualPlayerCards).toHaveBeenCalledWith(cards, color);
         });
         it("Client: CallbackMethod: DropCards", function () {
             var turnService = TurnService.getInstance();

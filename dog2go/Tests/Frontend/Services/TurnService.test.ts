@@ -13,11 +13,13 @@ describe("TurnService - ", () => {
         };
 
         callbacks = {
-            notifyActualPlayer: (possibleCards: ICard[], meepleColor: number) => { },
+            notifyActualPlayer: (possibleCards: IHandCard[], meepleColor: number) => { },
+            notifyActualPlayerCards: (possibleCards: IHandCard[], meepleColor: number) => { },
             dropCards: (ev: IGameTable) => { },
             sendMeeplePositions: (meeples: IMeeple[]) => { }
         };
         spyOn(callbacks, "notifyActualPlayer");
+        spyOn(callbacks, "notifyActualPlayerCards");
         spyOn(callbacks, "dropCards");
         spyOn(callbacks, "sendMeeplePositions");
 
@@ -59,16 +61,21 @@ describe("TurnService - ", () => {
     it("Client: CallbackMethod: NotifayActualPlayer", () => {
         var turnService = TurnService.getInstance();
         turnService.notifyActualPlayerCB = callbacks.notifyActualPlayer;
+        turnService.notifyActualPlayerCardsCB = callbacks.notifyActualPlayerCards;
 
         var cards: IHandCard[] = [<any>{ testData: 23883 }];
         var color: number = 844747;
 
         callbacks.notifyActualPlayer.calls.reset();
+        callbacks.notifyActualPlayerCards.calls.reset();
 
         $.connection.gameHub.client.notifyActualPlayer(cards, color);
 
         expect(callbacks.notifyActualPlayer).toHaveBeenCalled();
         expect(callbacks.notifyActualPlayer).toHaveBeenCalledWith(cards, color);
+
+        expect(callbacks.notifyActualPlayerCards).toHaveBeenCalled();
+        expect(callbacks.notifyActualPlayerCards).toHaveBeenCalledWith(cards, color);
     });
 
     it("Client: CallbackMethod: DropCards", () => {
