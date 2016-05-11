@@ -25,13 +25,6 @@ namespace dog2go.Backend.Hubs
             Games = GameRepository.Instance;
         }
 
-        private async void JoinChatGroup(string chatGroup)
-        {
-            var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-            Task test = context.Groups.Add(Context.ConnectionId, chatGroup);
-            await test;
-        }
-
         public override Task OnConnected()
         {
             string userName = Context.User.Identity.Name;
@@ -43,13 +36,9 @@ namespace dog2go.Backend.Hubs
                 if (user.ConnectionIds.Add(connectionId))
                 {
                     var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-                    JoinChatGroup(GlobalDefinitions.GroupName);
+                    Task test = context.Groups.Add(Context.ConnectionId, GlobalDefinitions.GroupName);
+                    test.Wait();
                     context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name));
-
-                    if (user.ConnectionIds.Count == 1)
-                    {
-                        Clients.Others.userConnected(userName);
-                    }
                 }
             }
             return base.OnConnected();
