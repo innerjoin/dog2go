@@ -1,4 +1,5 @@
 ﻿using System.Web.Optimization;
+using dog2go.Helpers;
 
 namespace dog2go
 {
@@ -28,7 +29,7 @@ namespace dog2go
                       "~/Frontend/Library/Bootstrap/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Frontend/Styles/site.css", new CssRewriteUrlTransform()));
+                      "~/Frontend/Styles/site.css", new CssRewriteUrlTransformFixed()));
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                       "~/Frontend/Styles/bootstrap/bootstrap.css"));
 
