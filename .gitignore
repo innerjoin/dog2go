@@ -224,3 +224,4 @@ ModelManifest.xml
 /dog2go/Frontend/Classes/*.js
 /dog2go/Frontend/Classes/*/*.js
 /dog2go/Tests/Frontend/*.js
+/dog2go/Tests/Frontend/*/*.js
