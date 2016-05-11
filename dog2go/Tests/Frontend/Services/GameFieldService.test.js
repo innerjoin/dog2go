@@ -1,4 +1,5 @@
 define(["require", "exports", "jquery", "../../../Frontend/Classes/Services/GameFieldsService"], function (require, exports, $, gfs) {
+    "use strict";
     var GameFieldService = gfs.GameFieldService;
     describe("GameFieldService - ", function () {
         var gameTable;

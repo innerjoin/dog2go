@@ -31,6 +31,10 @@ namespace dog2go.Backend.Hubs
                     Participation participation = ParticipationService.GetParticipation(table, curUser);
                     List<HandCard> cards = table.cardServiceData?.GetActualHandCards(participation.Participant, table);
                     Clients.Client(Context.ConnectionId).backToGame(table, cards);
+                if (table.ActualParticipation == participation)
+                {
+                     NotifyActualPlayer(participation.Participant, cards);
+                }
                 }
                 else
                 {
