@@ -143,7 +143,7 @@ namespace dog2go.Backend.Hubs
             var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             if (validCards != null)
             {
-                context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
+                context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", user.Nickname));
                 user.ConnectionIds.ForEach(cId =>
                 {
                     context.Clients.Client(cId).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
@@ -166,12 +166,9 @@ namespace dog2go.Backend.Hubs
         private void SendCardsForRound(GameTable table)
         {
             GameServices.UpdateActualRoundCards(table);
-            List<HandCard> validateHandCards = null;
             foreach (var participation in table.Participations)
             {
                 SendCards(participation.ActualPlayRound.Cards, participation.Participant);
-                if (participation.Participant.Nickname == Context.User.Identity.Name)
-                    validateHandCards = participation.ActualPlayRound.Cards;
 
                 // TODO: Notify the realy ActualPlayer
                 if (table.Participations.IndexOf(participation) == 0)
@@ -179,8 +176,6 @@ namespace dog2go.Backend.Hubs
                     NotifyActualPlayer(participation.Participant, participation.ActualPlayRound.Cards);
                 }
             }
-            User actualUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Identifier == Context.User.Identity.Name).Value;
-            Clients.Client(Context.ConnectionId).notifyActualPlayer(table.cardServiceData.ProveCards(validateHandCards, table, actualUser));
         }
 
         public void ChooseCardExchange(HandCard selectedCard)
@@ -200,10 +195,10 @@ namespace dog2go.Backend.Hubs
             return Games.Get().Find(table => table.Participations.Find(participation => participation.Participant.Nickname == Context.User.Identity.Name) != null);
         }
 
-        public bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
+        public void ValidateMove(MeepleMove meepleMove, CardMove cardMove)
         {
             if (meepleMove == null)
-                return false;
+                return;
             meepleMove.Meeple.CurrentPosition = meepleMove.Meeple.CurrentPosition ??
                                                 Validation.GetFieldById(GetActualGameTable(),
                                                     meepleMove.Meeple.CurrentFieldId);
@@ -213,7 +208,6 @@ namespace dog2go.Backend.Hubs
                 GameTable actualGameTable = GetActualGameTable();
                 GameServices.UpdateMeeplePosition(meepleMove, actualGameTable);
                 List<Meeple> allMeeples = new List<Meeple>();
-
                 foreach (var area in actualGameTable.PlayerFieldAreas)
                 {
                     allMeeples.AddRange(area.Meeples);
@@ -223,9 +217,9 @@ namespace dog2go.Backend.Hubs
                 actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GetActualUser(), cardMove.Card);
                 Clients.All.sendMeeplePositions(allMeeples);
                 NotifyNextPlayer();
-                return true;
+                return;
             }
-            return false;
+            Clients.Caller.returnMove();
         }
 
         private User GetActualUser()
@@ -257,11 +251,8 @@ namespace dog2go.Backend.Hubs
                 if (validHandCards != null)
                 {
                     context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
-                    
                     Clients.Client(id).notifyActualPlayer(validHandCards, GetColorCodeForUser(nextUser.Nickname));
                 }    
-                    
-
                 else
                 {
                     foreach (var card in actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable))

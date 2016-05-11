@@ -7,7 +7,6 @@ import coords = require("./FieldCoordinates");
 import FieldCoordinates = coords.FieldCoordinates;
 import FieldCoordinatesData = coords.FieldCoordinatesData;
 import AreaCoordinates = coords.AreaCoordinates;
-
 export class GameFieldController {
     private gameFieldService: GameFieldService;
     private game: Phaser.Game;

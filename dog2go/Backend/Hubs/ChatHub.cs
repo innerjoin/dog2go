@@ -21,12 +21,6 @@ namespace dog2go.Backend.Hubs
             _connectionRepository = connectionRepository;
             _chatRepository = chatRepository;
         }
-        public override Task OnConnected()
-        {
-            JoinGroup(GlobalDefinitions.GroupName);
-            SendSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name));
-            return base.OnConnected();
-        }
 
         public void SendMessage(string message)
         {
@@ -51,6 +45,7 @@ namespace dog2go.Backend.Hubs
         {
             if (! message.IsNullOrWhiteSpace())
             {
+                _chatRepository.AddMessage(new Message() { Msg = message, Group = GlobalDefinitions.GroupName });
                 Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(message);
             }
         }
