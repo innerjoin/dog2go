@@ -15,6 +15,7 @@ namespace dog2go.Backend.Model
         public List<PlayerFieldArea> PlayerFieldAreas;
 
         public List<Participation> Participations;
+        public Participation ActualParticipation;
         public CardServices cardServiceData { get; private set; }
         public GameTable(List<PlayerFieldArea> areas, int id)
         {

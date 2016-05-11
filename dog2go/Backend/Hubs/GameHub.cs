@@ -114,6 +114,7 @@ namespace dog2go.Backend.Hubs
             if (validCards != null)
             {
                 context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", user.Nickname));
+                actualGameTable.ActualParticipation = GetParticipation(actualGameTable, user.Nickname);
                 user.ConnectionIds.ForEach(cId =>
                 {
                     context.Clients.Client(cId).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
@@ -221,10 +222,11 @@ namespace dog2go.Backend.Hubs
             User nextUser = UserRepository.Instance.Get().FirstOrDefault(user => user.Value.Nickname == nextPlayerNickname).Value;
             List<HandCard> cards = actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable);
             List<HandCard> validHandCards = actualGameTable.cardServiceData.ProveCards(cards, actualGameTable, nextUser);
-            var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             nextUser.ConnectionIds.ForEach(id =>
             {
                 context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", Context.User.Identity.Name));
+                actualGameTable.ActualParticipation = GetParticipation(actualGameTable, nextUser.Nickname);
                 if (validHandCards != null)
                 {
                     context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
