@@ -223,5 +223,4 @@ ModelManifest.xml
 # Own ignores for .js Files from ts
 /dog2go/Frontend/Classes/*.js
 /dog2go/Frontend/Classes/*/*.js
-/dog2go/Tests/Frontend/*.js
-/dog2go/Tests/Frontend/*/*.js
+/dog2go/Tests/Frontend/**/*.test.js
