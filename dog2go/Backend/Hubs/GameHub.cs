@@ -176,7 +176,8 @@ namespace dog2go.Backend.Hubs
                                                 Validation.GetFieldById(GetActualGameTable(),
                                                     meepleMove.Meeple.CurrentFieldId);
             meepleMove.MoveDestination = meepleMove.MoveDestination ?? Validation.GetFieldById(GetActualGameTable(), meepleMove.DestinationFieldId);
-            if (!Validation.ValidateMove(meepleMove, cardMove)) return false;
+            if (Validation.ValidateMove(meepleMove, cardMove))
+            {
                 GameTable actualGameTable = GetActualGameTable();
                 GameServices.UpdateMeeplePosition(meepleMove, actualGameTable);
                 List<Meeple> allMeeples = new List<Meeple>();
@@ -184,14 +185,18 @@ namespace dog2go.Backend.Hubs
                 {
                     allMeeples.AddRange(area.Meeples);
                 }
-            actualGameTable.cardServiceData.GetActualHandCards(
-                   GetActualUser() , actualGameTable);
+                actualGameTable.cardServiceData.GetActualHandCards(
+                    GetActualUser(), actualGameTable);
                 actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GetActualUser(), cardMove.Card);
                 Clients.All.sendMeeplePositions(allMeeples);
                 NotifyNextPlayer();
                 return;
             }
-            Clients.Caller.returnMove();
+
+            else
+            {
+                Clients.Caller.returnMove();
+            }
         }
 
         private User GetActualUser()
