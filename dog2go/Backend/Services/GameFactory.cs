@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 
-namespace dog2go.Backend.Hubs
+namespace dog2go.Backend.Services
 {
     public class GameFactory
     {
-         public static GameTable GenerateNewGameTable(int gameId)
+         private static GameTable GenerateNewGameTable(int gameId)
         {
             List<PlayerFieldArea> areas = new List<PlayerFieldArea>();
 
@@ -34,6 +35,14 @@ namespace dog2go.Backend.Hubs
 
             GameTable table = new GameTable(areas, gameId);
             return table;
+        }
+
+        public static int CreateGameTable(IGameRepository games)
+        {
+            int newIdentifier = games.Get().Count;
+            GameTable generatedTable = GenerateNewGameTable(newIdentifier);
+            games.Add(generatedTable);
+            return generatedTable.Identifier;
         }
     }
 }
