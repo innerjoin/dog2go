@@ -375,7 +375,6 @@
     <TypeScriptCompile Include="Frontend\Classes\Model\GameModel.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Model\GameModel.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Model\TableModel.d.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Model\TableModel.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\ChatService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameArea.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\GameFieldsService.ts" />

@@ -149,6 +149,17 @@ export class GameFieldController {
         return null;
     }
 
+    public getFieldPosition(fieldId: number):Phaser.Point {
+        var result: Phaser.Point;
+        for (var field of this.allFields) {
+            if (field.Identifier === fieldId) {
+                result = field.viewRepresentation.position;
+                break;
+            }
+        }
+        return result;
+    }
+
     private getEndFields(fields: IMoveDestinationField[]): IEndField[] {
         var result: IEndField[] = [];
         for (var field of fields) {
