@@ -34,13 +34,13 @@ namespace dog2go.Controllers
             return View(gameTableList);
         }
 
-        [HttpGet]
-        [ActionName("GetTables")]
-        public ActionResult GetTables()
-        {
-            List<GameTable> gamesList = GameRepository.Instance.Get();
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Login", "Account");
-        }
+        //[HttpGet]
+        //[ActionName("GetTables")]
+        //public ActionResult GetTables()
+        //{
+        //    List<GameTable> gamesList = GameRepository.Instance.Get();
+        //    FormsAuthentication.SignOut();
+        //    return RedirectToAction("Login", "Account");
+        //}
     }
 }

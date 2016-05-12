@@ -1,4 +1,4 @@
-﻿@model dog2go.Models.
+﻿@model dog2go.Models.ChooseTableViewModels
 @{
     ViewBag.Title = "ChooseGameTable";
 }
@@ -6,7 +6,7 @@
 <h2>Choose your GameTable</h2>
 <div id="gameTableOverview">
     <div class="chooseGameTable">
-        @Html.EnumDropDownListFor(gameTable => )
+        @Html.EnumDropDownListFor(model => model.GameTableIdList)
     </div>
 </div>
 
