@@ -123,6 +123,14 @@ export class GameFieldController {
         return graphics;
     }
 
+
+    public isValidTargetField(targetField: IMoveDestinationField): boolean {
+        if (this.kennelFields.indexOf(targetField) > -1) {
+            return false;
+        }
+        return true;
+    }
+
     private getFieldById(id: number, fields: IMoveDestinationField[]): IMoveDestinationField {
         for (let field of fields) {
             if (id === field.Identifier) {
@@ -130,6 +138,26 @@ export class GameFieldController {
             }
         }
         return null;
+    }
+
+    public getFieldByIdOfAll(id: number): IMoveDestinationField {
+        for (let field of this.allFields) {
+            if (id === field.Identifier) {
+                return field;
+            }
+        }
+        return null;
+    }
+
+    public getFieldPosition(fieldId: number):Phaser.Point {
+        var result: Phaser.Point;
+        for (var field of this.allFields) {
+            if (field.Identifier === fieldId) {
+                result = field.viewRepresentation.position;
+                break;
+            }
+        }
+        return result;
     }
 
     private getEndFields(fields: IMoveDestinationField[]): IEndField[] {

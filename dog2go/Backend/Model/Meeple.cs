@@ -3,6 +3,8 @@
     public class Meeple
     {
         public Meeple() { }
+        
+        public int Identifier { get; set; }
 
         public ColorCode ColorCode { get; set; }
 
@@ -19,6 +21,11 @@
         public Meeple(KennelField kennelField, ColorCode colorCode) : this(kennelField)
         {
             ColorCode = colorCode;
+        }
+
+        public Meeple(KennelField kennelField, ColorCode colorCode, int identifier) : this(kennelField, colorCode)
+        {
+            Identifier = identifier;
         }
 
     }

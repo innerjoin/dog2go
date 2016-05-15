@@ -63,22 +63,41 @@ export class CardsController {
     }
 
     public makeGamefieldDroppable() {
+        var self = this;
         $("#gameContent > canvas").droppable({
             accept: function(d) {
                 if (d.hasClass("handcards")) {
                     return true;
                 }
             },
-            drop: (event, ui) => {
+            drop: function (event, ui) {
+                self.centerCard(ui.draggable, $(this));
+
                 var id: string = ui.draggable.attr("id");
-                var card: ICard = this.getFirstCardsByName(id);
-                // TODO: Handle Atribute-Selection?
-                var cardMove: ICardMove = { Card: card, SelectedAttribute: card.Attributes[0] };
-                this.selctedCard = card;
-                this.meepleController.proceedMeepleTurn(cardMove);
-                console.log("verify the following card: ", id, card);
+                console.log("Context: ", $(this), ui, ui.draggable.context);
+
+                self.handleDroppedCard(id);
             }
         });
+    }
+
+    public centerCard(drag, drop) {
+        var drop_p = drop.offset();
+        var drag_p = drag.offset();
+        var left_end = drop_p.left + drop.width() / 2 - drag_p.left - drag.width() / 2 + 1;
+        var top_end = drop_p.top + drop.height() / 2 - drag_p.top - drag.height() / 2 + 1;
+        drag.animate({
+            top: '+=' + top_end,
+            left: '+=' + left_end
+        });
+    }
+
+    public handleDroppedCard(id: string) {
+        var card: ICard = this.getFirstCardsByName(id);
+        var cardMove: ICardMove = { Card: card, SelectedAttribute: null };
+        this.selctedCard = card;
+        this.disableAllDrag();
+        this.meepleController.proceedMeepleTurn(cardMove);
     }
 
     public dropAllCards() {
@@ -101,7 +120,6 @@ export class CardsController {
         // HowTo draggable: http://stackoverflow.com/questions/5735270/revert-a-jquery-draggable-object-back-to-its-original-container-on-out-event-of
         $(`.handcards.${card.Name}`).draggable({
             revert: function (event, ui) {
-                console.log($(this).data("ui-draggable"));
                 $(this).data("ui-draggable").originalPosition = {
                     top: 0,
                     left: 0
