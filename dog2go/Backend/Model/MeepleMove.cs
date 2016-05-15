@@ -4,7 +4,7 @@
     {
         public Meeple Meeple { get; set; }
 
-        public MoveDestinationField MoveDestination { get; set; }
+        public MoveDestinationField MoveDestination;
 
         public int DestinationFieldId;
     }

@@ -79,11 +79,13 @@ namespace dog2go.Backend.Services
                 if (updateField != null)
                 {
                     updateField.CurrentMeeple = meepleMove.Meeple;
-                    Meeple actualMeeple = area.Meeples.Find(meeple => meeple.CurrentFieldId == meepleMove.Meeple.CurrentFieldId);
+                    Meeple actualMeeple = area.Meeples.Find(meeple => meeple.CurrentPosition.Identifier == meepleMove.Meeple.CurrentFieldId);
                     if (actualMeeple != null)
-                        actualMeeple = meepleMove.Meeple;
+                    {
+                        actualMeeple.CurrentPosition = updateField;
+                        actualMeeple.CurrentFieldId = updateField.Identifier;
+                    }
                 }
-                
             }
         }
 
@@ -95,11 +97,11 @@ namespace dog2go.Backend.Services
             table.cardServiceData.CurrentRound++;
 
             List<Participation> participations = table.Participations;
-            List<HandCard> cards;
+            
             foreach (Participation participation in participations)
             {
                 PlayRound actualPlayRound = new PlayRound(table.cardServiceData.CurrentRound - 1, nr);
-                cards = new List<HandCard>();
+                List<HandCard> cards = new List<HandCard>();
                 for (int i = 0; i < nr; i++)
                 {
                     cards.Add(new HandCard(table.cardServiceData.GetCard()));
