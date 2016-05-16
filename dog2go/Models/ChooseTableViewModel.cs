@@ -14,15 +14,17 @@ namespace dog2go.Models
 
     public class TableViewModel
     {
-        public TableViewModel(int identifier, string name)
+        public TableViewModel(int identifier, string name, List<string> participants)
         {
-            this.Identifier = identifier;
-            this.Name = name;
+            Identifier = identifier;
+            Name = name;
+            Participants = participants;
         }
         public TableViewModel(){}
         public int Identifier { get; set; }
 
         [Required(ErrorMessage = "You are required to provide a tablename"), StringLength(20, MinimumLength = 3, ErrorMessage = "Must be between 3 and 20 characters")]
         public string Name { get; set; }
+        public List<string> Participants { get; set; }
     }
 }

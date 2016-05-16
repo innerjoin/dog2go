@@ -13,9 +13,17 @@
 
 <div id="gameTableOverview">
     <div class="chooseGameTable">
-        @foreach (TableViewModel tv in Model.GameTableList)
+        @if (Model.GameTableList.Count == 0)
         {
-            @Html.Partial($"_ChooseGameTableListItem", tv)
+            <p>No open game tables. @Html.ActionLink("Create a new one", $"CreateTable", $"Game") </p>
+        }
+        else
+        {
+
+            foreach (TableViewModel tv in Model.GameTableList)
+             {
+                 @Html.Partial($"_ChooseGameTableListItem", tv)
+             }
         }
     </div>
 </div>

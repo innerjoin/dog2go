@@ -6,13 +6,13 @@ using dog2go.Backend;
 using dog2go.Backend.Constants;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
+using dog2go.Controllers.Helpers;
 using dog2go.Models;
 
 namespace dog2go.Controllers
 {
     public class AccountController : Controller
     {
-
         public ViewResult Login()
         {
             return View();
@@ -38,7 +38,7 @@ namespace dog2go.Controllers
                 ConnectionIds = new HashSet<string>()
             };
             UserRepository.Instance.Get().GetOrAdd(userName, user);
-            return RedirectToAction("Play", "Game");
+            return RedirectToAction($"ChooseGameTable", $"Game");
         }
 
         public bool LimitToOneTableExceeded()
@@ -54,12 +54,14 @@ namespace dog2go.Controllers
         }
 
         [HttpGet]
+        [FullyAuthorized]
         [ActionName("SignOut")]
         public ActionResult PostSignOut()
         {
-
             FormsAuthentication.SignOut();
-            return RedirectToAction("Login", "Account");
+            User user;
+            UserRepository.Instance.Get().TryRemove(User.Identity.Name, out user);
+            return RedirectToAction($"Login", $"Account");
         }
     }
 }

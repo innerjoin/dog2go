@@ -17,7 +17,7 @@ namespace dog2go
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 //defaults: new { controller = "Game", action = "Login", id = UrlParameter.Optional }
-                defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional }
+                defaults: new { controller = "Game", action = "ChooseGameTable", id = UrlParameter.Optional }
             );
         }
     }
