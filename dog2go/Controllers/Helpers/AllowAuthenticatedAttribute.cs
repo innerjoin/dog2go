@@ -25,6 +25,7 @@ namespace dog2go.Controllers.Helpers
             if (!isValid)
             {
                 HttpContext.Current.Response.Redirect("~/Account/Login");
+                return false;
             }
             return true;
         }
