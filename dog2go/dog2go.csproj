@@ -350,6 +350,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Game\ChooseGameTable.cshtml" />
     <Content Include="Views\Game\CreateTable.cshtml" />
+    <Content Include="Views\Game\_ChooseGameTableListItem.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
