@@ -109,7 +109,7 @@ namespace dog2go.Backend.Services
             MoveDestinationField destinationField = meepleMove.MoveDestination;
             var test = 0;
 
-            if (movedMeeple == null || cardMove?.SelectedAttribute == null)
+            if (movedMeeple == null || cardMove == null)
                 return false;
             foreach (var attribute in cardMove.Card.Attributes)
             {
@@ -136,6 +136,7 @@ namespace dog2go.Backend.Services
             if (HasBlockedField(startCountField, fieldCount)) return false;
                 for (var i = 0; i <= fieldCount; i++)
                 {
+                    if (startCountField == null) return false;
                     startCountField = startCountField.Next;
                     StartField startField = startCountField as StartField;
                 if (startField == null) continue;

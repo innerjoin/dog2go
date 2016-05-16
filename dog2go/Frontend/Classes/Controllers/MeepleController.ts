@@ -19,6 +19,7 @@ export class MeepleController {
 
     private playerMeepleColor: number;
     private turnCardMove: ICardMove;
+    private turnMeepleMove: IMeepleMove;
 
     private scaleFactor: number;
 
@@ -29,7 +30,8 @@ export class MeepleController {
 
         this.turnService = TurnService.getInstance();
         this.turnService.notifyActualPlayerCB = this.notifyActualPlayer.bind(this);
-        this.turnService.sendMeeplePositionsCB = this.sendMeeplesPositions.bind(this);
+        this.turnService.sendMeeplePositionsCB = this.repositionMeeples.bind(this);
+        this.turnService.returnMoveCB = this.returnMove.bind(this);
 
         this.allMeeples = [];
     }
@@ -40,8 +42,31 @@ export class MeepleController {
 
     }
 
-    public sendMeeplesPositions(meeples: IMeeple[]) {
+    public returnMove() {
+        console.log("Return move");
+        if (this.turnMeepleMove != null) {
+            this.positionMeeple(this.turnMeepleMove.Meeple);
+        }
+    }
+
+    public repositionMeeples(meeples: IMeeple[]) {
+        for (var meeple of this.allMeeples) {
+            for (var newMeeple of meeples) {
+                if (newMeeple.Identifier === meeple.Identifier) {
+                    meeple.CurrentPosition = newMeeple.CurrentPosition;
+                    this.positionMeeple(meeple);
+                    break;
+                }
+            }
+        }
         console.log("sendMeeplesPositions(), meeples: ", meeples);
+    }
+
+    public positionMeeple(meeple: IMeeple) {
+        if (meeple.spriteRepresentation && meeple.CurrentPosition) {
+            var coordinates: Phaser.Point = this.gameFieldController.getFieldPosition(meeple.CurrentPosition.Identifier);
+            this.game.add.tween(meeple.spriteRepresentation).to(coordinates, 500, Phaser.Easing.Quadratic.InOut, true);
+        }
     }
 
     public initializeMeeples(gameTable: IGameTable) {
@@ -49,19 +74,23 @@ export class MeepleController {
         this.allMeeples = [];
         for (var player of gameTable.PlayerFieldAreas) {
             for (var meeple of player.Meeples) {
-                var coordinates: Phaser.Point = this.getMeeplePosition(meeple);
                 var spriteName: string = this.getSpriteNameForColorCode(meeple.ColorCode);
 
-                var meepleSprite: Phaser.Sprite = this.game.add.sprite(coordinates.x, coordinates.y, spriteName);
+                //var meepleSprite: Phaser.Sprite = this.game.add.sprite(coordinates.x, coordinates.y, spriteName);
+                var meepleSprite: Phaser.Sprite = this.game.add.sprite(this.game.width / 2, this.game.height / 2, spriteName);
                 meepleSprite.anchor.setTo(0.5, 0.5);
                 meepleSprite.scale.setTo(this.scaleFactor * 0.13, this.scaleFactor * 0.13);
                 meepleSprite.inputEnabled = true;
 
                 meeple.spriteRepresentation = meepleSprite;
+
+                this.positionMeeple(meeple);
+
                 this.allMeeples.push(meeple);
             }
         }
     }
+    
 
     public proceedMeepleTurn(turnCardMove: ICardMove) {
         this.turnCardMove = turnCardMove;
@@ -72,24 +101,6 @@ export class MeepleController {
             meeple.spriteRepresentation.input.enableSnap(this.scaleFactor * 40, this.scaleFactor * 40, false, true);
             meeple.spriteRepresentation.events.onDragStop.add(this.dropLimiter, this, 0, meeple);
         }
-    }
-
-    getMeeplePosition(meeple: IMeeple): Phaser.Point {
-        var result: Phaser.Point;
-        var fieldType: string = meeple.CurrentPosition.FieldType;
-
-        switch (fieldType) {
-            case "dog2go.Backend.Model.KennelField":
-                for (var field of this.gameFieldController.getKennelFields) {
-                    if (field.Identifier === meeple.CurrentPosition.Identifier) {
-                        result = field.viewRepresentation.position;
-                        break;
-                    }
-                }
-            default:
-        }
-
-        return result;
     }
 
     private getMeeplesByColor(color: number): IMeeple[] {
@@ -129,16 +140,22 @@ export class MeepleController {
                 nearest = field;
             }
         });
-        if (nearest != null) {
+        if (nearest != null && this.gameFieldController.isValidTargetField(nearest)) {
             item.x = nearest.viewRepresentation.x;
             item.y = nearest.viewRepresentation.y;
             if (meeple.CurrentPosition.Identifier !== nearest.Identifier) {
                 var cardMoove: ICardMove;
-                var meepleMove: IMeepleMove = { Meeple: meeple, MoveDestination: nearest, DestinationFieldId: nearest.Identifier };
+                this.turnMeepleMove = { Meeple: meeple, MoveDestination: nearest, DestinationFieldId: nearest.Identifier };
 
                 console.log(nearest);
-                this.turnService.validateMove(meepleMove, this.turnCardMove);
-                this.turnCardMove = null;
+                this.turnService.validateMove(this.turnMeepleMove, this.turnCardMove);
+            }
+        } else {
+            console.log("Meeplepos: ", pointer);
+            var currentField = this.gameFieldController.getFieldByIdOfAll(meeple.CurrentPosition.Identifier);
+            if (currentField !== null) {
+                item.x = currentField.viewRepresentation.x;
+                item.y = currentField.viewRepresentation.y;
             }
         }
     }

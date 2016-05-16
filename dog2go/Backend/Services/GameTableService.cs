@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using dog2go.Backend.Constants;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
@@ -47,6 +45,73 @@ namespace dog2go.Backend.Services
             return UserRepository.Instance.Get()
                 .FirstOrDefault(user => user.Value.Nickname == userName)
                 .Value;
+        }
+
+        public static List<Meeple> GetOtherMeeples(GameTable gameTable, List<Meeple> myMeeples)
+        {
+            if (gameTable == null)
+                return null;
+            List<Meeple> otherMeeples = new List<Meeple>();
+            foreach (var playFieldArea in gameTable.PlayerFieldAreas)
+            {
+                otherMeeples.AddRange(playFieldArea.Meeples);
+            }
+
+            otherMeeples.RemoveAll(myMeeples.Contains);
+            return otherMeeples;
+        }
+
+        public static List<Meeple> GetOpenMeeples(List<Meeple> myMeeples)
+        {
+            return myMeeples?.FindAll(
+                meeple =>
+                    Validation.IsValidStartField(meeple.CurrentPosition) ||
+                    meeple.CurrentPosition.FieldType.Contains("StandardField"));
+        }
+
+        public static void UpdateMeeplePosition(MeepleMove meepleMove, GameTable gameTable)
+        {
+            if (gameTable == null || meepleMove == null)
+                return;
+            foreach (var area in gameTable.PlayerFieldAreas)
+            {
+                MoveDestinationField updateField = area.Fields.Find(field => field.Identifier == meepleMove.MoveDestination.Identifier);
+                if (updateField != null)
+                {
+                    updateField.CurrentMeeple = meepleMove.Meeple;
+                    Meeple actualMeeple = area.Meeples.Find(meeple => meeple.CurrentPosition.Identifier == meepleMove.Meeple.CurrentFieldId);
+                    if (actualMeeple != null)
+                    {
+                        actualMeeple.CurrentPosition = updateField;
+                        actualMeeple.CurrentFieldId = updateField.Identifier;
+                    }
+                }
+            }
+        }
+
+        public static GameTable UpdateActualRoundCards(GameTable table)
+        {
+            if (table?.cardServiceData == null || table.Participations == null)
+                return null;
+            int nr = table.cardServiceData.GetNumberOfCardsPerUser();
+            table.cardServiceData.CurrentRound++;
+
+            List<Participation> participations = table.Participations;
+            
+            foreach (Participation participation in participations)
+            {
+                PlayRound actualPlayRound = new PlayRound(table.cardServiceData.CurrentRound - 1, nr);
+                List<HandCard> cards = new List<HandCard>();
+                for (int i = 0; i < nr; i++)
+                {
+                    cards.Add(new HandCard(table.cardServiceData.GetCard()));
+                }
+
+                actualPlayRound.Cards = cards;
+                participation.ActualPlayRound = actualPlayRound;
+            }
+
+            return table;
         }
     }
 

@@ -1,5 +1,5 @@
 ﻿@using dog2go.Views.Extensions
-
+@model dog2go.Models.DisplayNameModel
 @{
     ViewBag.Title = "Play";
 }
@@ -16,19 +16,18 @@
         <div id="chatContainer">
             <ul id="chatBox"></ul>
             <div class="input-group">
-                <input class="form-control semi-transparent-input" type="text" id="message"/>
+                <input class="form-control semi-transparent-input" type="text" id="message" />
                 <input type="submit" value="send" class="btn inline semi-transparent-button" id="sendmessage">
-                
+
             </div>
             <input type="hidden" id="displayname" />
         </div>
-        <div id="cardContainer">
-      @*      <img src="~/Frontend/Images/cards-min/card_1-11-play_190x300komp.png"></img>
-            <img src="~/Frontend/Images/cards-min/card_3_190x300komp.png"></img>
-            <img src="~/Frontend/Images/cards-min/card_8_190x300komp.png"></img>
-            <img src="~/Frontend/Images/cards-min/card_10_190x300komp.png"></img>
-            <img src="~/Frontend/Images/cards-min/card_joker_190x300komp.png"></img>
-            <img src="~/Frontend/Images/cards-min/card_3_190x300komp.png"></img> *@
+        <div id="cardContainer"></div>
+        <div id="playerInformation">
+            <span id="playerInformationMeepleColor"><img src="~/Frontend/Images/@Model.ColorMeeplePath"/></span>
+            <!--<span id="playerInformationMeepleColor"><img src="~/Frontend/Images/meeple_red.png" /></span>-->
+            
+            <span id="playerInformationName">@Model.DisplayUser.Nickname</span>
         </div>
     </div>
 </div>

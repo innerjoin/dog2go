@@ -142,11 +142,11 @@ namespace dog2go.Tests.Backend
             User user1 = table.Participations.Find(participation => participation.Participant.Nickname == "user1").Participant;
             User user3 = table.Participations.Find(participation => participation.Participant.Nickname == "user3").Participant;
 
-            User partner1 = GameServices.GetPartner(
+            User partner1 = ParticipationService.GetPartner(
                 table.Participations.Find(participation => participation.Participant.Nickname == "user1").Participant,
                 table.Participations);
 
-            User partner3 = GameServices.GetPartner(
+            User partner3 = ParticipationService.GetPartner(
                 table.Participations.Find(participation => participation.Participant.Nickname == "user3").Participant,
                 table.Participations);
 
@@ -161,7 +161,7 @@ namespace dog2go.Tests.Backend
         {
             User user = new User("test_user", "4");
 
-            User partner = GameServices.GetPartner(user,
+            User partner = ParticipationService.GetPartner(user,
                 null);
             Assert.AreEqual(null, partner);
         }
@@ -170,7 +170,7 @@ namespace dog2go.Tests.Backend
         public void TestGetPartnerNotInitializedUser()
         {
 
-            User partner = GameServices.GetPartner(null,
+            User partner = ParticipationService.GetPartner(null,
                 null);
             Assert.AreEqual(null, partner);
         }
@@ -182,13 +182,13 @@ namespace dog2go.Tests.Backend
         public void TestGetNextPlayerCorrectlyInitialized()
         {
             GameTable table = MakeInitialGameTable;
-            string user2 = GameServices.GetNextPlayer(table, "user1");
+            string user2 = ParticipationService.GetNextPlayer(table, "user1");
             Assert.AreEqual(true, user2.Equals("user2"));
-            string user3 = GameServices.GetNextPlayer(table, "user2");
+            string user3 = ParticipationService.GetNextPlayer(table, "user2");
             Assert.AreEqual(true, user3.Equals("user3"));
-            string user4 = GameServices.GetNextPlayer(table, "user3");
+            string user4 = ParticipationService.GetNextPlayer(table, "user3");
             Assert.AreEqual(true, user4.Equals("user4"));
-            string user1 = GameServices.GetNextPlayer(table, "user4");
+            string user1 = ParticipationService.GetNextPlayer(table, "user4");
             Assert.AreEqual(true, user1.Equals("user1"));
         }
 
@@ -196,7 +196,7 @@ namespace dog2go.Tests.Backend
         public void TestGetNextPlayerNonExistentUser()
         {
             GameTable table = MakeInitialGameTable;
-            string user = GameServices.GetNextPlayer(table, "user5");
+            string user = ParticipationService.GetNextPlayer(table, "user5");
             Assert.AreEqual(true, user == null);
         }
 
@@ -204,7 +204,7 @@ namespace dog2go.Tests.Backend
         public void TestGetNextPlayerNotInitalizedGameTable()
         {
             GameTable table = MakeInitialGameTable;
-            string user = GameServices.GetNextPlayer(null, "user1");
+            string user = ParticipationService.GetNextPlayer(null, "user1");
             Assert.AreEqual(true, user == null);
         }
         #endregion
@@ -220,7 +220,7 @@ namespace dog2go.Tests.Backend
             MoveDestinationField currentField = redArea.Fields.Find(field => field.FieldType.Contains("StartField"));
             currentField.CurrentMeeple = redMeeple;
             MoveDestinationField moveField = redArea.Fields.Find(field => field.FieldType.Contains("StandardField"));
-            GameServices.UpdateMeeplePosition(new MeepleMove() {Meeple = redMeeple, MoveDestination = moveField}, table);
+            GameTableService.UpdateMeeplePosition(new MeepleMove() {Meeple = redMeeple, MoveDestination = moveField}, table);
             Assert.AreEqual(moveField, table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red).Fields.Find(field => field.CurrentMeeple == redMeeple));
         }
 
@@ -234,14 +234,14 @@ namespace dog2go.Tests.Backend
             currentField.CurrentMeeple = redMeeple;
             MoveDestinationField moveField = redArea.Fields.Find(field => field.FieldType.Contains("StandardField"));
             GameTable notModified = table;
-            GameServices.UpdateMeeplePosition(null, table);
+            GameTableService.UpdateMeeplePosition(null, table);
             Assert.AreEqual(table, notModified);
         }
 
         [Test]
         public void TestUpdateMeeplePositionNoTable()
         {
-            GameServices.UpdateMeeplePosition(null,null);
+            GameTableService.UpdateMeeplePosition(null,null);
             Assert.AreEqual(true, true);
         }
         #endregion
@@ -252,11 +252,11 @@ namespace dog2go.Tests.Backend
         public void TestUpdateActualRoundCardsCorrectlyInitialized()
         {
             GameTable table = MakeInitialGameTable;
-            GameServices.UpdateActualRoundCards(table);
+            GameTableService.UpdateActualRoundCards(table);
             Assert.AreEqual(4,
                 table.Participations.FindAll(participation => participation.ActualPlayRound.Cards.Count() == 6).Count);
 
-            GameServices.UpdateActualRoundCards(table);
+            GameTableService.UpdateActualRoundCards(table);
             Assert.AreEqual(4,
                 table.Participations.FindAll(participation => participation.ActualPlayRound.Cards.Count() == 5).Count);
         }
@@ -264,15 +264,15 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestUpdateActualRoundCardsNonGameTable()
         {
-            GameServices.UpdateActualRoundCards(null);
-            Assert.AreEqual(true, true);
+            GameTable table = GameTableService.UpdateActualRoundCards(null);
+            Assert.AreEqual(table, null);
         }
 
         [Test]
         public void TestUpdateActualRoundCardsNonInitializedGameTable()
         {
-            GameServices.UpdateActualRoundCards(new GameTable(new List<PlayerFieldArea>(), 4, "TestTable"));
-            Assert.AreEqual(true, true);
+            GameTable table = GameTableService.UpdateActualRoundCards(new GameTable(new List<PlayerFieldArea>(), 4));
+            Assert.AreEqual(table, null);
         }
         #endregion
 

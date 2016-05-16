@@ -1,7 +1,4 @@
-﻿/// <reference path="TableModel.ts"/>
-
-
-interface IGameTable {
+﻿interface IGameTable {
     Name: string;
     Identifier: number;
     Start: Date;
@@ -33,6 +30,7 @@ interface IMeeple {
     CurrentPosition: IMoveDestinationField;
     IsStartFieldBlocked: boolean;
     CurrentFieldId: number;
+    Identifier: number;
 
     spriteRepresentation: Phaser.Sprite;
 }
