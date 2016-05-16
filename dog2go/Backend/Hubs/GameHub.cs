@@ -176,10 +176,10 @@ namespace dog2go.Backend.Hubs
             List<HandCard> cards = actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable);
             List<HandCard> validHandCards = actualGameTable.cardServiceData.ProveCards(cards, actualGameTable, nextUser);
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, nextUser.Nickname);
             context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname));
             nextUser.ConnectionIds.ForEach(id =>
             {
-                actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, nextUser.Nickname);
                 if (validHandCards.Find(card => card.IsValid) != null)
                 {
                     context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
@@ -193,14 +193,14 @@ namespace dog2go.Backend.Hubs
                     context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NoValidCardAvailable);
 
                     if (actualGameTable.cardServiceData.ProveCardsCount%GlobalDefinitions.NofParticipantsPerTable != 0)
-                        NotifyNextPlayer(ParticipationService.GetNextPlayer(actualGameTable, nextUserName));
+                        NotifyNextPlayer(ParticipationService.GetNextPlayer(actualGameTable, nextUser.Nickname));
                     if (!actualGameTable.cardServiceData.AreCardsOnHand(actualGameTable))
                     {
                         SendCardsForRound(actualGameTable);
                     }
                     else
                     {
-                        NotifyNextPlayer(ParticipationService.GetNextPlayer(actualGameTable, nextUserName));
+                        NotifyNextPlayer(ParticipationService.GetNextPlayer(actualGameTable, nextUser.Nickname));
                     }
                 }
             });

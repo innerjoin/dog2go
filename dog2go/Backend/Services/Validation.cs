@@ -136,6 +136,7 @@ namespace dog2go.Backend.Services
             if (HasBlockedField(startCountField, fieldCount)) return false;
                 for (var i = 0; i <= fieldCount; i++)
                 {
+                    if (startCountField == null) return false;
                     startCountField = startCountField.Next;
                     StartField startField = startCountField as StartField;
                 if (startField == null) continue;
