@@ -1,8 +1,7 @@
-﻿using System;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Security;
-using dog2go.Backend;
 using dog2go.Backend.Constants;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
@@ -40,7 +39,6 @@ namespace dog2go.Controllers
             UserRepository.Instance.Get().GetOrAdd(userName, user);
             return RedirectToAction("Play", "Game");
         }
-
         public bool LimitToOneTableExceeded()
         {
             ModelState.AddModelError(string.Empty, "Gametable already full. Come back later");

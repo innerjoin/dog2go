@@ -1,5 +1,5 @@
 ﻿@using dog2go.Views.Extensions
-
+@model dog2go.Models.DisplayNameModel
 @{
     ViewBag.Title = "Play";
 }
@@ -24,8 +24,10 @@
         </div>
         <div id="cardContainer"></div>
         <div id="playerInformation">
-            <span id="playerInformationMeepleColor"><img src="~/Frontend/Images/meeple_blue.png"></img></span>
-            <span id="playerInformationName"><p>de Hans</p></span>
+            <span id="playerInformationMeepleColor"><img src="~/Frontend/Images/@Model.ColorMeeplePath"/></span>
+            <!--<span id="playerInformationMeepleColor"><img src="~/Frontend/Images/meeple_red.png" /></span>-->
+            
+            <span id="playerInformationName">@Model.DisplayUser.Nickname</span>
         </div>
     </div>
 </div>

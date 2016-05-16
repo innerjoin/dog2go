@@ -193,7 +193,11 @@ namespace dog2go.Backend.Hubs
                     context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NoValidCardAvailable);
 
                     if (actualGameTable.cardServiceData.ProveCardsCount%GlobalDefinitions.NofParticipantsPerTable != 0)
+                    {
                         NotifyNextPlayer(ParticipationService.GetNextPlayer(actualGameTable, nextUser.Nickname));
+                        return;
+                    }
+
                     if (!actualGameTable.cardServiceData.AreCardsOnHand(actualGameTable))
                     {
                         SendCardsForRound(actualGameTable);
