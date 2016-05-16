@@ -1,11 +1,16 @@
 ﻿/* scale form input width */
 input, select, textarea {
-    max-width: 280px;
+    max-width: 40vw;
 }
 
 /* ensure body height */
 html, body {
     height: 100%;
+}
+
+.site-wrap {
+    /*padding: 3vw!important;*/
+    overflow: auto;
 }
 
 #gamePageOverlay {
@@ -28,10 +33,16 @@ html, body {
         -ms-opacity: 1;
         opacity: 1;
         color: white;
-        padding: 5em;
+        padding: 0.5vw;
         align-self: center;
         text-align: center;
     }
+
+    #gamePageOverlay > .pageOverlayContent h1 {
+          font-size: 10vw !important;
+      
+    }
+
     #gamePageOverlay > .pageOverlayContent > .loading {
         display: block;
     }
@@ -46,6 +57,7 @@ html, body {
     width: 100%;
     height: 100%;
     background-image: url("../Images/wood-min.jpg");
+    background-size: cover;
 }
 
     #gameContainer > #gameContent {
@@ -65,15 +77,34 @@ html, body {
         float: left;
         width: 42%;
         height: 100%;
-        /*background-color: #aaBB00;*/
     }
+
+#sideContainer > #playerInformation {
+    display: flex;
+    align-self: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 9%;
+    padding: 1vw;
+}
+
+#playerInformationMeepleColor {
+    height: 100%;
+}
+
+#playerInformationMeepleColor > img {
+    height: 100%;
+}
+
+#playerInformationName {
+    font-size: 3vw;
+    
+}
 
 #sideContainer > #cardContainer {
     float: left;
     width: 100%;
-    height: 50%;
-    color: #ff00cc;
-    font-size: 2em;
+    height: 40%;
 }
 
 #sideContainer > #chatContainer {
@@ -81,7 +112,7 @@ html, body {
     width: 100%;
     max-width: 100%;
     height: 50%;
-    border: 1px solid gray;
+    border: 0.2vw solid gray;
     overflow: hidden;
     background: slategray;
     background: rgba(00, 00, 00, .7);
@@ -93,16 +124,31 @@ html, body {
     #sideContainer > #chatContainer ul {
         color: white;
         overflow: auto;
+        font-size: 1.5vw;
+        margin: 0;
+        padding-left: 1vw;
     }
 
     #sideContainer > #chatContainer > .input-group {
         align-self: flex-end;
-        padding: 6px;
+        padding: 1vw;
         width: 100%;
+        margin: 0;
     }
 
+        #sideContainer > #chatContainer > .input-group > input {
+            height: 4vw;
+            font-size: 1.5vw;
+            padding: 0!important;
+            border-radius: 1vw!important;
+        }
+
         #sideContainer > #chatContainer > .input-group > input[type=text] {
-            max-width: 70%;
+            width: 30vw;
+        }
+        #sideContainer > #chatContainer > .input-group > input[type=submit] {
+            width: 8vw;
+            float: right;
         }
 
 #cardContainer > img {
@@ -114,7 +160,9 @@ footer {
     z-index: 3;
     position: fixed;
     bottom: 0;
-    right: 10px;
+    right: 1vw;
+    bottom: 1vw;
+    font-size: 1.2vw;
 }
 
 input.semi-transparent-input {
@@ -127,7 +175,7 @@ input.semi-transparent-input {
 input.semi-transparent-button {
     background-color: #636363 !important;
     background-color: rgba(99,99,99,0.8) !important;
-    border: 1px solid white !important;
+    border: 0.1vw solid white !important;
     color: white;
 }
 
@@ -153,17 +201,17 @@ input.semi-transparent-button {
     right: 0;
     float: right;
     clear: both;
-    width: 200px;
-    border-top: 1px solid #111;
-    border-bottom: 1px solid #000;
+    width: 40vw;
+    border-top: 0.1vw solid #111;
+    border-bottom: 0.1vw solid #000;
 }
 
     .nav-item a {
         display: block;
-        padding: 1em;
+        padding: 3vw; 
         background: linear-gradient(135deg, rgba(0,0,0,0) 0,rgba(0,0,0,0.65) 100%);
         color: white;
-        font-size: 1.2em;
+        font-size: 3vw;
         text-decoration: none;
         -webkit-transition: color 0.5s, background 0.6s;
         -moz-transition: color 0.5s, background 0.6s;
@@ -173,8 +221,8 @@ input.semi-transparent-button {
     }
 
         .nav-item a:hover {
-            color: #00ced1;
-            background: linear-gradient(135deg, rgba(0,0,0,0) 0,rgba(00,99,91,0.65) 100%);
+            color: rgb(8, 171, 224);
+            background: linear-gradient(135deg, rgba(0,0,0,0) 0,rgba(0, 81, 99, 0.65) 100%);
         }
 
 /* Site Wrapper - Everything that isn't navigation */
@@ -191,7 +239,7 @@ input.semi-transparent-button {
     bottom: 100%;
     right: 0;
     z-index: 1;
-    padding: 1px;
+    padding: 0.1vw;
     background-image: radial-gradient(ellipse at center, #ffffff 0, #eeeeee 100%);
 }
 
@@ -203,11 +251,11 @@ input.semi-transparent-button {
 
 label[for="nav-trigger"] {
     position: fixed;
-    right: 15px;
-    top: 15px;
+    right: 1.5vw;
+    top: 1.5vw;
     z-index: 2;
-    height: 30px;
-    width: 30px;
+    height: 3vw;
+    width: 3vw;
     cursor: pointer;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' x='0px' y='0px' width='30px' height='30px' viewBox='0 0 30 30' style='stroke:white' enable-background='new 0 0 30 30' xml:space='preserve'><rect width='30' height='6'/><rect y='24' width='30' height='6'/><rect y='12' width='30' height='6'/></svg>");
     -ms-background-size: contain;
@@ -215,7 +263,7 @@ label[for="nav-trigger"] {
 }
 
 label:hover {
-    fill: #00ced1;
+    fill: #008cd1;
 }
 
 .nav-trigger + label, .site-wrap {
@@ -227,15 +275,15 @@ label:hover {
 }
 
 .nav-trigger:checked + label {
-    right: 215px;
+    right: 41vw;
 }
 
 .nav-trigger:checked ~ .site-wrap {
-    right: 200px;
-    -webkit-box-shadow: 0 0 5px 5px #000000;
-    -ms-box-shadow: 0 0 5px 5px #000000;
-    box-shadow: 0 0 5px 5px #000000;
-    box-shadow: 0 0 5px 5px rgba(0,0,0,0.5);
+    right: 40vw;
+    -webkit-box-shadow: 0 0 0.5vw 0.5vw #000000;
+    -ms-box-shadow: 0 0 0.5vw 0.5vw #000000;
+    box-shadow: 0 0 0.5vw 0.5vw #000000;
+    box-shadow: 0 0 0.5vw 0.5vw rgba(0,0,0,0.5);
 }
 
 body {
@@ -252,7 +300,7 @@ body {
     padding: 0;
 }
 
-html, body {
+html, body, p {
     height: 100%;
     width: 100%;
     margin: 0;
