@@ -208,6 +208,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\Helpers\CssRewriteUrlTransformFixed.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Backend\Hubs\ChatHub.cs" />
     <Compile Include="Backend\Services\GameFactory.cs" />
