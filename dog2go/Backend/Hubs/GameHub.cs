@@ -15,9 +15,9 @@ namespace dog2go.Backend.Hubs
     {
         private static readonly object Locker = new object();
 
-        public GameHub(IGameRepository repos): base(repos){}
+        public GameHub(IGameRepository repos) : base(repos) { }
 
-        public GameHub() {}
+        public GameHub() { }
 
 
         public GameTable ConnectToTable()
@@ -25,16 +25,16 @@ namespace dog2go.Backend.Hubs
             lock (Locker)
             {
                 GameTable table = GameTableService.GetTable(Games);
-            string curUser = Context.User.Identity.Name;
+                string curUser = Context.User.Identity.Name;
                 if (GameTableService.AlreadyConnected(table, curUser))
-            {
+                {
                     Participation participation = ParticipationService.GetParticipation(table, curUser);
                     List<HandCard> cards = table.cardServiceData?.GetActualHandCards(participation.Participant, table);
                     Clients.Client(Context.ConnectionId).backToGame(table, cards);
-                if (table.ActualParticipation == participation)
-                {
-                     NotifyActualPlayer(participation.Participant, cards);
-                }
+                    if (table.ActualParticipation == participation)
+                    {
+                        NotifyActualPlayer(participation.Participant, cards);
+                    }
                 }
                 else
                 {
@@ -44,9 +44,9 @@ namespace dog2go.Backend.Hubs
                         AllConnected(table);
                 }
                 Clients.Client(Context.ConnectionId).createGameTable(table);
-                    return table;
-                }
+                return table;
             }
+        }
 
         // for test method calls only
         public GameTable GetGeneratedGameTable()
@@ -166,7 +166,7 @@ namespace dog2go.Backend.Hubs
                 {
                     context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
                     Clients.Client(id).notifyActualPlayer(validHandCards, GameTableService.GetColorCodeForUser(nextUser.Nickname, Locker, Games));
-                }    
+                }
                 else
                 {
                     foreach (var card in actualGameTable.cardServiceData.GetActualHandCards(nextUser, actualGameTable))
@@ -176,7 +176,7 @@ namespace dog2go.Backend.Hubs
 
                     Clients.Client(id).dropCards();
 
-                    if (actualGameTable.cardServiceData.ProveCardsCount%GlobalDefinitions.NofParticipantsPerTable != 0)
+                    if (actualGameTable.cardServiceData.ProveCardsCount % GlobalDefinitions.NofParticipantsPerTable != 0)
                         return;
                     if (!actualGameTable.cardServiceData.AreCardsOnHand(actualGameTable))
                     {

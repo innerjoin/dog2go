@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
+using dog2go.Backend.Hubs;
+using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
 using dog2go.Backend.Services;
@@ -41,7 +43,8 @@ namespace dog2go.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            GameFactory.CreateGameTable(GameRepository.Instance, model.Name);
+            int tableId = GameFactory.CreateGameTable(GameRepository.Instance, model.Name);
+            AddParticipantToTable(tableId);
             return RedirectToAction("Play", "Game");
         }
 
@@ -60,8 +63,15 @@ namespace dog2go.Controllers
         [ActionName("ChooseGameTable")]
         public ActionResult ChooseGameTable(TableViewModel model)
         {
-            //add player to game
+            AddParticipantToTable(model.Identifier);
             return RedirectToAction("Play", "Game");
+        }
+
+        private void AddParticipantToTable(int tableId)
+        {
+            List<GameTable> gameTableList = GameRepository.Instance.Get();
+            GameTable gameTable = gameTableList?.Find(table => table.Identifier.Equals(tableId));
+            ParticipationService.AddParticipation(gameTable, User.Identity.Name);
         }
 
         //[HttpGet]
