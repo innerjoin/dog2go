@@ -251,7 +251,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ChooseTableViewModels.cs" />
+    <Compile Include="Models\ChooseTableViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tests\Backend\CardServicesTest.cs" />
@@ -349,6 +349,7 @@
     <Content Include="Views\Game\Play.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Game\ChooseGameTable.cshtml" />
+    <Content Include="Views\Game\CreateTable.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />

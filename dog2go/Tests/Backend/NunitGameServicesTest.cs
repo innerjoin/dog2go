@@ -271,7 +271,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestUpdateActualRoundCardsNonInitializedGameTable()
         {
-            GameServices.UpdateActualRoundCards(new GameTable(new List<PlayerFieldArea>(), 4));
+            GameServices.UpdateActualRoundCards(new GameTable(new List<PlayerFieldArea>(), 4, "TestTable"));
             Assert.AreEqual(true, true);
         }
         #endregion

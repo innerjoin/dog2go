@@ -31,7 +31,7 @@ namespace dog2go.Backend.Services
         {
             int gameId = GlobalDefinitions.GameId;
             if (games.Get().Count == 0)
-                gameId = GameFactory.CreateGameTable(games);
+                gameId = GameFactory.CreateGameTable(games, GlobalDefinitions.GroupName);
             return games.Get().Find(x => x.Identifier == gameId);
         }
 

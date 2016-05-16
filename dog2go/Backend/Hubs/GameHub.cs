@@ -51,7 +51,7 @@ namespace dog2go.Backend.Hubs
         // for test method calls only
         public GameTable GetGeneratedGameTable()
         {
-            int gameTableId = GameFactory.CreateGameTable(Games);
+            int gameTableId = GameFactory.CreateGameTable(Games, GlobalDefinitions.GroupName);
             lock (Locker)
             {
                 return Games.Get().Find(table => table.Identifier.Equals(gameTableId));

@@ -1,12 +1,34 @@
-﻿@model dog2go.Models.ChooseTableViewModels
+﻿@using System.Data.Entity.Migrations.Model
+@using dog2go.Models
+@model dog2go.Models.ChooseTableViewModel
 @{
     ViewBag.Title = "ChooseGameTable";
 }
 
 <h2>Choose your GameTable</h2>
+<div id="createTable">
+    @Html.ActionLink("Create a new game table", "CreateTable", "Game")
+</div>
 <div id="gameTableOverview">
     <div class="chooseGameTable">
-        @Html.EnumDropDownListFor(model => model.GameTableIdList)
+        @foreach (TableViewModel table in Model.GameTableList)
+        {
+            using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.HiddenFor(x => table.Identifier)
+                        <p>@table.Name - @table.Identifier</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Join" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+        }
     </div>
 </div>
 
