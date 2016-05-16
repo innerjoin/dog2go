@@ -36,6 +36,11 @@ namespace dog2go.Backend.Services
             return table?.Participations?.FirstOrDefault(part => curUser.Equals(part.Participant.Nickname));
         }
 
+        public static bool IsAlreadyParticipating(GameTable table, string curUser)
+        {
+            return GetParticipation(table, curUser) != null;
+        }
+
         public static User GetPartner(User user, List<Participation> participations)
         {
             if (user == null || participations == null)

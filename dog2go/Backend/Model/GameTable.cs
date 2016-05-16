@@ -17,12 +17,12 @@ namespace dog2go.Backend.Model
         public List<Participation> Participations;
         public Participation ActualParticipation;
         public CardServices cardServiceData { get; private set; }
-        public GameTable(List<PlayerFieldArea> areas, int id)
+        public GameTable(List<PlayerFieldArea> areas, int id, string name)
         {
             PlayerFieldAreas = areas;
             Identifier = id;
             Participations = new List<Participation>();
-            //CurremtRound = 0;
+            Name = name;
         }
 
         public void RegisterCardService(CardServices service)

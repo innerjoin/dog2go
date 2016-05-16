@@ -1,0 +1,30 @@
+﻿@using dog2go.Models
+@model ChooseTableViewModel
+
+@{
+    ViewBag.Title = "Choose Game Table";
+}
+
+<h2>Choose your GameTable</h2>
+
+<div id="createTable">
+    @Html.ActionLink("Create a new game table", $"CreateTable", $"Game")
+</div>
+
+<div id="gameTableOverview">
+    <div class="chooseGameTable">
+        @if (Model.GameTableList.Count == 0)
+        {
+            <p>No open game tables. @Html.ActionLink("Create a new one", $"CreateTable", $"Game") </p>
+        }
+        else
+        {
+
+            foreach (TableViewModel tv in Model.GameTableList)
+             {
+                 @Html.Partial($"_ChooseGameTableListItem", tv)
+             }
+        }
+    </div>
+</div>
+

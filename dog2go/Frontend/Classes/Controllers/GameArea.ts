@@ -55,10 +55,10 @@ export class GameArea {
         
         this.gameFieldService.getGameFieldData();
         
-        this.game.load.image("meeple_blue", "../Frontend/Images/meeple_blue.png");
-        this.game.load.image("meeple_red", "../Frontend/Images/meeple_red.png");
-        this.game.load.image("meeple_green", "../Frontend/Images/meeple_green.png");
-        this.game.load.image("meeple_yellow", "../Frontend/Images/meeple_yellow.png");
+        this.game.load.image("meeple_blue", "/Frontend/Images/meeple_blue.png");
+        this.game.load.image("meeple_red", "/Frontend/Images/meeple_red.png");
+        this.game.load.image("meeple_green", "/Frontend/Images/meeple_green.png");
+        this.game.load.image("meeple_yellow", "/Frontend/Images/meeple_yellow.png");
 
         this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.game.scale.refresh();

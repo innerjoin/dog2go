@@ -6,7 +6,7 @@ namespace dog2go.Backend.Services
 {
     public class GameFactory
     {
-         private static GameTable GenerateNewGameTable(int gameId)
+         private static GameTable GenerateNewGameTable(int gameId, string gameName)
         {
             List<PlayerFieldArea> areas = new List<PlayerFieldArea>();
 
@@ -33,14 +33,14 @@ namespace dog2go.Backend.Services
             areas.Add(areaBottom);
             areas.Add(areaRight);
 
-            GameTable table = new GameTable(areas, gameId);
+            GameTable table = new GameTable(areas, gameId, gameName);
             return table;
         }
 
-        public static int CreateGameTable(IGameRepository games)
+        public static int CreateGameTable(IGameRepository games, string tableName)
         {
             int newIdentifier = games.Get().Count;
-            GameTable generatedTable = GenerateNewGameTable(newIdentifier);
+            GameTable generatedTable = GenerateNewGameTable(newIdentifier, tableName);
             games.Add(generatedTable);
             return generatedTable.Identifier;
         }

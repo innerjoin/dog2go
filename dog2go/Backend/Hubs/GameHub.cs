@@ -25,33 +25,32 @@ namespace dog2go.Backend.Hubs
             lock (Locker)
             {
                 GameTable table = GameTableService.GetTable(Games);
-            string curUser = Context.User.Identity.Name;
+                string curUser = Context.User.Identity.Name;
                 if (GameTableService.AlreadyConnected(table, curUser))
-            {
+                {
                     Participation participation = ParticipationService.GetParticipation(table, curUser);
                     List<HandCard> cards = table.cardServiceData?.GetActualHandCards(participation.Participant, table);
                     Clients.Client(Context.ConnectionId).backToGame(table, cards);
-                if (table.ActualParticipation == participation)
-                {
-                     NotifyActualPlayer(participation.Participant, cards);
-                }
+                    if (table.ActualParticipation == participation)
+                    {
+                         NotifyActualPlayer(participation.Participant, cards);
+                    }
                 }
                 else
                 {
                     ParticipationService.AddParticipation(table, curUser);
-
-                    if (table.Participations.Count == GlobalDefinitions.NofParticipantsPerTable)
-                        AllConnected(table);
                 }
+                if (table.Participations.Count == GlobalDefinitions.NofParticipantsPerTable)
+                    AllConnected(table);
                 Clients.Client(Context.ConnectionId).createGameTable(table);
-                    return table;
-                }
+                return table;
             }
+        }
 
         // for test method calls only
         public GameTable GetGeneratedGameTable()
         {
-            int gameTableId = GameFactory.CreateGameTable(Games);
+            int gameTableId = GameFactory.CreateGameTable(Games, GlobalDefinitions.GroupName);
             lock (Locker)
             {
                 return Games.Get().Find(table => table.Identifier.Equals(gameTableId));
