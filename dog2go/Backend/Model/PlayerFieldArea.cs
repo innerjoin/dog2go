@@ -74,7 +74,9 @@ namespace dog2go.Backend.Model
             {
                 KennelField kennelField = new KennelField(++fieldId);
                 int meepleId = (Identifier - 1) * NumberOfMeeple + count;
-                meepleList.Add(new Meeple(kennelField, this.ColorCode, meepleId) {IsStartFieldBlocked = true});
+                Meeple newMeeple = new Meeple(kennelField, this.ColorCode, meepleId) {IsStartFieldBlocked = true};
+                meepleList.Add(newMeeple);
+                kennelField.CurrentMeeple = newMeeple;
                 kennelFields.Add(kennelField);
             }
 

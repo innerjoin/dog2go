@@ -137,14 +137,12 @@ namespace dog2go.Backend.Hubs
             if (Validation.ValidateMove(meepleMove, cardMove))
             {
                 GameTable actualGameTable = GameTableService.GetActualGameTable(Locker, Games, Context.User.Identity.Name);
-                GameTableService.UpdateMeeplePosition(meepleMove, actualGameTable);
+                GameTableService.UpdateMeeplePosition(meepleMove, actualGameTable, cardMove.SelectedAttribute != null);
                 List<Meeple> allMeeples = new List<Meeple>();
                 foreach (var area in actualGameTable.PlayerFieldAreas)
                 {
                     allMeeples.AddRange(area.Meeples);
                 }
-                actualGameTable.cardServiceData.GetActualHandCards(
-                    GameTableService.GetActualUser(Context.User.Identity.Name), actualGameTable);
                 actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GameTableService.GetActualUser(Context.User.Identity.Name), cardMove.Card);
                 Clients.All.sendMeeplePositions(allMeeples);
                 NotifyNextPlayer("");

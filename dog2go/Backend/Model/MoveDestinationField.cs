@@ -18,7 +18,8 @@ namespace dog2go.Backend.Model
             set
             {
                 _currentMeeple = value;
-                _currentMeeple.CurrentPosition = this;
+                if(_currentMeeple != null)
+                    _currentMeeple.CurrentPosition = this;
             }
         }
 
