@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Linq;
 using dog2go.Backend.Constants;
 using dog2go.Backend.Interfaces;
@@ -69,23 +70,41 @@ namespace dog2go.Backend.Services
                     meeple.CurrentPosition.FieldType.Contains("StandardField"));
         }
 
-        public static void UpdateMeeplePosition(MeepleMove meepleMove, GameTable gameTable)
+        public static void UpdateMeeplePosition(MeepleMove meepleMove, GameTable gameTable, bool isChangePlace)
         {
             if (gameTable == null || meepleMove == null)
                 return;
             foreach (var area in gameTable.PlayerFieldAreas)
             {
-                MoveDestinationField updateField = area.Fields.Find(field => field.Identifier == meepleMove.MoveDestination.Identifier);
-                if (updateField != null)
+                MoveDestinationField updateField = area.Fields.Find(field => field.Identifier == meepleMove.MoveDestination.Identifier) ??
+                                                   area.KennelFields.Find(field => field.Identifier == meepleMove.MoveDestination.Identifier);
+                if(updateField == null)continue;
+                
+                if (isChangePlace)
                 {
-                    updateField.CurrentMeeple = meepleMove.Meeple;
-                    Meeple actualMeeple = area.Meeples.Find(meeple => meeple.CurrentPosition.Identifier == meepleMove.Meeple.CurrentFieldId);
-                    if (actualMeeple != null)
-                    {
-                        actualMeeple.CurrentPosition = updateField;
-                        actualMeeple.CurrentFieldId = updateField.Identifier;
-                    }
+                    Meeple moveDestinationMeeple = updateField.CurrentMeeple;
+                    if(moveDestinationMeeple != null)
+                        moveDestinationMeeple.CurrentPosition = meepleMove.Meeple.CurrentPosition;
                 }
+
+                else
+                {
+                    Meeple removeDestinationMeeple = updateField.CurrentMeeple;
+                    if (removeDestinationMeeple != null)
+                        removeDestinationMeeple.CurrentPosition =
+                            area.KennelFields.Find(field => field.CurrentMeeple == null);
+                }
+                updateField.CurrentMeeple = meepleMove.Meeple;
+                Meeple actualMeeple = area.Meeples.Find(meeple => meeple.CurrentPosition.Identifier == meepleMove.Meeple.CurrentFieldId);
+                if (actualMeeple == null) continue;
+                if (actualMeeple.CurrentPosition.FieldType.Contains("StartField"))
+                    actualMeeple.IsStartFieldBlocked = false;
+                actualMeeple.CurrentPosition = updateField;
+                actualMeeple.CurrentFieldId = updateField.Identifier;
+                MoveDestinationField oldDestinationField = area.Fields.Find(field => field.Identifier == meepleMove.Meeple.CurrentFieldId) ??
+                                                           area.KennelFields.Find(field => field.Identifier == meepleMove.Meeple.CurrentFieldId);
+                if(oldDestinationField == null)continue;
+                oldDestinationField.CurrentMeeple = null;
             }
         }
 

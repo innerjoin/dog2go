@@ -117,7 +117,10 @@ namespace dog2go.Backend.Services
                 {
                     case AttributeEnum.ChangePlace:
                         if (ProveChangePlace(movedMeeple, destinationField))
+                        {
                             test += 1;
+                            cardMove.SelectedAttribute = new CardAttribute(AttributeEnum.ChangePlace);
+                        }
                         break;
                     case AttributeEnum.LeaveKennel:
                         if (ProveLeaveKennel(movedMeeple, destinationField))
@@ -138,6 +141,7 @@ namespace dog2go.Backend.Services
                 {
                     if (startCountField == null) return false;
                     startCountField = startCountField.Next;
+                    fieldCount--;
                     StartField startField = startCountField as StartField;
                 if (startField == null) continue;
                         EndField endField = startField.EndFieldEntry;

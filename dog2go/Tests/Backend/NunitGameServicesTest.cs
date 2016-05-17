@@ -220,7 +220,7 @@ namespace dog2go.Tests.Backend
             MoveDestinationField currentField = redArea.Fields.Find(field => field.FieldType.Contains("StartField"));
             currentField.CurrentMeeple = redMeeple;
             MoveDestinationField moveField = redArea.Fields.Find(field => field.FieldType.Contains("StandardField"));
-            GameTableService.UpdateMeeplePosition(new MeepleMove() {Meeple = redMeeple, MoveDestination = moveField}, table);
+            GameTableService.UpdateMeeplePosition(new MeepleMove() {Meeple = redMeeple, MoveDestination = moveField}, table, false);
             Assert.AreEqual(moveField, table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red).Fields.Find(field => field.CurrentMeeple == redMeeple));
         }
 
@@ -234,14 +234,14 @@ namespace dog2go.Tests.Backend
             currentField.CurrentMeeple = redMeeple;
             MoveDestinationField moveField = redArea.Fields.Find(field => field.FieldType.Contains("StandardField"));
             GameTable notModified = table;
-            GameTableService.UpdateMeeplePosition(null, table);
+            GameTableService.UpdateMeeplePosition(null, table,false);
             Assert.AreEqual(table, notModified);
         }
 
         [Test]
         public void TestUpdateMeeplePositionNoTable()
         {
-            GameTableService.UpdateMeeplePosition(null,null);
+            GameTableService.UpdateMeeplePosition(null,null,false);
             Assert.AreEqual(true, true);
         }
         #endregion
