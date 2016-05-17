@@ -50,7 +50,7 @@ describe("GameFieldService - ", () => {
         var gameFieldService = GameFieldService.getInstance();
         gameFieldService.createGameTableCB = callbacks.createGametable;
 
-        gameFieldService.getGameFieldData();
+        gameFieldService.getGameFieldData(1);
 
         // uppon calling server Methods: Allways check if Hub has been started correctly
         expect($.connection.hub.start).toHaveBeenCalled();

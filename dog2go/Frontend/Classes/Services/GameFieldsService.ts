@@ -29,10 +29,11 @@ export class GameFieldService {
         return GameFieldService.instance;
     }
 
-    public getGameFieldData():void {
+    public getGameFieldData(tableId: number):void {
         var gameHub = $.connection.gameHub;
         $.connection.hub.start().done(() => {
-            gameHub.server.connectToTable();
+            console.log("the ID: ", tableId);
+            gameHub.server.connectToTable(tableId);
         });
     }
 }

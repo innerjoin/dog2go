@@ -1,7 +1,4 @@
-﻿
-//import sc = require("./SessionController");
-//import SessionController = sc.SessionController;
-import cc = require("./ChatController");
+﻿import cc = require("./ChatController");
 import ChatController = cc.ChatController;
 import gac = require("./GameArea");
 import GameArea = gac.GameArea;
@@ -10,14 +7,8 @@ export class GameMaster {
     private chatController: ChatController;
     private gameArea: GameArea;
 
-    constructor() {
-
+    constructor(tableId: number) {
         this.chatController = new ChatController();
-        this.gameArea = new GameArea();
-        
-        $().ready(() => {
-            //sessionController.checkConnection();
-        });
-    }
-    
+        this.gameArea = new GameArea(tableId);
+    }   
 }
