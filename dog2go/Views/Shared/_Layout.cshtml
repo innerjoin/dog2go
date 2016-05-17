@@ -17,10 +17,10 @@
 <body>
 
     <ul class="navigation">
-        <li class="nav-item">@Html.ActionLink("Play now", "Play", "Game")</li>
-        <li class="nav-item">@Html.ActionLink("About dog2go", "About", "Home")</li>
+        <li class="nav-item">@Html.ActionLink("Play now", $"ChooseGameTable", $"Game")</li>
+        <li class="nav-item">@Html.ActionLink("About dog2go", $"About", $"Home")</li>
         <li class="nav-item"><a href="https://www.hsr.ch" target="_blank">HSR</a></li>
-        <li class="nav-item">@Html.ActionLink("Logout", "SignOut", "Account")</li>
+        <li class="nav-item">@Html.ActionLink("Logout", $"SignOut", $"Account")</li>
     </ul>
 
     <input type="checkbox" id="nav-trigger" class="nav-trigger" />

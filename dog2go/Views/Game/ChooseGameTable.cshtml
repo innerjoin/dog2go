@@ -11,6 +11,9 @@
     @Html.ActionLink("Create a new game table", $"CreateTable", $"Game")
 </div>
 
+<hr />
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
 <div id="gameTableOverview">
     <div class="chooseGameTable">
         @if (Model.GameTableList.Count == 0)

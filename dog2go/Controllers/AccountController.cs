@@ -22,7 +22,7 @@ namespace dog2go.Controllers
         public ActionResult PostLogin(LoginViewModel loginModel)
         {
             string userName = loginModel.UserName;
-            if (!ModelState.IsValid || UserNameTaken(userName) || LimitToOneTableExceeded())
+            if (!ModelState.IsValid || UserNameTaken(userName))
             {
                 return View(loginModel);
             }
@@ -38,11 +38,6 @@ namespace dog2go.Controllers
             };
             UserRepository.Instance.Get().GetOrAdd(userName, user);
             return RedirectToAction($"ChooseGameTable", $"Game");
-        }
-        public bool LimitToOneTableExceeded()
-        {
-            ModelState.AddModelError(string.Empty, "Gametable already full. Come back later");
-            return UserRepository.Instance.Get().Count >= GlobalDefinitions.NofParticipantsPerTable;
         }
 
         private bool UserNameTaken(string userName)

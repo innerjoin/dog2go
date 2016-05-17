@@ -31,14 +31,18 @@ namespace dog2go.Backend.Hubs
             string connectionId = Context.ConnectionId;
             User user = UserRepository.Instance.Get(userName);
 
-            lock (Locker)
+            if (user != null)
             {
-                if (user.ConnectionIds.Add(connectionId))
+                lock (Locker)
                 {
-                    var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-                    Task test = context.Groups.Add(Context.ConnectionId, GlobalDefinitions.GroupName);
-                    test.Wait();
-                    context.Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name));
+                    if (user.ConnectionIds.Add(connectionId))
+                    {
+                        IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                        Task test = context.Groups.Add(Context.ConnectionId, GlobalDefinitions.GroupName);
+                        test.Wait();
+                        context.Clients.Group(GlobalDefinitions.GroupName)
+                            .broadcastSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name));
+                    }
                 }
             }
             return base.OnConnected();

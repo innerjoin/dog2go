@@ -56,5 +56,16 @@ namespace dog2go.Backend.Repos
                 return _gameTables;
             }
         }
+
+        public bool Exists(int tableId)
+        {
+            return _gameTables.Exists(x => x.Identifier == tableId);
+        }
+
+        public bool IsParticipant(int tableId, string user)
+        {
+            GameTable firstOrDefault = _gameTables.FirstOrDefault(x => x.Identifier == tableId);
+            return firstOrDefault != null && firstOrDefault.Participations.Exists(y => y.Participant.Nickname == user);
+        }
     }
 }

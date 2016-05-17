@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using dog2go.Backend.Constants;
 using dog2go.Backend.Services;
+using Microsoft.Ajax.Utilities;
+using WebGrease.Configuration;
 
 namespace dog2go.Backend.Model
 {
     public class GameTable
     {
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
-        public int Identifier { get; set; }
+        public int Identifier { get; private set; }
+
+        public int TableSize { get; private set; }
 
         public DateTime Start { get; set; }
         public DateTime Stop { get; set; }
@@ -23,6 +28,7 @@ namespace dog2go.Backend.Model
             Identifier = id;
             Participations = new List<Participation>();
             Name = name;
+            TableSize = GlobalDefinitions.NofParticipantsPerTable;
         }
 
         public void RegisterCardService(CardServices service)
@@ -30,6 +36,13 @@ namespace dog2go.Backend.Model
             if(cardServiceData != null)
                 throw new Exception("already registered");
             cardServiceData = service;
+        }
+
+        public bool IsFull()
+        {
+            if(Participations.Count > TableSize)
+                throw new Exception("should not happen: table has more participants than playerfieldareas!!");
+            return Participations.Count == TableSize;
         }
     }
 }

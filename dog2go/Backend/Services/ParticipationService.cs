@@ -9,8 +9,10 @@ namespace dog2go.Backend.Services
 {
     public class ParticipationService
     {
-        public static void AddParticipation(GameTable table, string curUser)
+        public static bool AddParticipation(GameTable table, string curUser)
         {
+            if (table.IsFull())
+                return false;
             Participation newParticipation;
             if (table.Participations.Count() % 2 == 1)
             {
@@ -29,6 +31,7 @@ namespace dog2go.Backend.Services
             }
             table.PlayerFieldAreas.Find(area => area.Identifier == table.Participations.Count() + 1).Participation = newParticipation;
             table.Participations.Add(newParticipation);
+            return true;
         }
 
         public static Participation GetParticipation(GameTable table, string curUser)

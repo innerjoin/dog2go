@@ -16,9 +16,9 @@ namespace dog2go.Controllers
         [FullyAuthorized]
         public ActionResult Play(int id = -1)
         {
-            if (id < 0)
+            if (id < 0 || !GameRepository.Instance.Exists(id) || !GameRepository.Instance.IsParticipant(id, User.Identity.Name)) 
                 return RedirectToAction($"ChooseGameTable", $"Game");
-            // TODO: verify that id exists and pass id to view and from there to signalR
+            // TODO: pass id from view to signalR
             User user = UserRepository.Instance.Get().FirstOrDefault(x => x.Value.Identifier == User.Identity.Name).Value;
             DisplayNameModel model = new DisplayNameModel
             {
@@ -51,12 +51,15 @@ namespace dog2go.Controllers
 
         [HttpGet]
         [FullyAuthorized]
-        public ActionResult ChooseGameTable()
+        public ActionResult ChooseGameTable(string modelError)
         {
+            if (!string.IsNullOrEmpty(modelError))
+                ModelState.AddModelError(string.Empty, modelError);
             ChooseTableViewModel model = new ChooseTableViewModel();
             List<GameTable> gameTableList = GameRepository.Instance.Get();
             gameTableList?.ForEach(table =>
             {
+                if (table.IsFull()) return;
                 List<string> participants = new List<string>();
                 table.Participations?.ForEach(part => { participants.Add(part.Participant.Nickname); });
                 model.GameTableList.Add(new TableViewModel(table.Identifier, table.Name, participants));
@@ -69,19 +72,21 @@ namespace dog2go.Controllers
         [ActionName("ChooseGameTable")]
         public ActionResult ChooseGameTable(TableViewModel model)
         {
-            AddParticipantToTable(model.Identifier);
+            if (!AddParticipantToTable(model.Identifier))
+            {
+                return RedirectToAction($"ChooseGameTable", $"Game", new { modelError = $"Could not join table \'" + model.Name + "' as it was already full. Please join another one." });
+            }
             return RedirectToAction($"Play", $"Game", new {id = model.Identifier});
         }
 
         [FullyAuthorized]
-        private void AddParticipantToTable(int tableId)
+        private bool AddParticipantToTable(int tableId)
         {
             List<GameTable> gameTableList = GameRepository.Instance.Get();
             GameTable gameTable = gameTableList?.Find(table => table.Identifier.Equals(tableId));
-            if (!ParticipationService.IsAlreadyParticipating(gameTable, User.Identity.Name))
-            {
-                ParticipationService.AddParticipation(gameTable, User.Identity.Name);
-            }
+            if (ParticipationService.IsAlreadyParticipating(gameTable, User.Identity.Name))
+                return true;
+            return ParticipationService.AddParticipation(gameTable, User.Identity.Name);
         }
 
         private static string GetUserMeeplePath()
