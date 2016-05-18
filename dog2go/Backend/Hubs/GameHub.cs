@@ -28,24 +28,32 @@ namespace dog2go.Backend.Hubs
             {
                 GameTable table = GameTableService.GetTable(Games, gameTableId);
                 string curUser = Context.User.Identity.Name;
+                List<HandCard> cards = null;
                 if (GameTableService.AlreadyConnected(table, curUser))
                 {
                     Participation participation = ParticipationService.GetParticipation(table, curUser);
-                    List<HandCard> cards = table.CardServiceData?.GetActualHandCards(participation.Participant, table);
-                    Task task = Clients.Client(Context.ConnectionId).backToGame(table, cards);
-                    task.Wait();
+
+                    if (table.Participations.Count == GlobalDefinitions.NofParticipantsPerTable && !table.IsInitialized)
+                    {
+                        AllConnected(table);
+                        Clients.Client(Context.ConnectionId).createGameTable(table);
+                    }
+                    else
+                    {
+                        cards = table.CardServiceData?.GetActualHandCards(participation.Participant, table);
+                        Task task = Clients.Client(Context.ConnectionId).backToGame(table, cards);
+                        task.Wait();
+                    }
                     if (table.ActualParticipation == participation)
                     {
-                         NotifyActualPlayer(participation.Participant, cards);
+                        NotifyActualPlayer(participation.Participant, cards);
                     }
                 }
                 else
                 {
                     ParticipationService.AddParticipation(table, curUser);
+                    Clients.Client(Context.ConnectionId).createGameTable(table);
                 }
-                if (table.Participations.Count == GlobalDefinitions.NofParticipantsPerTable)
-                    AllConnected(table);
-                Clients.Client(Context.ConnectionId).createGameTable(table);
                 return table;
             }
         }
@@ -97,6 +105,7 @@ namespace dog2go.Backend.Hubs
         public void AllConnected(GameTable table)
         {
             table.RegisterCardService(new CardServices());
+            table.IsInitialized = true;
             SendCardsForRound(table);
         }
 

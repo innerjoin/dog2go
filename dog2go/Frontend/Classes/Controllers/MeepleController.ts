@@ -43,15 +43,19 @@ export class MeepleController {
         console.log("Return move");
         if (this.turnMeepleMove != null) {
             this.positionMeeple(this.turnMeepleMove.Meeple);
+            this.turnMeepleMove = null;
         }
     }
 
     public repositionMeeples(meeples: IMeeple[]) {
+        this.turnCardMove = null;
+        this.turnMeepleMove = null;
         for (let meeple of this.allMeeples) {
             for (let newMeeple of meeples) {
                 if (newMeeple.Identifier === meeple.Identifier) {
                     meeple.CurrentPosition = newMeeple.CurrentPosition;
-                    this.positionMeeple(meeple);
+                    this.disableAllMeeplesDraggable();
+                    this.positionMeeple(meeple);    
                     break;
                 }
             }
@@ -93,7 +97,20 @@ export class MeepleController {
         this.turnCardMove = turnCardMove;
         const meeples: IMeeple[] = this.getMeeplesByColor(this.playerMeepleColor);
         for (let meeple of meeples) {
-            // TODO: add distinction for blocked meeples
+            this.setMeepleDraggable(meeple, true);
+        }
+    }
+
+    public disableAllMeeplesDraggable() {
+        for (let meeple of this.allMeeples) {
+            this.setMeepleDraggable(meeple, false);
+        }
+    }
+
+    public setMeepleDraggable(meeple: IMeeple, setDraggable: boolean) {
+        if (!setDraggable) {
+            meeple.spriteRepresentation.input.disableDrag();
+        } else {
             meeple.spriteRepresentation.input.enableDrag();
             meeple.spriteRepresentation.input.enableSnap(this.scaleFactor * 40, this.scaleFactor * 40, false, true);
             meeple.spriteRepresentation.events.onDragStop.add(this.dropLimiter, this, 0, meeple);

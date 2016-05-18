@@ -45,6 +45,7 @@ export class CardsController {
     }
 
     public notifyActualPlayer(possibleCards: IHandCard[], meepleColor: number) {
+        console.log("NotifyActualPlayer", possibleCards, meepleColor);
         this.dropAllCards();
         this.showHandCards(possibleCards);
         for (var card of possibleCards) {
