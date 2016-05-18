@@ -2,7 +2,6 @@
 //import Area = require("../../../Frontend/Classes/Controllers/GameArea");
 import gfc = require("../../../Frontend/Classes/Controllers/GameFieldsController");
 import GameFieldController = gfc.GameFieldController;
-import gm = require("../../../Frontend/Classes/Model/GameModel");
 import Coordinates = require("../../../Frontend/Classes/Controllers/FieldCoordinates");
 import FieldCoordinatesData = Coordinates.FieldCoordinatesData;
 
