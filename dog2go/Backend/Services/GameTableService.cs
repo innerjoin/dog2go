@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.OleDb;
 using System.Linq;
 using dog2go.Backend.Constants;
 using dog2go.Backend.Interfaces;
@@ -71,12 +70,18 @@ namespace dog2go.Backend.Services
         {
             if (gameTable == null || meepleMove == null)
                 return;
-            foreach (var area in gameTable.PlayerFieldAreas)
+            MoveDestinationField saveField = null;
+            foreach (PlayerFieldArea area in gameTable.PlayerFieldAreas)
             {
+                MoveDestinationField oldDestinationField = area.Fields.Find(field => field.Identifier == meepleMove.Meeple.CurrentFieldId) ??
+                                                           area.KennelFields.Find(field => field.Identifier == meepleMove.Meeple.CurrentFieldId);
+                if (oldDestinationField != null)
+                    oldDestinationField.CurrentMeeple = null;
+
                 MoveDestinationField updateField = area.Fields.Find(field => field.Identifier == meepleMove.MoveDestination.Identifier) ??
                                                    area.KennelFields.Find(field => field.Identifier == meepleMove.MoveDestination.Identifier);
                 if(updateField == null)continue;
-                
+                saveField = updateField;
                 if (isChangePlace)
                 {
                     Meeple moveDestinationMeeple = updateField.CurrentMeeple;
@@ -92,35 +97,35 @@ namespace dog2go.Backend.Services
                             area.KennelFields.Find(field => field.CurrentMeeple == null);
                 }
                 updateField.CurrentMeeple = meepleMove.Meeple;
-                Meeple actualMeeple = area.Meeples.Find(meeple => meeple.CurrentPosition.Identifier == meepleMove.Meeple.CurrentFieldId);
-                if (actualMeeple == null) continue;
+            }
+
+            foreach (Meeple actualMeeple in gameTable.PlayerFieldAreas.Select(area => 
+                                                                        area.Meeples.Find(meeple => meeple.CurrentPosition.Identifier == meepleMove.Meeple.CurrentFieldId)).
+                                                                        Where(actualMeeple => actualMeeple != null))
+            {
                 if (actualMeeple.CurrentPosition.FieldType.Contains("StartField"))
                     actualMeeple.IsStartFieldBlocked = false;
-                actualMeeple.CurrentPosition = updateField;
-                actualMeeple.CurrentFieldId = updateField.Identifier;
-                MoveDestinationField oldDestinationField = area.Fields.Find(field => field.Identifier == meepleMove.Meeple.CurrentFieldId) ??
-                                                           area.KennelFields.Find(field => field.Identifier == meepleMove.Meeple.CurrentFieldId);
-                if(oldDestinationField == null)continue;
-                oldDestinationField.CurrentMeeple = null;
+                actualMeeple.CurrentPosition = saveField;
+                actualMeeple.CurrentFieldId = saveField?.Identifier ?? -1 ;
             }
         }
 
         public static GameTable UpdateActualRoundCards(GameTable table)
         {
-            if (table?.cardServiceData == null || table.Participations == null)
+            if (table?.CardServiceData == null || table.Participations == null)
                 return null;
-            int nr = table.cardServiceData.GetNumberOfCardsPerUser();
-            table.cardServiceData.CurrentRound++;
+            int nr = table.CardServiceData.GetNumberOfCardsPerUser();
+            table.CardServiceData.CurrentRound++;
 
             List<Participation> participations = table.Participations;
             
             foreach (Participation participation in participations)
             {
-                PlayRound actualPlayRound = new PlayRound(table.cardServiceData.CurrentRound - 1, nr);
+                PlayRound actualPlayRound = new PlayRound(table.CardServiceData.CurrentRound - 1, nr);
                 List<HandCard> cards = new List<HandCard>();
                 for (int i = 0; i < nr; i++)
                 {
-                    cards.Add(new HandCard(table.cardServiceData.GetCard()));
+                    cards.Add(new HandCard(table.CardServiceData.GetCard()));
                 }
 
                 actualPlayRound.Cards = cards;

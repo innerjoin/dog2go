@@ -3,8 +3,8 @@ import ChatService = Service.ChatService;
 
 export class ChatController {
     private chatService: ChatService;
-    constructor(tableId: number) {
-        this.chatService = ChatService.getInstance(tableId, this.putMessage, this.putSystemMessage);
+    constructor() {
+        this.chatService = ChatService.getInstance(tableId, this.putMessage.bind(this), this.putSystemMessage.bind(this));
         $("#message").keypress((e) => {
             if (e.which === 13) this.sendChat(tableId);
         });

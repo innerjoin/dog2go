@@ -81,7 +81,10 @@ namespace dog2go.Backend.Services
             if (myMeeples == null)
                 return false;
             List<Meeple> myMovableMeeples = myMeeples.FindAll(meeple => Validation.IsMovableField(meeple.CurrentPosition));
-            return myMovableMeeples.Any(meeple => !Validation.HasBlockedField(meeple.CurrentPosition, value) || Validation.CanMoveToEndFields(meeple.CurrentPosition, value));
+            return myMovableMeeples.Any(meeple => (!Validation.HasBlockedField(meeple.CurrentPosition, value) &&
+                                                    Validation.CanMoveToEndFields(meeple.CurrentPosition, value, meeple.ColorCode)||
+                                                    (!Validation.HasBlockedField(meeple.CurrentPosition, value) &&
+                                                    !Validation.CanMoveToEndFields(meeple.CurrentPosition, value, meeple.ColorCode))));
         }
 
         private bool IsCardAlreadyUsed(HandCard card, List<HandCard> handCards)
@@ -137,10 +140,10 @@ namespace dog2go.Backend.Services
         public void RemoveAllCardsFromUser(GameTable actualGameTable, User actualUser)
         {
             HandCard[] cardArray = new HandCard[6];
-            actualGameTable.cardServiceData.GetActualHandCards(actualUser, actualGameTable).CopyTo(cardArray);
+            actualGameTable.CardServiceData.GetActualHandCards(actualUser, actualGameTable).CopyTo(cardArray);
             foreach (var card in cardArray)
             {
-                actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, actualUser, card);
+                actualGameTable.CardServiceData.RemoveCardFromUserHand(actualGameTable, actualUser, card);
             }
         }
 
