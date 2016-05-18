@@ -31,7 +31,7 @@ export class CardsController {
     public showHandCards(cards: ICard[]) {
         this.myCards = cards;
         console.log("Show HandCards: ", cards);
-        
+
         if (typeof cards !== "undefined" && cards !== null) {
             for (let i = 0; i < cards.length; i++) {
                 this.addCard(cards[i]);
@@ -58,17 +58,17 @@ export class CardsController {
     }
 
     public makeGamefieldDroppable() {
+        var self = this;
         $("#gameContent > canvas").droppable({
-            accept: d => {
+            accept: function (d) {
                 if (d.hasClass("handcards")) {
                     return true;
                 }
-                return false;
             },
-            drop: (event, ui) => {
-                this.centerCard(ui.draggable, $(this));
+            drop: function (event, ui) {
+                self.centerCard(ui.draggable, $(this));
                 const id = ui.draggable.attr("id");
-                this.handleDroppedCard(id);
+                self.handleDroppedCard(id);
             }
         });
     }
@@ -111,7 +111,7 @@ export class CardsController {
     public setDragableOnCard(card: ICard) {
         // HowTo draggable: http://stackoverflow.com/questions/5735270/revert-a-jquery-draggable-object-back-to-its-original-container-on-out-event-of
         $(`.handcards.${card.Name}`).draggable({
-            revert: (event/*, ui*/) => {
+            revert: function (event, ui) {
                 $(this).data("ui-draggable").originalPosition = {
                     top: 0,
                     left: 0
@@ -121,7 +121,7 @@ export class CardsController {
         });
     }
 
-    private getFirstCardsByName(name: string) :ICard {
+    private getFirstCardsByName(name: string): ICard {
         for (let card of this.myCards) {
             if (name === card.Name) {
                 return card;

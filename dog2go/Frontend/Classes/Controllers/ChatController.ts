@@ -4,7 +4,7 @@ import ChatService = Service.ChatService;
 export class ChatController {
     private chatService: ChatService;
     constructor() {
-        this.chatService = ChatService.getInstance(this.putMessage, this.putSystemMessage);
+        this.chatService = ChatService.getInstance(this.putMessage.bind(this), this.putSystemMessage.bind(this));
         $("#message").keypress((e) => {
             if (e.which === 13) this.sendChat();
         });
