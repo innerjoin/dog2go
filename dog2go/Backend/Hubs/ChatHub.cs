@@ -15,10 +15,8 @@ namespace dog2go.Backend.Hubs
     public class ChatHub : GenericHub
     {
         private readonly IChatRepository _chatRepository;
-        private readonly IConnectionRepository _connectionRepository;
-        public ChatHub(IConnectionRepository connectionRepository, IChatRepository chatRepository)
+        public ChatHub(IChatRepository chatRepository)
         {
-            _connectionRepository = connectionRepository;
             _chatRepository = chatRepository;
         }
 
@@ -43,16 +41,9 @@ namespace dog2go.Backend.Hubs
 
         public void SendSystemMessage(string message)
         {
-            if (! message.IsNullOrWhiteSpace())
-            {
-                _chatRepository.AddMessage(new Message() { Msg = message, Group = GlobalDefinitions.GroupName });
-                Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(message);
-            }
-        }
-
-        private void JoinGroup(string groupName)
-        {
-            Groups.Add(Context.ConnectionId, groupName);
+            if (message.IsNullOrWhiteSpace()) return;
+            _chatRepository.AddMessage(new Message() { Msg = message, Group = GlobalDefinitions.GroupName });
+            Clients.Group(GlobalDefinitions.GroupName).broadcastSystemMessage(message);
         }
     }
 }

@@ -48,7 +48,7 @@ describe("GameFieldService - ", () => {
     it("Server: getGameFieldData", () => {
         
         var gameFieldService = GameFieldService.getInstance();
-        gameFieldService.createGameTableCB = callbacks.createGametable;
+        gameFieldService.createGameTableCb = callbacks.createGametable;
 
         gameFieldService.getGameFieldData(1);
 
@@ -61,8 +61,8 @@ describe("GameFieldService - ", () => {
 
     it("Client: backToGame", () => {
         var gameFieldService = GameFieldService.getInstance();
-        gameFieldService.createGameTableCB = callbacks.createGametable;
-        gameFieldService.assignHandCardsCB = callbacks.assignHandCards;
+        gameFieldService.createGameTableCb = callbacks.createGametable;
+        gameFieldService.assignHandCardsCb = callbacks.assignHandCards;
 
         callbacks.createGametable.calls.reset();
         callbacks.assignHandCards.calls.reset();

@@ -39,7 +39,7 @@ export class GameArea {
 
         if (!isTesting) {
             this.gameFieldService = GameFieldService.getInstance();
-            this.gameFieldService.createGameTableCB = this.buildFields.bind(this);
+            this.gameFieldService.createGameTableCb = this.buildFields.bind(this);
             this.gameFieldController = new GameFieldController(this.game, scaleFactor);
             this.meepleController = new MeepleController(this.game, this.gameFieldController, scaleFactor);
             this.cardsController = new CardsController(this.meepleController);

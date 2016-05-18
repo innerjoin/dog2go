@@ -1,5 +1,4 @@
-﻿/// <reference path="../Services/ChatService.ts"/>
-import Service = require("../Services/ChatService");
+﻿import Service = require("../Services/ChatService");
 import ChatService = Service.ChatService;
 
 export class ChatController {
@@ -12,13 +11,11 @@ export class ChatController {
         $("#sendmessage").click(() => {
             this.sendChat();
         });
-
-        $("#displayname").val("TEST");
         $("#gameContent").focus();
     }
 
     private sendChat() {
-        this.chatService.sendMessage($('#message').val());
+        this.chatService.sendMessage($("#message").val());
         $("#message").val("");
         $("#gameContent").focus();
     }
@@ -28,15 +25,18 @@ export class ChatController {
         const encodedMsg = $("<div />").text(message).html();
         // Add the message to the page. 
         $("#chatBox").append(`<li><strong>${encodedName}</strong>:&nbsp;&nbsp;${encodedMsg}</li>`);
-        // auto scroll chat to bottom
-        $('#chatBox').animate({ scrollTop: $(document).height() }, "slow");
+        this.scrollToBottom();
     }
 
     public putSystemMessage(message: string) {
         const encodedMsg = $("<div />").text(message).html();
         // Add the message to the page. 
         $("#chatBox").append(`<li><strong>${encodedMsg}</strong></li>`);
+        this.scrollToBottom();
+    }
+
+    public scrollToBottom() {
         // auto scroll chat to bottom
-        $('#chatBox').animate({ scrollTop: $(document).height() }, "slow");
+        $('#chatBox').animate({ scrollTop: $(document).height() }, "slow");     
     }
 }

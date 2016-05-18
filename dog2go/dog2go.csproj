@@ -365,7 +365,6 @@
     <TypeScriptCompile Include="Frontend\Classes\Controllers\CardsController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameFieldsController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\MeepleController.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\LoginStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\GameStartupConfig.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\FieldCoordinates.ts" />
@@ -384,7 +383,6 @@
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameArea.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\GameFieldsService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\RoundService.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Services\SessionService.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Services\TurnService.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\p2.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\phaser.comments.d.ts" />
