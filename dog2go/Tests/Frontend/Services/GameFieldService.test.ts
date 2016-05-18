@@ -34,7 +34,7 @@ describe("GameFieldService - ", () => {
             return callbackDone;
         });
         $.connection["gameHub"] = <any>{server: <any>{
-            connectToTable: () => { $.connection.gameHub.client.createGameTable(gameTable); }
+            connectToTable: () => { $.connection.gameHub.client.createGameTable(gameTable, tableId); }
             }, client: <any>{}
         };
     });
@@ -67,7 +67,7 @@ describe("GameFieldService - ", () => {
         callbacks.createGametable.calls.reset();
         callbacks.assignHandCards.calls.reset();
 
-        $.connection.gameHub.client.backToGame(gameTable, cards);
+        $.connection.gameHub.client.backToGame(gameTable, cards, tableId);
 
         expect(callbacks.createGametable).toHaveBeenCalled();
         expect(callbacks.createGametable).toHaveBeenCalledWith(gameTable);

@@ -44,7 +44,7 @@ describe("RoundService - ", () => {
 
         var cards: ICard[] = [<any>{ testData: 48476 }];
         
-        $.connection.gameHub.client.assignHandCards(cards);
+        $.connection.gameHub.client.assignHandCards(cards, tableId);
 
         expect(callbacks.assignHandCards).toHaveBeenCalled();
         expect(callbacks.assignHandCards).toHaveBeenCalledWith(cards);

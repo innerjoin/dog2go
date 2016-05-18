@@ -45,7 +45,7 @@ describe("TurnService - ", () => {
         var meepleMove: IMeepleMove = <any>{ testData: 83737, Meeple: { CurrentPosition: { Identifier: 83837 } }, MoveDestination: { Identiier: 88387} };
         var cardMove: ICardMove= <any>{ testData: 43211 };
         // no Callbacks yet awaiten from validate
-        turnService.validateMove(meepleMove, cardMove);
+        turnService.validateMove(meepleMove, cardMove, tableId);
 
         // uppon calling server Methods: Allways check if Hub has been started correctly
         expect($.connection.hub.start).toHaveBeenCalled();
@@ -70,7 +70,7 @@ describe("TurnService - ", () => {
         callbacks.notifyActualPlayer.calls.reset();
         callbacks.notifyActualPlayerCards.calls.reset();
 
-        $.connection.gameHub.client.notifyActualPlayer(cards, color);
+        $.connection.gameHub.client.notifyActualPlayer(cards, color, tableId);
 
         expect(callbacks.notifyActualPlayer).toHaveBeenCalled();
         expect(callbacks.notifyActualPlayer).toHaveBeenCalledWith(cards, color);
@@ -86,7 +86,7 @@ describe("TurnService - ", () => {
         
         callbacks.dropCards.calls.reset();
 
-        $.connection.gameHub.client.dropCards();
+        $.connection.gameHub.client.dropCards(tableId);
 
         expect(callbacks.dropCards).toHaveBeenCalledWith();
         //expect(callbacks.notifyActualPlayer).toHaveBeenCalledWith();
@@ -100,7 +100,7 @@ describe("TurnService - ", () => {
 
         callbacks.sendMeeplePositions.calls.reset();
 
-        $.connection.gameHub.client.sendMeeplePositions(meeples);
+        $.connection.gameHub.client.sendMeeplePositions(meeples, tableId);
 
         expect(callbacks.sendMeeplePositions).toHaveBeenCalled();
         expect(callbacks.sendMeeplePositions).toHaveBeenCalledWith(meeples);

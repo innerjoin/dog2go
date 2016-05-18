@@ -39,7 +39,7 @@ export class TurnService {
         return TurnService.instance;
     }
 
-    public validateMove(meepleMove: IMeepleMove, cardMove: ICardMove) {
+    public validateMove(meepleMove: IMeepleMove, cardMove: ICardMove, tableId: number) {
         var mMoveReady: any = $.extend({}, meepleMove);
         mMoveReady.Meeple = $.extend({}, meepleMove.Meeple);
         mMoveReady.Meeple.CurrentFieldId = meepleMove.Meeple.CurrentPosition.Identifier;
@@ -52,7 +52,7 @@ export class TurnService {
         console.log("Validating, Going to Send out: ", mMoveReady, cardMove);
         var gameHub = $.connection.gameHub;
         $.connection.hub.start().done(() => {
-            gameHub.server.validateMove(mMoveReady, cardMove);
+            gameHub.server.validateMove(mMoveReady, cardMove, tableId);
         });
     }
 }

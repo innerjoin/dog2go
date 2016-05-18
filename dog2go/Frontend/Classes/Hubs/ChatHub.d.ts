@@ -5,11 +5,10 @@
 }
 
 interface IChatHubClient {
-    broadcastMessage(name: string, message: string);
-    broadcastSystemMessage(message: string);
+    broadcastMessage(name: string, message: string, tableId: number);
+    broadcastSystemMessage(message: string, tableId: number);
 }
 
 interface IChatHubServer {
-    assignChatToTable(tableId: number): void;
     sendMessage(message: string, tableId: number): void;
 }

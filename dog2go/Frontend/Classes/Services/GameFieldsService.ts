@@ -5,12 +5,13 @@ export class GameFieldService {
     public createGameTableCb: (gameTable: IGameTable) => any;
 
     constructor(tableId: number) {
+        console.log("GameFieldService: ", tableId);
         if (GameFieldService.instance) {
             // ReSharper disable once TsNotResolved
             throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance() instead of new.");
         }
         const gameHub = $.connection.gameHub;
-        gameHub.qs = `tableId=${tableId}`;
+        $.connection.hub.qs = `tableId=${tableId}`;
         gameHub.client.createGameTable = (gameTable) => {
             this.createGameTableCb(gameTable);
         }

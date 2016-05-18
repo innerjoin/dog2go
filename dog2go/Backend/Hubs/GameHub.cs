@@ -30,7 +30,7 @@ namespace dog2go.Backend.Hubs
                 {
                     Participation participation = ParticipationService.GetParticipation(table, curUser);
                     List<HandCard> cards = table.cardServiceData?.GetActualHandCards(participation.Participant, table);
-                    Clients.Client(Context.ConnectionId).backToGame(table, cards);
+                    Clients.Client(Context.ConnectionId).backToGame(table, cards, table.Identifier);
                     if (table.ActualParticipation == participation)
                     {
                          NotifyActualPlayer(participation.Participant, cards, gameTableId);
@@ -42,7 +42,7 @@ namespace dog2go.Backend.Hubs
                 }
                 if (table.Participations.Count == GlobalDefinitions.NofParticipantsPerTable)
                     AllConnected(table);
-                Clients.Client(Context.ConnectionId).createGameTable(table);
+                Clients.Client(Context.ConnectionId).createGameTable(table, table.Identifier);
                 return table;
             }
         }
@@ -57,11 +57,11 @@ namespace dog2go.Backend.Hubs
             }
         }
 
-        public void SendCards(List<HandCard> cards, User user)
+        public void SendCards(List<HandCard> cards, User user, int tableId)
         {
             user.ConnectionIds.ForEach(id =>
             {
-                Clients.Client(id).assignHandCards(cards);
+                Clients.Client(id).assignHandCards(cards, tableId);
             });
         }
         private void NotifyActualPlayer(User user, List<HandCard> handCards, int tableId)
@@ -76,7 +76,7 @@ namespace dog2go.Backend.Hubs
                 user.ConnectionIds.ForEach(cId =>
                 {
                     context.Clients.Client(cId).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
-                    Clients.Client(cId).notifyActualPlayer(validCards, GameTableService.GetColorCodeForUser(user.Nickname, Locker, Games));
+                    Clients.Client(cId).notifyActualPlayer(validCards, GameTableService.GetColorCodeForUser(user.Nickname, Locker, Games), tableId);
                 });
 
             }
@@ -97,7 +97,7 @@ namespace dog2go.Backend.Hubs
             GameTableService.UpdateActualRoundCards(table);
             foreach (var participation in table.Participations)
             {
-                SendCards(participation.ActualPlayRound.Cards, participation.Participant);
+                SendCards(participation.ActualPlayRound.Cards, participation.Participant, table.Identifier);
             }
 
             if (table.ActualParticipation != null)
@@ -124,7 +124,7 @@ namespace dog2go.Backend.Hubs
             });
         }
 
-        public void ValidateMove(MeepleMove meepleMove, CardMove cardMove)
+        public void ValidateMove(MeepleMove meepleMove, CardMove cardMove, int tableId)
         {
             if (meepleMove == null)
                 return;
@@ -144,12 +144,12 @@ namespace dog2go.Backend.Hubs
                     allMeeples.AddRange(area.Meeples);
                 }
                 actualGameTable.cardServiceData.RemoveCardFromUserHand(actualGameTable, GameTableService.GetActualUser(Context.User.Identity.Name), cardMove.Card);
-                Clients.All.sendMeeplePositions(allMeeples);
+                Clients.All.sendMeeplePositions(allMeeples, tableId);
                 NotifyNextPlayer("");
             }
             else
             {
-                Clients.Caller.returnMove();
+                Clients.Caller.returnMove(tableId);
             }
         }
 
@@ -179,12 +179,12 @@ namespace dog2go.Backend.Hubs
                 if (validHandCards.Find(card => card.IsValid) != null)
                 {
                     context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
-                    Clients.Client(id).notifyActualPlayer(validHandCards, GameTableService.GetColorCodeForUser(nextUser.Nickname, Locker, Games));
+                    Clients.Client(id).notifyActualPlayer(validHandCards, GameTableService.GetColorCodeForUser(nextUser.Nickname, Locker, Games), actualGameTable.Identifier);
                 }    
                 else
                 {
                     actualGameTable.cardServiceData.RemoveAllCardsFromUser(actualGameTable,nextUser );
-                    Clients.Client(id).dropCards();
+                    Clients.Client(id).dropCards(actualGameTable.Identifier);
 
                     context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NoValidCardAvailable);
 

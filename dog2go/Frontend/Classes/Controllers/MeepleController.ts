@@ -20,10 +20,13 @@ export class MeepleController {
 
     private scaleFactor: number;
 
+    private tableId: number;
+
     constructor(tableId: number, game: Phaser.Game, gameFieldController: GameFieldController, scaleFactor: number) {
         this.scaleFactor = scaleFactor;
         this.gameFieldController = gameFieldController;
         this.game = game;
+        this.tableId = tableId;
 
         this.turnService = TurnService.getInstance(tableId);
         this.turnService.notifyActualPlayerCB = this.notifyActualPlayer.bind(this);
@@ -143,7 +146,7 @@ export class MeepleController {
             item.y = nearest.viewRepresentation.y;
             if (meeple.CurrentPosition.Identifier !== nearest.Identifier) {
                 this.turnMeepleMove = { Meeple: meeple, MoveDestination: nearest, DestinationFieldId: nearest.Identifier };
-                this.turnService.validateMove(this.turnMeepleMove, this.turnCardMove);
+                this.turnService.validateMove(this.turnMeepleMove, this.turnCardMove, this.tableId);
             }
         } else {
             const currentField = this.gameFieldController.getFieldByIdOfAll(meeple.CurrentPosition.Identifier);

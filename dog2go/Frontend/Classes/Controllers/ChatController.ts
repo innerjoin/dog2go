@@ -5,7 +5,6 @@ export class ChatController {
     private chatService: ChatService;
     constructor(tableId: number) {
         this.chatService = ChatService.getInstance(tableId, this.putMessage, this.putSystemMessage);
-        this.chatService.assignChatToTable(tableId);
         $("#message").keypress((e) => {
             if (e.which === 13) this.sendChat(tableId);
         });

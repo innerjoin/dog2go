@@ -28,9 +28,6 @@ namespace dog2go.Backend.Services
 
         public static GameTable GetTable(IGameRepository games, int gameId)
         {
-            //int gameId = GlobalDefinitions.GameId;
-            //if (games.Get().Count == 0)
-            //    gameId = GameFactory.CreateGameTable(games, GlobalDefinitions.GroupName);
             return games.Get().Find(x => x.Identifier == gameId);
         }
 

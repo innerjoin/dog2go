@@ -10,13 +10,13 @@ namespace dog2go.Backend.Hubs
     {
         public void SendMessage(string message, int tableId)
         {
-            Clients.Group(tableId.ToString()).broadcastMessage(Context.User.Identity.Name, message);
+            Clients.Group(tableId.ToString()).broadcastMessage(Context.User.Identity.Name, message, tableId);
         }
 
         public void SendSystemMessage(string message, int tableId)
         {
             if (message.IsNullOrWhiteSpace()) return;
-            Clients.Group(tableId.ToString()).broadcastSystemMessage(message);
+            Clients.Group(tableId.ToString()).broadcastSystemMessage(message, tableId);
         }
     }
 }
