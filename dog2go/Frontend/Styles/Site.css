@@ -307,3 +307,22 @@ html, body, p {
     padding: 0;
     font-family: Helvetica, Arial, sans-serif;
 }
+
+.chooseGameTable {
+    margin-left: 10%;
+    width: 40%;
+}
+
+#joinTablebtn {
+    float: right;
+}
+
+#gameTableItem {
+    border-bottom-style: dashed;
+    margin-top: 10px;
+}
+
+#gameTableName {
+    font-weight: bold;
+    margin-bottom: 0;
+}

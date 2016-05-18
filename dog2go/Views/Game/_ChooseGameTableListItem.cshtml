@@ -2,16 +2,16 @@
 
 @using (Html.BeginForm("ChooseGameTable", $"Game", FormMethod.Post)) {
     @Html.AntiForgeryToken()
-    <div class="form-horizontal">
+    <div class="form-horizontal" id="gameTableItem">
         <div class="form-group">
             @Html.HiddenFor(x => x.Identifier)
             @Html.HiddenFor(x => x.Name)
-            <p>@(Model.Name) - @(Model.Identifier)</p>
+            <p id="gameTableName">@(Model.Name) - @(Model.Identifier)</p>
             @if(Model.Participants != null ) {
                 <p>Participants: @(string.Join(" | ", Model.Participants))</p>
             }
         </div>
-        <div class="form-group">
+        <div class="form-group" id="joinTablebtn">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Join" class="btn btn-default" />
             </div>
