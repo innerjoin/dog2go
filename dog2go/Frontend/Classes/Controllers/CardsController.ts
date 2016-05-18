@@ -21,11 +21,13 @@ export class CardsController {
 
         this.gameFieldService = GameFieldService.getInstance();
         this.gameFieldService.assignHandCardsCb = this.showHandCards.bind(this);
+
         this.roundService = RoundService.getInstance();
         this.roundService.assignHandCardsCB = this.showHandCards.bind(this);
+
         this.turnService = TurnService.getInstance();
         this.turnService.notifyActualPlayerCardsCB = this.notifyActualPlayer.bind(this);
-
+        this.turnService.dropCardsCB = this.dropAllCards.bind(this);
     }
 
     public showHandCards(cards: ICard[]) {
