@@ -38,18 +38,17 @@ html, body {
         text-align: center;
     }
 
-    #gamePageOverlay > .pageOverlayContent h1 {
-          font-size: 10vw !important;
-      
-    }
+        #gamePageOverlay > .pageOverlayContent h1 {
+            font-size: 10vw !important;
+        }
 
-    #gamePageOverlay > .pageOverlayContent > .loading {
-        display: block;
-    }
+        #gamePageOverlay > .pageOverlayContent > .loading {
+            display: block;
+        }
 
-    #gamePageOverlay > .pageOverlayContent > .switchOrientation {
-        display: none;
-    }
+        #gamePageOverlay > .pageOverlayContent > .switchOrientation {
+            display: none;
+        }
 
 #gameContainer {
     position: relative;
@@ -92,13 +91,12 @@ html, body {
     height: 100%;
 }
 
-#playerInformationMeepleColor > img {
-    height: 100%;
-}
+    #playerInformationMeepleColor > img {
+        height: 100%;
+    }
 
 #playerInformationName {
     font-size: 3vw;
-    
 }
 
 #sideContainer > #cardContainer {
@@ -139,17 +137,18 @@ html, body {
         #sideContainer > #chatContainer > .input-group > input {
             height: 4vw;
             font-size: 1.5vw;
-            padding: 0!important;
-            border-radius: 1vw!important;
+            padding: 0 !important;
+            border-radius: 1vw !important;
         }
 
-        #sideContainer > #chatContainer > .input-group > input[type=text] {
-            width: 30vw;
-        }
-        #sideContainer > #chatContainer > .input-group > input[type=submit] {
-            width: 8vw;
-            float: right;
-        }
+            #sideContainer > #chatContainer > .input-group > input[type=text] {
+                width: 30vw;
+            }
+
+            #sideContainer > #chatContainer > .input-group > input[type=submit] {
+                width: 8vw;
+                float: right;
+            }
 
 #cardContainer > img {
     max-width: 33%;
@@ -208,7 +207,7 @@ input.semi-transparent-button {
 
     .nav-item a {
         display: block;
-        padding: 3vw; 
+        padding: 3vw;
         background: linear-gradient(135deg, rgba(0,0,0,0) 0,rgba(0,0,0,0.65) 100%);
         color: white;
         font-size: 3vw;
@@ -306,4 +305,27 @@ html, body, p {
     margin: 0;
     padding: 0;
     font-family: Helvetica, Arial, sans-serif;
+}
+
+.chooseGameTable {
+    margin-left: 10%;
+    width: 400px;
+}
+
+.joinTablebtn {
+    float: right;
+    width: 50px;
+    margin-top: 15px;
+}
+
+.gameTableItem {
+    border-bottom-style: dashed;
+    width: 80%;
+    padding-top: 10px;
+    float: left;
+}
+
+.gameTableName {
+    font-weight: bold;
+    margin-bottom: 0;
 }

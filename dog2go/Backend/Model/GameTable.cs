@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using dog2go.Backend.Constants;
 using dog2go.Backend.Services;
-using Microsoft.Ajax.Utilities;
-using WebGrease.Configuration;
 
 namespace dog2go.Backend.Model
 {
@@ -14,14 +12,13 @@ namespace dog2go.Backend.Model
         public int Identifier { get; private set; }
 
         public int TableSize { get; private set; }
-
         public DateTime Start { get; set; }
         public DateTime Stop { get; set; }
         public List<PlayerFieldArea> PlayerFieldAreas;
 
         public List<Participation> Participations;
         public Participation ActualParticipation;
-        public CardServices cardServiceData { get; private set; }
+        public CardServices CardServiceData { get; private set; }
         public GameTable(List<PlayerFieldArea> areas, int id, string name)
         {
             PlayerFieldAreas = areas;
@@ -33,9 +30,11 @@ namespace dog2go.Backend.Model
 
         public void RegisterCardService(CardServices service)
         {
-            if(cardServiceData != null)
+            /*if(cardServiceData != null)
                 throw new Exception("already registered");
-            cardServiceData = service;
+            cardServiceData = service;*/
+            if (CardServiceData == null)
+                CardServiceData = service;
         }
 
         public bool IsFull()

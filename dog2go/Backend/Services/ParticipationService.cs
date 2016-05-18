@@ -44,11 +44,22 @@ namespace dog2go.Backend.Services
             return GetParticipation(table, curUser) != null;
         }
 
+        public static string GetSingleConnectionId(HashSet<string> connectionIdHashSet)
+        {
+            return connectionIdHashSet.FirstOrDefault();
+        }
+
         public static User GetPartner(User user, List<Participation> participations)
         {
             if (user == null || participations == null)
                 return null;
             return participations.Find(participation => participation.Participant.Identifier == user.Identifier)?.Partner;
+        }
+
+        public static User GetActualPlayer(GameTable actualGameTable, string userName)
+        {
+            int? identifier = actualGameTable?.PlayerFieldAreas.Find(area => area.Participation.Participant.Nickname == userName)?.Identifier;
+            return actualGameTable?.PlayerFieldAreas.Find(area => area.Identifier == identifier)?.Participation?.Participant;
         }
 
         public static string GetNextPlayer(GameTable actualGameTable, string userName)

@@ -43,7 +43,7 @@ namespace dog2go.Backend.Services
             if (HasBlockedField(currentPos, value))
                 return false;
             if (destinationField.FieldType.Contains("EndField"))
-                return CanMoveToEndFields(currentPos, value);
+                return CanMoveToEndFields(currentPos, value, moveMeeple.ColorCode);
             currentPos = GetNextField(currentPos, value);
             return currentPos?.Identifier == destinationField.Identifier;
         }
@@ -82,7 +82,7 @@ namespace dog2go.Backend.Services
         public static MoveDestinationField GetFieldById(GameTable actualTable, int fieldId)
         {
             MoveDestinationField moveDestinationField = null;
-            var playerFieldArea = actualTable.PlayerFieldAreas.Find(area => area.Fields.Find(field =>
+            PlayerFieldArea playerFieldArea = actualTable.PlayerFieldAreas.Find(area => area.Fields.Find(field =>
             {
                 if (field.Identifier != fieldId) return false;
                     moveDestinationField = field;
@@ -134,7 +134,7 @@ namespace dog2go.Backend.Services
             return test > 0;
         }
 
-        public static bool CanMoveToEndFields(MoveDestinationField startCountField, int fieldCount)
+        public static bool CanMoveToEndFields(MoveDestinationField startCountField, int fieldCount, ColorCode meepleColorCode)
         {
             if (HasBlockedField(startCountField, fieldCount)) return false;
                 for (var i = 0; i <= fieldCount; i++)
@@ -152,7 +152,7 @@ namespace dog2go.Backend.Services
                             if (endField == null)
                                 return false;
                         }
-                        return true;
+                        return startField.ColorCode == meepleColorCode;
                     }
             return false;
         }
@@ -164,10 +164,8 @@ namespace dog2go.Backend.Services
                 if (startCountField.FieldType.Contains("StartField"))
                 {
                     startCountField = startCountField.Previous;
-                    fieldCount--;
+                    fieldCount++;
                 }
-                
-
                 for (var i = 0; i > fieldCount; i--)
                 {
                     if (startCountField == null)
@@ -195,7 +193,7 @@ namespace dog2go.Backend.Services
                 if (startCountField.FieldType.Contains("StartField"))
                 {
                     startCountField = startCountField.Next;
-                    fieldCount++;
+                    fieldCount--;
                 }
                 
                 for (var i = 0; i <= fieldCount; i++)
