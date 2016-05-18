@@ -11,7 +11,7 @@ describe("GameArea - ", () => {
         timerCallback = jasmine.createSpy("timerCallback");
         jasmine.clock().install();
 
-        console.log(_phaser);
+        console.log("Phaser (_phaser): ", _phaser);
         game = new Phaser.Game();
     });
 
