@@ -183,7 +183,7 @@ namespace dog2go.Backend.Hubs
             actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, nextUser.Nickname);
             if (nextUser.ConnectionIds.Count == 1)
             {
-                Task task = context.Clients.Group(actualGameTable^.Identifier.toString(), ParticipationService.GetSingleConnectionId(nextUser.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname));
+                Task task = context.Clients.Group(actualGameTable.Identifier.ToString(), ParticipationService.GetSingleConnectionId(nextUser.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname));
                 task.Wait();
             }
             nextUser.ConnectionIds.ForEach(id =>  

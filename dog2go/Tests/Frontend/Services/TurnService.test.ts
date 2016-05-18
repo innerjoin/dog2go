@@ -61,8 +61,8 @@ describe("TurnService - ", () => {
 
     it("Client: CallbackMethod: NotifayActualPlayer", () => {
         var turnService = TurnService.getInstance(tableId);
-        turnService.notifyActualPlayerCB = callbacks.notifyActualPlayer;
-        turnService.notifyActualPlayerCardsCB = callbacks.notifyActualPlayerCards;
+        turnService.notifyActualPlayerCb = callbacks.notifyActualPlayer;
+        turnService.notifyActualPlayerCardsCb = callbacks.notifyActualPlayerCards;
 
         var cards: IHandCard[] = [<any>{ testData: 23883 }];
         var color: number = 844747;
@@ -82,7 +82,7 @@ describe("TurnService - ", () => {
     it("Client: CallbackMethod: DropCards", () => {
         var turnService = TurnService.getInstance(tableId);
 
-        turnService.dropCardsCB = callbacks.dropCards;
+        turnService.dropCardsCb = callbacks.dropCards;
         
         callbacks.dropCards.calls.reset();
 
@@ -94,7 +94,7 @@ describe("TurnService - ", () => {
 
     it("Client: CallbackMethod: NotifayActualPlayer", () => {
         var turnService = TurnService.getInstance(tableId);
-        turnService.sendMeeplePositionsCB = callbacks.sendMeeplePositions;
+        turnService.sendMeeplePositionsCb = callbacks.sendMeeplePositions;
 
         var meeples: IMeeple[] = [<any>{ testData: 23883 }];
 

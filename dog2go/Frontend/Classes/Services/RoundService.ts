@@ -1,25 +1,27 @@
 ﻿
 export class RoundService {
     private static instance: RoundService = null;
-    public assignHandCardsCB: (cards: ICard[]) => any;
+    public assignHandCardsCb: (cards: ICard[]) => any;
     
-    constructor() {
+    constructor(gameTableId: number) {
         if (RoundService.instance) {
             // ReSharper disable once TsNotResolved
             throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance(_tableId) instead of new.");
         }
-        var gameHub = $.connection.gameHub;
+        const gameHub = $.connection.gameHub;
 
-        gameHub.client.assignHandCards = (cards: ICard[]) => {
-            this.assignHandCardsCB(cards);
+        gameHub.client.assignHandCards = (cards: ICard[], tableId: number) => {
+            if (gameTableId === tableId) {
+                this.assignHandCardsCb(cards);
+            }
         }
         RoundService.instance = this;
     }
 
-    public static getInstance(_tableId) {
+    public static getInstance(tableId: number) {
         // Create new instance if callback is given
         if (RoundService.instance === null) {
-            RoundService.instance = new RoundService();
+            RoundService.instance = new RoundService(tableId);
         }
         return RoundService.instance;
     }

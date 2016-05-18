@@ -22,9 +22,9 @@ export class CardsController {
         this.gameFieldService = GameFieldService.getInstance(tableId);
         this.gameFieldService.assignHandCardsCb = this.showHandCards.bind(this);
         this.roundService = RoundService.getInstance(tableId);
-        this.roundService.assignHandCardsCB = this.showHandCards.bind(this);
+        this.roundService.assignHandCardsCb = this.showHandCards.bind(this);
         this.turnService = TurnService.getInstance(tableId);
-        this.turnService.notifyActualPlayerCardsCB = this.notifyActualPlayer.bind(this);
+        this.turnService.notifyActualPlayerCardsCb = this.notifyActualPlayer.bind(this);
 
     }
 

@@ -38,7 +38,7 @@ describe("RoundService - ", () => {
 
     it("Client: assignHandCards", () => {
         var roundService = RoundService.getInstance(tableId);
-        roundService.assignHandCardsCB = callbacks.assignHandCards;
+        roundService.assignHandCardsCb = callbacks.assignHandCards;
 
         callbacks.assignHandCards.calls.reset();
 

@@ -1,40 +1,48 @@
 ﻿
 export class TurnService {
     private static instance: TurnService = null;
-    public notifyActualPlayerCB: (possibleCards: IHandCard[], meepleColor: number) => any;
-    public notifyActualPlayerCardsCB: (possibleCards: IHandCard[], meepleColor: number) => any;
-    public dropCardsCB: () => any;
-    public sendMeeplePositionsCB: (meeples: IMeeple[]) => any;
-    public returnMoveCB: () => any;
+    public notifyActualPlayerCb: (possibleCards: IHandCard[], meepleColor: number) => any;
+    public notifyActualPlayerCardsCb: (possibleCards: IHandCard[], meepleColor: number) => any;
+    public dropCardsCb: () => any;
+    public sendMeeplePositionsCb: (meeples: IMeeple[]) => any;
+    public returnMoveCb: () => any;
 
-    constructor() {
+    constructor(gameTableId: number) {
         if (TurnService.instance) {
             // ReSharper disable once TsNotResolved
             throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance(_tableId) instead of new.");
         }
-        var gameHub = $.connection.gameHub;
+        const gameHub = $.connection.gameHub;
 
-        gameHub.client.notifyActualPlayer = (possibleCards, meepleColor) => {
-            this.notifyActualPlayerCB(possibleCards, meepleColor);
-            this.notifyActualPlayerCardsCB(possibleCards, meepleColor);
+        gameHub.client.notifyActualPlayer = (possibleCards, meepleColor, tableId) => {
+            if (gameTableId === tableId) {
+                this.notifyActualPlayerCb(possibleCards, meepleColor);
+                this.notifyActualPlayerCardsCb(possibleCards, meepleColor);
+            }
         }
-        gameHub.client.sendMeeplePositions = (meeples) => {
-            this.sendMeeplePositionsCB(meeples);
+        gameHub.client.sendMeeplePositions = (meeples, tableId) => {
+            if (gameTableId === tableId) {
+                this.sendMeeplePositionsCb(meeples);
+            }
         }
-        gameHub.client.dropCards = () => {
-            this.dropCardsCB();
+        gameHub.client.dropCards = (tableId) => {
+            if (gameTableId === tableId) {
+                this.dropCardsCb();
+            }
         }
-        gameHub.client.returnMove = () => {
-            this.returnMoveCB();
+        gameHub.client.returnMove = (tableId) => {
+            if (gameTableId === tableId) {
+                this.returnMoveCb();
+            }
         }
         
         TurnService.instance = this;
     }
 
-    public static getInstance(_tableId) {
+    public static getInstance(tableId: number) {
         // Create new instance if callback is given
         if (TurnService.instance === null) {
-            TurnService.instance = new TurnService();
+            TurnService.instance = new TurnService(tableId);
         }
         return TurnService.instance;
     }

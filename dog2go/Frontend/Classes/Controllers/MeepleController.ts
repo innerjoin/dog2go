@@ -29,9 +29,9 @@ export class MeepleController {
         this.tableId = tableId;
 
         this.turnService = TurnService.getInstance(tableId);
-        this.turnService.notifyActualPlayerCB = this.notifyActualPlayer.bind(this);
-        this.turnService.sendMeeplePositionsCB = this.repositionMeeples.bind(this);
-        this.turnService.returnMoveCB = this.returnMove.bind(this);
+        this.turnService.notifyActualPlayerCb = this.notifyActualPlayer.bind(this);
+        this.turnService.sendMeeplePositionsCb = this.repositionMeeples.bind(this);
+        this.turnService.returnMoveCb = this.returnMove.bind(this);
 
         this.allMeeples = [];
     }
