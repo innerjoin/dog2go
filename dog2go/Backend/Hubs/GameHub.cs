@@ -46,7 +46,7 @@ namespace dog2go.Backend.Hubs
                     }
                     if (table.ActualParticipation == participation)
                     {
-                        NotifyActualPlayer(participation.Participant, cards);
+                        NotifyActualPlayer(participation.Participant, cards, table.Identifier);
                     }
                 }
                 else
