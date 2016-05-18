@@ -6,7 +6,7 @@ import GameFieldService = gfs.GameFieldService;
 describe("GameFieldService - ", () => {
     var gameTable: IGameTable;
     var cards: ICard[];
-    //var $ = null;
+    var tableId = 0;
     var callbacks, callbackDone;
     beforeAll(() => {
         gameTable = <any>{ testdata: 12345 };
@@ -34,20 +34,20 @@ describe("GameFieldService - ", () => {
             return callbackDone;
         });
         $.connection["gameHub"] = <any>{server: <any>{
-            connectToTable: () => { $.connection.gameHub.client.createGameTable(gameTable); }
+            connectToTable: () => { $.connection.gameHub.client.createGameTable(gameTable, tableId); }
             }, client: <any>{}
         };
     });
     
     it("get Instance", () => {
-        var gameFieldService = GameFieldService.getInstance();
+        var gameFieldService = GameFieldService.getInstance(tableId);
 
-        expect(gameFieldService).toBe(GameFieldService.getInstance());
+        expect(gameFieldService).toBe(GameFieldService.getInstance(tableId));
     });
     
     it("Server: getGameFieldData", () => {
         
-        var gameFieldService = GameFieldService.getInstance();
+        var gameFieldService = GameFieldService.getInstance(tableId);
         gameFieldService.createGameTableCb = callbacks.createGametable;
 
         gameFieldService.getGameFieldData(1);
@@ -60,14 +60,14 @@ describe("GameFieldService - ", () => {
     });
 
     it("Client: backToGame", () => {
-        var gameFieldService = GameFieldService.getInstance();
+        var gameFieldService = GameFieldService.getInstance(tableId);
         gameFieldService.createGameTableCb = callbacks.createGametable;
         gameFieldService.assignHandCardsCb = callbacks.assignHandCards;
 
         callbacks.createGametable.calls.reset();
         callbacks.assignHandCards.calls.reset();
 
-        $.connection.gameHub.client.backToGame(gameTable, cards);
+        $.connection.gameHub.client.backToGame(gameTable, cards, tableId);
 
         expect(callbacks.createGametable).toHaveBeenCalled();
         expect(callbacks.createGametable).toHaveBeenCalledWith(gameTable);

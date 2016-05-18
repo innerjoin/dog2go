@@ -11,12 +11,13 @@ namespace dog2go.Tests.Backend
     public class NunitValidationTest
     {
         private readonly GameHub _hub = new GameHub(GameRepository.Instance);
+        private const int TableId = 0;
 
         private GameTable MakeInitialGameTable
         {
             get
             {
-                GameTable gameTable = _hub.GetGeneratedGameTable();
+                GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
                 List<Participation> participationsList = new List<Participation>();
                 User user1 = new User("user1", "1");
                 User user2 = new User("user2", "2");
@@ -120,7 +121,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestLeaveKennel()
         {
-            GameTable gameTable = _hub.GetGeneratedGameTable();
+            GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             KennelField kennelField = greenArea.KennelFields[0] as KennelField;
             StartField endField = greenArea.Fields.Find(field => field.FieldType.Contains("StartField")) as StartField;
@@ -142,7 +143,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestMovedInSameFieldAreaPositive()
         {
-            GameTable gameTable = _hub.GetGeneratedGameTable();
+            GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             StandardField startField = greenArea.Fields[10] as StandardField;
             StandardField endField = greenArea.Fields[14] as StandardField;
@@ -164,7 +165,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestMovedInSameFieldAreaNegative()
         {
-            GameTable gameTable = _hub.GetGeneratedGameTable();
+            GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             StandardField startField = greenArea.Fields[10] as StandardField;
             StandardField endField = greenArea.Fields[14] as StandardField;
@@ -186,7 +187,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestMovedInOtherFieldAreaPositive()
         {
-            GameTable gameTable = _hub.GetGeneratedGameTable();
+            GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea startArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             PlayerFieldArea targeArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Yellow);
             StandardField startField = startArea.Fields[8] as StandardField;
@@ -209,7 +210,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestLeaveKennelWrongField()
         {
-            GameTable gameTable = _hub.GetGeneratedGameTable();
+            GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             StandardField startField = greenArea.Fields[10] as StandardField;
             StandardField endField = greenArea.Fields[14] as StandardField;
@@ -231,7 +232,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestLeaveKennelNotAllowed()
         {
-            GameTable gameTable = _hub.GetGeneratedGameTable();
+            GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             StandardField startField = greenArea.Fields[10] as StandardField;
             StandardField endField = greenArea.Fields[14] as StandardField;
@@ -253,7 +254,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestChangeMeepleAllowed()
         {
-            GameTable gameTable = _hub.GetGeneratedGameTable();
+            GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             PlayerFieldArea blueArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
             StandardField startField = greenArea.Fields[10] as StandardField;
@@ -381,7 +382,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestChangeMeeplePositive()
         {
-            GameTable gameTable = _hub.GetGeneratedGameTable();
+            GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             PlayerFieldArea blueArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
             StandardField startField = greenArea.Fields[10] as StandardField;
@@ -406,7 +407,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestChangeMeepleNegativeSameColor()
         {
-            GameTable gameTable = _hub.GetGeneratedGameTable();
+            GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             StandardField startField = greenArea.Fields[10] as StandardField;
             StandardField endField = greenArea.Fields[14] as StandardField;
@@ -430,7 +431,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void TestChangeMeepleNegativeStartField()
         {
-            GameTable gameTable = _hub.GetGeneratedGameTable();
+            GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea greenArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             PlayerFieldArea blueArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
             StandardField startField = greenArea.Fields[10] as StandardField;

@@ -59,23 +59,23 @@ namespace dog2go.Backend.Hubs
         }
 
         // for test method calls only
-        public GameTable GetGeneratedGameTable()
+        public GameTable GetGeneratedGameTable(int tableId)
         {
-            int gameTableId = GameFactory.CreateGameTable(Games, GlobalDefinitions.GroupName);
+            int gameTableId = GameFactory.CreateGameTable(Games, tableId.ToString());
             lock (Locker)
             {
                 return Games.Get().Find(table => table.Identifier.Equals(gameTableId));
             }
         }
 
-        public void SendCards(List<HandCard> cards, User user)
+        public void SendCards(List<HandCard> cards, User user, int tableId)
         {
             user.ConnectionIds.ForEach(id =>
             {
-                Clients.Client(id).assignHandCards(cards);
+                Clients.Client(id).assignHandCards(cards, tableId);
             });
         }
-        private void NotifyActualPlayer(User user, List<HandCard> handCards)
+        private void NotifyActualPlayer(User user, List<HandCard> handCards, int tableId)
         {
             GameTable actualGameTable = GameTableService.GetActualGameTable(Locker, Games, Context.User.Identity.Name);
             List<HandCard> validCards = actualGameTable.CardServiceData.ProveCards(handCards, actualGameTable, user);
@@ -84,7 +84,7 @@ namespace dog2go.Backend.Hubs
             {
                 if (user.ConnectionIds.Count == 1)
                 {
-                    Task task = context.Clients.Group(GlobalDefinitions.GroupName, ParticipationService.GetSingleConnectionId(user.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", user.Nickname));
+                    Task task = context.Clients.Group(tableId.ToString(), ParticipationService.GetSingleConnectionId(user.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", user.Nickname));
                     task.Wait();
                 }
                 actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, user.Nickname);
@@ -92,7 +92,7 @@ namespace dog2go.Backend.Hubs
                 {
                     Task task =  context.Clients.Client(cId).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
                     task.Wait();
-                    Clients.Client(cId).notifyActualPlayer(validCards, GameTableService.GetColorCodeForUser(user.Nickname, Locker, Games));
+                    Clients.Client(cId).notifyActualPlayer(validCards, GameTableService.GetColorCodeForUser(user.Nickname, Locker, Games), tableId);
                 });
 
             }
@@ -114,17 +114,17 @@ namespace dog2go.Backend.Hubs
             GameTableService.UpdateActualRoundCards(table);
             foreach (var participation in table.Participations)
             {
-                SendCards(participation.ActualPlayRound.Cards, participation.Participant);
+                SendCards(participation.ActualPlayRound.Cards, participation.Participant, table.Identifier);
             }
 
             if (table.ActualParticipation != null)
-                NotifyActualPlayer(table.ActualParticipation.Participant, table.ActualParticipation.ActualPlayRound.Cards);
+                NotifyActualPlayer(table.ActualParticipation.Participant, table.ActualParticipation.ActualPlayRound.Cards, table.Identifier);
             else
             {
                 Participation participation = table.Participations.First();
                 if (participation != null)
                 {
-                    NotifyActualPlayer(participation.Participant, participation.ActualPlayRound.Cards);
+                    NotifyActualPlayer(participation.Participant, participation.ActualPlayRound.Cards, table.Identifier);
                 }
             }
         }
@@ -141,7 +141,7 @@ namespace dog2go.Backend.Hubs
             });
         }
 
-        public void ValidateMove(MeepleMove meepleMove, CardMove cardMove)
+        public void ValidateMove(MeepleMove meepleMove, CardMove cardMove, int tableId)
         {
             if (meepleMove == null)
                 return;
@@ -161,13 +161,13 @@ namespace dog2go.Backend.Hubs
                     allMeeples.AddRange(area.Meeples);
                 }
                 actualGameTable.CardServiceData.RemoveCardFromUserHand(actualGameTable, GameTableService.GetActualUser(Context.User.Identity.Name), cardMove.Card);
-                Task test = Clients.All.sendMeeplePositions(allMeeples);
+                Task test = Clients.All.sendMeeplePositions(allMeeples, tableId);
                 test.Wait();
                 NotifyNextPlayer("");
             }
             else
             {
-                Clients.Caller.returnMove();
+                Clients.Caller.returnMove(tableId);
             }
         }
 
@@ -180,7 +180,6 @@ namespace dog2go.Backend.Hubs
                 actualGameTable = GameTableService.GetActualGameTable(Locker, Games, Context.User.Identity.Name);
                 nextPlayerNickname = ParticipationService.GetNextPlayer(actualGameTable, Context.User.Identity.Name);
             }
-
             else
             {
                 actualGameTable = GameTableService.GetActualGameTable(Locker, Games, nextUserName);
@@ -193,7 +192,7 @@ namespace dog2go.Backend.Hubs
             actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, nextUser.Nickname);
             if (nextUser.ConnectionIds.Count == 1)
             {
-                Task task = context.Clients.Group(GlobalDefinitions.GroupName, ParticipationService.GetSingleConnectionId(nextUser.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname));
+                Task task = context.Clients.Group(actualGameTable.Identifier.ToString(), ParticipationService.GetSingleConnectionId(nextUser.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname));
                 task.Wait();
             }
             nextUser.ConnectionIds.ForEach(id =>  
@@ -202,12 +201,12 @@ namespace dog2go.Backend.Hubs
                 {
                     Task chatTask =  context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer);
                     chatTask.Wait();
-                    Clients.Client(id).notifyActualPlayer(validHandCards, GameTableService.GetColorCodeForUser(nextUser.Nickname, Locker, Games));
+                    Clients.Client(id).notifyActualPlayer(validHandCards, GameTableService.GetColorCodeForUser(nextUser.Nickname, Locker, Games), actualGameTable.Identifier);
                 }    
                 else
                 {
                     actualGameTable.CardServiceData.RemoveAllCardsFromUser(actualGameTable,nextUser );
-                    Clients.Client(id).dropCards();
+                    Clients.Client(id).dropCards(actualGameTable.Identifier);
 
                     Task chatTask = context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NoValidCardAvailable);
                     chatTask.Wait();

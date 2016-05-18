@@ -8,7 +8,7 @@ export class GameMaster {
     private gameArea: GameArea;
 
     constructor(tableId: number) {
-        this.chatController = new ChatController();
+        this.chatController = new ChatController(tableId);
         this.gameArea = new GameArea(tableId);
     }   
 }

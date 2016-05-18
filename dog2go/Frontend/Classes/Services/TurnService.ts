@@ -1,45 +1,61 @@
 ﻿
 export class TurnService {
     private static instance: TurnService = null;
-    public notifyActualPlayerCB: (possibleCards: IHandCard[], meepleColor: number) => any;
-    public notifyActualPlayerCardsCB: (possibleCards: IHandCard[], meepleColor: number) => any;
-    public dropCardsCB: () => any;
-    public sendMeeplePositionsCB: (meeples: IMeeple[]) => any;
-    public returnMoveCB: () => any;
+    public notifyActualPlayerCb: (possibleCards: IHandCard[], meepleColor: number) => any;
+    public notifyActualPlayerCardsCb: (possibleCards: IHandCard[], meepleColor: number) => any;
+    public dropCardsCb: () => any;
+    public sendMeeplePositionsCb: (meeples: IMeeple[]) => any;
+    public returnMoveCb: () => any;
 
-    constructor() {
+    constructor(gameTableId: number) {
         if (TurnService.instance) {
             // ReSharper disable once TsNotResolved
-            throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance() instead of new.");
+            throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance(_tableId) instead of new.");
         }
-        var gameHub = $.connection.gameHub;
+        const gameHub = $.connection.gameHub;
 
-        gameHub.client.notifyActualPlayer = (possibleCards, meepleColor) => {
-            this.notifyActualPlayerCB(possibleCards, meepleColor);
-            this.notifyActualPlayerCardsCB(possibleCards, meepleColor);
+        gameHub.client.notifyActualPlayer = (possibleCards, meepleColor, tableId) => {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (gameTableId == tableId) {
+                this.notifyActualPlayerCb(possibleCards, meepleColor);
+                this.notifyActualPlayerCardsCb(possibleCards, meepleColor);
+            }
         }
-        gameHub.client.sendMeeplePositions = (meeples) => {
-            this.sendMeeplePositionsCB(meeples);
+        gameHub.client.sendMeeplePositions = (meeples, tableId) => {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (gameTableId == tableId) {
+                this.sendMeeplePositionsCb(meeples);
+            }
         }
-        gameHub.client.dropCards = () => {
-            this.dropCardsCB();
+        gameHub.client.dropCards = (tableId) => {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (gameTableId == tableId) {
+                this.dropCardsCb();
+            }
         }
-        gameHub.client.returnMove = () => {
-            this.returnMoveCB();
+        gameHub.client.returnMove = (tableId) => {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (gameTableId == tableId) {
+                this.returnMoveCb();
+            }
         }
         
         TurnService.instance = this;
     }
 
-    public static getInstance() {
+    public static getInstance(tableId: number) {
         // Create new instance if callback is given
         if (TurnService.instance === null) {
-            TurnService.instance = new TurnService();
+            TurnService.instance = new TurnService(tableId);
         }
         return TurnService.instance;
     }
 
-    public validateMove(meepleMove: IMeepleMove, cardMove: ICardMove) {
+    public validateMove(meepleMove: IMeepleMove, cardMove: ICardMove, tableId: number) {
         var mMoveReady: any = $.extend({}, meepleMove);
         mMoveReady.Meeple = $.extend({}, meepleMove.Meeple);
         mMoveReady.Meeple.CurrentFieldId = meepleMove.Meeple.CurrentPosition.Identifier;
@@ -52,7 +68,7 @@ export class TurnService {
         console.log("Validating, Going to Send out: ", mMoveReady, cardMove);
         var gameHub = $.connection.gameHub;
         $.connection.hub.start().done(() => {
-            gameHub.server.validateMove(mMoveReady, cardMove);
+            gameHub.server.validateMove(mMoveReady, cardMove, tableId);
         });
     }
 }
