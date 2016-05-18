@@ -15,23 +15,31 @@ export class TurnService {
         const gameHub = $.connection.gameHub;
 
         gameHub.client.notifyActualPlayer = (possibleCards, meepleColor, tableId) => {
-            if (gameTableId === tableId) {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (gameTableId == tableId) {
                 this.notifyActualPlayerCb(possibleCards, meepleColor);
                 this.notifyActualPlayerCardsCb(possibleCards, meepleColor);
             }
         }
         gameHub.client.sendMeeplePositions = (meeples, tableId) => {
-            if (gameTableId === tableId) {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (gameTableId == tableId) {
                 this.sendMeeplePositionsCb(meeples);
             }
         }
         gameHub.client.dropCards = (tableId) => {
-            if (gameTableId === tableId) {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (gameTableId == tableId) {
                 this.dropCardsCb();
             }
         }
         gameHub.client.returnMove = (tableId) => {
-            if (gameTableId === tableId) {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (gameTableId == tableId) {
                 this.returnMoveCb();
             }
         }

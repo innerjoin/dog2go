@@ -11,7 +11,9 @@ export class RoundService {
         const gameHub = $.connection.gameHub;
 
         gameHub.client.assignHandCards = (cards: ICard[], tableId: number) => {
-            if (gameTableId === tableId) {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (gameTableId == tableId) {
                 this.assignHandCardsCb(cards);
             }
         }

@@ -13,13 +13,17 @@ export class GameFieldService {
         const gameHub = $.connection.gameHub;
         $.connection.hub.qs = `tableId=${tableId}`;
         gameHub.client.createGameTable = (gameTable, _tableId) => {
-            if (_tableId === tableId) {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (_tableId == tableId) {
                 this.createGameTableCb(gameTable);
             }
         }
 
         gameHub.client.backToGame = (gameTable, cards, _tableId) => {
-            if (_tableId === tableId) {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (_tableId == tableId) {
                 this.createGameTableCb(gameTable);
                 this.assignHandCardsCb(cards);
             }
