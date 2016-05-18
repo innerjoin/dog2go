@@ -56,7 +56,7 @@ describe("TurnService - ", () => {
         delete meepleMove.MoveDestination;
 
         expect($.connection.gameHub.server.validateMove).toHaveBeenCalled();
-        expect($.connection.gameHub.server.validateMove).toHaveBeenCalledWith(meepleMove, cardMove);
+        expect($.connection.gameHub.server.validateMove).toHaveBeenCalledWith(meepleMove, cardMove, tableId);
     });
 
     it("Client: CallbackMethod: NotifayActualPlayer", () => {
