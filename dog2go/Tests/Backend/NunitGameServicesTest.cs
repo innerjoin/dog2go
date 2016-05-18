@@ -15,11 +15,13 @@ namespace dog2go.Tests.Backend
     {
         private readonly GameHub _hub = new GameHub(GameRepository.Instance);
         private readonly GameServices _gameServices = new GameServices();
+        private const int TableId = 0;
+
         private GameTable MakeInitialGameTable
         {
             get
             {
-                GameTable gameTable = _hub.GetGeneratedGameTable();
+                GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
                 List<Participation> participationsList = new List<Participation>();
                 User user1 = new User("user1", "1");
                 User user2 = new User("user2", "2");
@@ -51,7 +53,7 @@ namespace dog2go.Tests.Backend
                 return gameTable;
             }
         }
-        private static bool arePartners(PlayerFieldArea currentPlayerFieldArea, PlayerFieldArea partnerPlayerFieldArea)
+        private static bool ArePartners(PlayerFieldArea currentPlayerFieldArea, PlayerFieldArea partnerPlayerFieldArea)
         {
             return currentPlayerFieldArea.Participation.Participant.Identifier.Equals(
                 partnerPlayerFieldArea.Participation.Participant.Identifier);
@@ -84,7 +86,7 @@ namespace dog2go.Tests.Backend
             {
                 foreach (PlayerFieldArea partnerPlayerFieldArea in gameTable.PlayerFieldAreas)
                 {
-                    if (arePartners(currentPlayerFieldArea, partnerPlayerFieldArea))
+                    if (ArePartners(currentPlayerFieldArea, partnerPlayerFieldArea))
                     {
                         for (int j = 0; j < 4; j++)
                         {
@@ -108,7 +110,7 @@ namespace dog2go.Tests.Backend
             {
                 foreach (PlayerFieldArea partnerPlayerFieldArea in gameTable.PlayerFieldAreas)
                 {
-                    if (arePartners(currentPlayerFieldArea, partnerPlayerFieldArea) && !partnerFounded)
+                    if (ArePartners(currentPlayerFieldArea, partnerPlayerFieldArea) && !partnerFounded)
                     {
                         for (int j = 0; j < 4; j++)
                         {

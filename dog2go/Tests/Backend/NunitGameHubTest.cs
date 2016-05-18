@@ -11,12 +11,14 @@ namespace dog2go.Tests.Backend
     {
 
         private readonly GameHub _hub = new GameHub(GameRepository.Instance);
+        private const int TableId = 0;
+
         #region "Testmethods for HasBlocked-Method"
         [Test]
         public void dog_testHasBlocked()
         {
 
-            GameTable table = _hub.GetGeneratedGameTable();
+            GameTable table = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea blueArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
             PlayerFieldArea redArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red);
             StandardField standardField = (StandardField)blueArea.Fields.Find(field => field.Identifier == 12);
@@ -36,7 +38,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void dog_testHasBlockedWrong()
         {
-            GameTable table = _hub.GetGeneratedGameTable();
+            GameTable table = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea blueArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
             PlayerFieldArea redArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red);
             StandardField standardField = (StandardField)blueArea.Fields.Find(field => field.Identifier == 16);
@@ -56,7 +58,7 @@ namespace dog2go.Tests.Backend
         [Test]
         public void dog_testHasBlockedBackwards()
         {
-            GameTable table = _hub.GetGeneratedGameTable();
+            GameTable table = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea blueArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue);
             PlayerFieldArea redArea = table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Red);
             StandardField standardField = (StandardField)redArea.Fields.Find(field => field.FieldType.Contains("StandardField"));

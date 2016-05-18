@@ -6,7 +6,7 @@ export class RoundService {
     constructor() {
         if (RoundService.instance) {
             // ReSharper disable once TsNotResolved
-            throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance() instead of new.");
+            throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance(_tableId) instead of new.");
         }
         var gameHub = $.connection.gameHub;
 
@@ -16,7 +16,7 @@ export class RoundService {
         RoundService.instance = this;
     }
 
-    public static getInstance() {
+    public static getInstance(_tableId) {
         // Create new instance if callback is given
         if (RoundService.instance === null) {
             RoundService.instance = new RoundService();

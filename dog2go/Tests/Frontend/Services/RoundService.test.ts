@@ -4,7 +4,7 @@ import rs = require("../../../Frontend/Classes/Services/RoundService");
 import RoundService = rs.RoundService;
 
 describe("RoundService - ", () => {
-
+    var tableId = 0;
     var callbacks, callbackDone;
     beforeAll(() => {
         
@@ -31,13 +31,13 @@ describe("RoundService - ", () => {
     });
 
     it("get Instance", () => {
-        var roundService = RoundService.getInstance();
+        var roundService = RoundService.getInstance(tableId);
 
-        expect(roundService).toBe(RoundService.getInstance());
+        expect(roundService).toBe(RoundService.getInstance(tableId));
     });
 
     it("Client: assignHandCards", () => {
-        var roundService = RoundService.getInstance();
+        var roundService = RoundService.getInstance(tableId);
         roundService.assignHandCardsCB = callbacks.assignHandCards;
 
         callbacks.assignHandCards.calls.reset();

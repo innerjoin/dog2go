@@ -16,14 +16,14 @@ export class CardsController {
     private selctedCard: ICard = null;
     private meepleController: MeepleController;
 
-    constructor(meepleController: MeepleController) {
+    constructor(tableId: number, meepleController: MeepleController) {
         this.meepleController = meepleController;
 
-        this.gameFieldService = GameFieldService.getInstance();
+        this.gameFieldService = GameFieldService.getInstance(tableId);
         this.gameFieldService.assignHandCardsCb = this.showHandCards.bind(this);
-        this.roundService = RoundService.getInstance();
+        this.roundService = RoundService.getInstance(tableId);
         this.roundService.assignHandCardsCB = this.showHandCards.bind(this);
-        this.turnService = TurnService.getInstance();
+        this.turnService = TurnService.getInstance(tableId);
         this.turnService.notifyActualPlayerCardsCB = this.notifyActualPlayer.bind(this);
 
     }

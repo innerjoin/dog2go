@@ -4,6 +4,7 @@ interface HubProxy{}
 interface IGameHub extends HubProxy {
     client: IGameHubClient;
     server: IGameHubServer;
+    qs: string;
 }
 
 interface IGameHubClient {

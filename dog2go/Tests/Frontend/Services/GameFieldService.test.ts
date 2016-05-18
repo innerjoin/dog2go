@@ -6,7 +6,7 @@ import GameFieldService = gfs.GameFieldService;
 describe("GameFieldService - ", () => {
     var gameTable: IGameTable;
     var cards: ICard[];
-    //var $ = null;
+    var tableId = 0;
     var callbacks, callbackDone;
     beforeAll(() => {
         gameTable = <any>{ testdata: 12345 };
@@ -40,14 +40,14 @@ describe("GameFieldService - ", () => {
     });
     
     it("get Instance", () => {
-        var gameFieldService = GameFieldService.getInstance();
+        var gameFieldService = GameFieldService.getInstance(tableId);
 
-        expect(gameFieldService).toBe(GameFieldService.getInstance());
+        expect(gameFieldService).toBe(GameFieldService.getInstance(tableId));
     });
     
     it("Server: getGameFieldData", () => {
         
-        var gameFieldService = GameFieldService.getInstance();
+        var gameFieldService = GameFieldService.getInstance(tableId);
         gameFieldService.createGameTableCb = callbacks.createGametable;
 
         gameFieldService.getGameFieldData(1);
@@ -60,7 +60,7 @@ describe("GameFieldService - ", () => {
     });
 
     it("Client: backToGame", () => {
-        var gameFieldService = GameFieldService.getInstance();
+        var gameFieldService = GameFieldService.getInstance(tableId);
         gameFieldService.createGameTableCb = callbacks.createGametable;
         gameFieldService.assignHandCardsCb = callbacks.assignHandCards;
 

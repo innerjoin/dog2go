@@ -27,6 +27,7 @@ namespace dog2go.Backend.Hubs
 
         public override Task OnConnected()
         {
+            string tableId = Context.QueryString["tableId"];
             string userName = Context.User.Identity.Name;
             string connectionId = Context.ConnectionId;
             User user = UserRepository.Instance.Get(userName);
@@ -38,9 +39,9 @@ namespace dog2go.Backend.Hubs
                     if (user.ConnectionIds.Add(connectionId))
                     {
                         IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-                        Task test = context.Groups.Add(Context.ConnectionId, GlobalDefinitions.GroupName);
+                        Task test = context.Groups.Add(Context.ConnectionId, tableId);
                         test.Wait();
-                        context.Clients.Group(GlobalDefinitions.GroupName)
+                        context.Clients.Group(tableId)
                             .broadcastSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name));
                     }
                 }

@@ -5,6 +5,7 @@ import TurnService = ts.TurnService;
 
 describe("TurnService - ", () => {
     var callbacks, callbackDone;
+    var tableId: number;
     beforeAll(() => {
         callbackDone = {
             done: (callback: any) => {
@@ -35,12 +36,12 @@ describe("TurnService - ", () => {
     });
 
     it("get Instance", () => {
-        var turnService = TurnService.getInstance();
-        expect(turnService).toBe(TurnService.getInstance());
+        var turnService = TurnService.getInstance(tableId);
+        expect(turnService).toBe(TurnService.getInstance(tableId));
     });
 
     it("Server: validateMove", () => {
-        var turnService = TurnService.getInstance();
+        var turnService = TurnService.getInstance(tableId);
         var meepleMove: IMeepleMove = <any>{ testData: 83737, Meeple: { CurrentPosition: { Identifier: 83837 } }, MoveDestination: { Identiier: 88387} };
         var cardMove: ICardMove= <any>{ testData: 43211 };
         // no Callbacks yet awaiten from validate
@@ -59,7 +60,7 @@ describe("TurnService - ", () => {
     });
 
     it("Client: CallbackMethod: NotifayActualPlayer", () => {
-        var turnService = TurnService.getInstance();
+        var turnService = TurnService.getInstance(tableId);
         turnService.notifyActualPlayerCB = callbacks.notifyActualPlayer;
         turnService.notifyActualPlayerCardsCB = callbacks.notifyActualPlayerCards;
 
@@ -79,7 +80,7 @@ describe("TurnService - ", () => {
     });
 
     it("Client: CallbackMethod: DropCards", () => {
-        var turnService = TurnService.getInstance();
+        var turnService = TurnService.getInstance(tableId);
 
         turnService.dropCardsCB = callbacks.dropCards;
         
@@ -92,7 +93,7 @@ describe("TurnService - ", () => {
     });
 
     it("Client: CallbackMethod: NotifayActualPlayer", () => {
-        var turnService = TurnService.getInstance();
+        var turnService = TurnService.getInstance(tableId);
         turnService.sendMeeplePositionsCB = callbacks.sendMeeplePositions;
 
         var meeples: IMeeple[] = [<any>{ testData: 23883 }];

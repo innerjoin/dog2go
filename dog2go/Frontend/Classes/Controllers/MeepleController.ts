@@ -20,12 +20,12 @@ export class MeepleController {
 
     private scaleFactor: number;
 
-    constructor(game: Phaser.Game, gameFieldController: GameFieldController, scaleFactor: number) {
+    constructor(tableId: number, game: Phaser.Game, gameFieldController: GameFieldController, scaleFactor: number) {
         this.scaleFactor = scaleFactor;
         this.gameFieldController = gameFieldController;
         this.game = game;
 
-        this.turnService = TurnService.getInstance();
+        this.turnService = TurnService.getInstance(tableId);
         this.turnService.notifyActualPlayerCB = this.notifyActualPlayer.bind(this);
         this.turnService.sendMeeplePositionsCB = this.repositionMeeples.bind(this);
         this.turnService.returnMoveCB = this.returnMove.bind(this);
