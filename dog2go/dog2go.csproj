@@ -259,7 +259,6 @@
     <Compile Include="Tests\Backend\CardServicesTest.cs" />
     <Compile Include="Tests\Backend\NunitGameServicesTest.cs" />
     <Compile Include="Tests\Backend\NunitValidationTest.cs" />
-    <Compile Include="Tests\Backend\NunitHubConnectionTest.cs" />
     <Compile Include="Views\Extensions\RequireJsHelpers.cs" />
     <Compile Include="Tests\Backend\NunitGameHubTest.cs" />
   </ItemGroup>
@@ -369,7 +368,6 @@
     <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\FieldCoordinates.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Controllers\GameMaster.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\SessionController.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\ChatHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\GameHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\Hub.d.ts" />
