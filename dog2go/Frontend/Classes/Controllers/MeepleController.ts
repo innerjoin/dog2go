@@ -83,7 +83,7 @@ export class MeepleController {
                 //var meepleSprite: Phaser.Sprite = this.game.add.sprite(coordinates.x, coordinates.y, spriteName);
                 const meepleSprite: Phaser.Sprite = this.game.add.sprite(this.game.width / 2, this.game.height / 2, spriteName);
                 meepleSprite.anchor.setTo(0.5, 0.5);
-                meepleSprite.scale.setTo(this.scaleFactor * 0.13, this.scaleFactor * 0.13);
+                meepleSprite.scale.setTo(this.scaleFactor * 0.21, this.scaleFactor * 0.17);
                 meepleSprite.inputEnabled = true;
 
                 meeple.spriteRepresentation = meepleSprite;

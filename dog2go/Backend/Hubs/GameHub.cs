@@ -29,6 +29,7 @@ namespace dog2go.Backend.Hubs
                 GameTable table = GameTableService.GetTable(Games, gameTableId);
                 string curUser = Context.User.Identity.Name;
                 List<HandCard> cards = null;
+
                 if (GameTableService.AlreadyConnected(table, curUser))
                 {
                     Participation participation = ParticipationService.GetParticipation(table, curUser);
@@ -36,12 +37,12 @@ namespace dog2go.Backend.Hubs
                     if (table.Participations.Count == GlobalDefinitions.NofParticipantsPerTable && !table.IsInitialized)
                     {
                         AllConnected(table);
-                        Clients.Client(Context.ConnectionId).createGameTable(table);
+                        Clients.Client(Context.ConnectionId).createGameTable(table, table.Identifier);
                     }
                     else
                     {
                         cards = table.CardServiceData?.GetActualHandCards(participation.Participant, table);
-                        Task task = Clients.Client(Context.ConnectionId).backToGame(table, cards);
+                        Task task = Clients.Client(Context.ConnectionId).backToGame(table, cards, table.Identifier);
                         task.Wait();
                     }
                     if (table.ActualParticipation == participation)

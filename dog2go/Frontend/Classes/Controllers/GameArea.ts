@@ -28,14 +28,10 @@ export class GameArea {
         console.log(_phaser, _savecpu);
         const gameStates = {
             init: this.init.bind(this),
-            preload: this.preload.bind(this),
-            create: this.create.bind(this)
+            preload: this.preload.bind(this)
         };
         this.gameTableId = tableId;
         this.game = new Phaser.Game(scaleFactor * 700, scaleFactor * 700, Phaser.AUTO, "gameContent", gameStates, true);
-
-        //this.game.plugins.add(new Phaser.Plugin.SaveCPU(this.game, null));
-        //this.game.plugins.add(Phaser.Plugin.SaveCPU);
 
         if (!isTesting) {
             this.gameFieldService = GameFieldService.getInstance(tableId);
@@ -65,7 +61,6 @@ export class GameArea {
         this.game.scale.refresh();
         if (!this.game.device.desktop) {
             this.game.scale.forceOrientation(true, false);
-            this.game.scale.setResizeCallback(this.gameResized, this);
             this.game.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
             this.game.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
         }
@@ -78,15 +73,7 @@ export class GameArea {
         $("#gamePageOverlay").css("display", "none");
         $(".pageOverlayContent > .loading").css("display", "none");
         $(".pageOverlayContent > .switchOrientation").css("display", "block");
-
         return;
-    }
-    
-
-    public gameResized(width, height) {
-        //  This could be handy if you need to do any extra processing if the game resizes.
-        //  A resize could happen if for example swapping orientation on a device or resizing the browser window.
-        //  Note that this callback is only really useful if you use a ScaleMode of RESIZE and place it inside your main game state.
     }
 
     public enterIncorrectOrientation() {
@@ -95,11 +82,5 @@ export class GameArea {
 
     public leaveIncorrectOrientation() {
         $("#gamePageOverlay").css("display", "none");
-    }
-    
-    public create() {
-        console.log("Create GameArea");
-        //this.gameFieldService.getGameFieldData();
-        return;
     }
 }
