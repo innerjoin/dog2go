@@ -1,7 +1,7 @@
 ﻿export class FieldCoordinates {
-    FOUR_PlAYERS: FieldCoordinatesData;
+    fourPlAyerMode: FieldCoordinatesData;
     constructor(scaleFactor: number) {
-        this.FOUR_PlAYERS = new FieldCoordinatesData(scaleFactor * 40, [scaleFactor * 510, scaleFactor * 30, scaleFactor * 190, scaleFactor * 670], [scaleFactor * 30, scaleFactor * 190, scaleFactor * 670, scaleFactor * 510]);
+        this.fourPlAyerMode = new FieldCoordinatesData(scaleFactor * 40, [scaleFactor * 510, scaleFactor * 30, scaleFactor * 190, scaleFactor * 670], [scaleFactor * 30, scaleFactor * 190, scaleFactor * 670, scaleFactor * 510]);
     }
 }
 
@@ -43,12 +43,3 @@ export class FieldCoordinatesData {
         return new AreaCoordinates(position, this);
     }
 }
-
-//const cellSpan = 40;
-//const xStart = [520, 40, 200, 680];
-//const yStart = [40, 200, 680, 520];
-//const xOffsetDefinitions = [-cellSpan, 0, cellSpan, 0];
-//const yOffsetDefinitions = [0, cellSpan, 0, -cellSpan];
-//const xAlternativeOffsetDefinitions = [0, cellSpan, 0, -cellSpan];
-//const yAlternativeOffsetDefinitions = [cellSpan, 0, -cellSpan, 0];
-

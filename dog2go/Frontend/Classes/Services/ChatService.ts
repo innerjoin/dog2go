@@ -1,19 +1,16 @@
-﻿
-import ChatModel = require("../Model/ChatModel");
-
-export class ChatService {
+﻿export class ChatService {
     private static instance: ChatService = null;
     constructor(callback: (name: string, message: string) => any, systemCallback: (message: string) => any) {
         if (ChatService.instance) {
             throw new Error("Error: ChatService instantiation failed. Singleton module! Use .getInstance() instead of new.");
         }
-        var chatHub = $.connection.chatHub;
+        const chatHub = $.connection.chatHub;
 
-        chatHub.client.broadcastMessage = function (name: string, message: string) {
+        chatHub.client.broadcastMessage = (name: string, message: string) => {
             callback(name, message);
         };
 
-        chatHub.client.broadcastSystemMessage = function (message: string) {
+        chatHub.client.broadcastSystemMessage = (message: string) => {
             systemCallback(message);
         };
         

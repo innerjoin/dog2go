@@ -22,14 +22,16 @@ export class GameArea {
     private cardsController: CardsController;
     private meepleController: MeepleController;
     private game: Phaser.Game;
+    private gameTableId: number;
 
-    constructor(isTesting?: boolean) {
+    constructor(tableId: number, isTesting?: boolean) {
         console.log(_phaser, _savecpu);
         const gameStates = {
             init: this.init.bind(this),
             preload: this.preload.bind(this),
             create: this.create.bind(this)
         };
+        this.gameTableId = tableId;
         this.game = new Phaser.Game(scaleFactor * 700, scaleFactor * 700, Phaser.AUTO, "gameContent", gameStates, true);
 
         //this.game.plugins.add(new Phaser.Plugin.SaveCPU(this.game, null));
@@ -37,7 +39,7 @@ export class GameArea {
 
         if (!isTesting) {
             this.gameFieldService = GameFieldService.getInstance();
-            this.gameFieldService.createGameTableCB = this.buildFields.bind(this);
+            this.gameFieldService.createGameTableCb = this.buildFields.bind(this);
             this.gameFieldController = new GameFieldController(this.game, scaleFactor);
             this.meepleController = new MeepleController(this.game, this.gameFieldController, scaleFactor);
             this.cardsController = new CardsController(this.meepleController);
@@ -53,7 +55,7 @@ export class GameArea {
     /* load game assets here, but not objects */
     preload() {
         
-        this.gameFieldService.getGameFieldData();
+        this.gameFieldService.getGameFieldData(this.gameTableId);
         
         this.game.load.image("meeple_blue", "/Frontend/Images/meeple_blue.png");
         this.game.load.image("meeple_red", "/Frontend/Images/meeple_red.png");

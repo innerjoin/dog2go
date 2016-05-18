@@ -1,22 +1,22 @@
 ﻿
 export class GameFieldService {
     private static instance: GameFieldService = null;
-    public assignHandCardsCB: (cards: ICard[]) => any;
-    public createGameTableCB: (gameTable: IGameTable) => any;
+    public assignHandCardsCb: (cards: ICard[]) => any;
+    public createGameTableCb: (gameTable: IGameTable) => any;
 
     constructor() {
         if (GameFieldService.instance) {
             // ReSharper disable once TsNotResolved
             throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance() instead of new.");
         }
-        var gameHub = $.connection.gameHub;
+        const gameHub = $.connection.gameHub;
         gameHub.client.createGameTable = (gameTable) => {
-            this.createGameTableCB(gameTable);
+            this.createGameTableCb(gameTable);
         }
 
         gameHub.client.backToGame = (gameTable, cards) => {
-            this.createGameTableCB(gameTable);
-            this.assignHandCardsCB(cards);
+            this.createGameTableCb(gameTable);
+            this.assignHandCardsCb(cards);
         }
         GameFieldService.instance = this;
     }
@@ -24,15 +24,15 @@ export class GameFieldService {
     public static getInstance() {
         // Create new instance if callback is given
         if (GameFieldService.instance === null) {
-            var temp = new GameFieldService();
+            new GameFieldService();
         }
         return GameFieldService.instance;
     }
 
-    public getGameFieldData():void {
+    public getGameFieldData(tableId: number):void {
         var gameHub = $.connection.gameHub;
         $.connection.hub.start().done(() => {
-            gameHub.server.connectToTable();
+            gameHub.server.connectToTable(tableId);
         });
     }
 }

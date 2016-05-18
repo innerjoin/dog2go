@@ -19,6 +19,6 @@ interface IGameHubClient {
 }
 
 interface IGameHubServer {
-    connectToTable(): IGameTable;
+    connectToTable(gameTableId: number): IGameTable;
     validateMove(meepleMove: IMeepleMove, cardMove: ICardMove): boolean;
 }

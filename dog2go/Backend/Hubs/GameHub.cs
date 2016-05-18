@@ -22,11 +22,11 @@ namespace dog2go.Backend.Hubs
         public GameHub() { }
 
 
-        public GameTable ConnectToTable()
+        public GameTable ConnectToTable(int gameTableId)
         {
             lock (Locker)
             {
-                GameTable table = GameTableService.GetTable(Games);
+                GameTable table = GameTableService.GetTable(Games, gameTableId);
                 string curUser = Context.User.Identity.Name;
                 if (GameTableService.AlreadyConnected(table, curUser))
                 {

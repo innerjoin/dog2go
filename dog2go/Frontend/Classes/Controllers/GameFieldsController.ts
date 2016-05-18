@@ -29,34 +29,34 @@ export class GameFieldController {
         
 
         const fc = new FieldCoordinates(scaleFactor);
-        this.fieldCoordinates = fc.FOUR_PlAYERS;
+        this.fieldCoordinates = fc.fourPlAyerMode;
 
         this.allFields = [];
     }
 
     public buildFields = (gameTable: IGameTable) => {
         let currentPos = 0;
-        for (var k = 0; k < gameTable.PlayerFieldAreas.length; k++) {
-            var area: IPlayerFieldArea = gameTable.PlayerFieldAreas[k];
-            var current: IMoveDestinationField = area.Fields[0];
+        for (let k = 0; k < gameTable.PlayerFieldAreas.length; k++) {
+            const area: IPlayerFieldArea = gameTable.PlayerFieldAreas[k];
+            let current: IMoveDestinationField = area.Fields[0];
             const areaPos = this.fieldCoordinates.getAreaCoordinates(currentPos);
             // create kennel fields           
             this.addKennelFields(area.KennelFields, areaPos, area.ColorCode);
-            var fieldNr = 0;
+            let fieldNr = 0;
 
-            let endFields: IEndField[] = this.getEndFields(area.Fields);
+            const endFields: IEndField[] = this.getEndFields(area.Fields);
 
             // create destination fields
             while (current) {
-                var color = 0xeeeeee;
+                let color = 0xeeeeee;
                 if (current.Identifier === area.StartField.Identifier) {
-                    var startField: IStartField = <IStartField>current;
+                    const startField: IStartField = <IStartField>current;
                     color = area.ColorCode;
                     let ex = areaPos.x;
                     let ey = areaPos.y;
 
                     // Generate Endfields from startfield
-                    var finalField = startField.EndFieldEntry;
+                    let finalField = startField.EndFieldEntry;
                     for (let j = 0; j < endFields.length; j++) {
                         ex += areaPos.xAltOffset;
                         ey += areaPos.yAltOffset;
@@ -88,7 +88,7 @@ export class GameFieldController {
         const kennelX = areaPos.x + 11 * areaPos.xOffset;
         const kennelY = areaPos.y + 11 * areaPos.yOffset;
         for (let i = 0; i < kennelFields.length; i++) {
-            var kennelField: IKennelField = kennelFields[i];
+            const kennelField: IKennelField = kennelFields[i];
             let xx = 0;
             let yy = 0;
             switch (i % 4) {
@@ -117,8 +117,8 @@ export class GameFieldController {
         graphics.lineStyle(this.scaleFactor * 2, 0x222222, 1);
         graphics.drawCircle(0, 0, this.scaleFactor * 30); //draw a circle relative to it's parent (in this case, the graphics object)
         graphics.endFill();
-        var style = { font: "20px Arial", fill: "#000000", align: "center" };
-        var text = this.game.make.text(2, 2, id + "", style);
+        const style = { font: "20px Arial", fill: "#000000", align: "center" };
+        const text = this.game.make.text(2, 2, id + "", style);
         graphics.addChild(text);
         return graphics;
     }
@@ -150,8 +150,8 @@ export class GameFieldController {
     }
 
     public getFieldPosition(fieldId: number):Phaser.Point {
-        var result: Phaser.Point;
-        for (var field of this.allFields) {
+        let result: Phaser.Point;
+        for (let field of this.allFields) {
             if (field.Identifier === fieldId) {
                 result = field.viewRepresentation.position;
                 break;
@@ -161,8 +161,8 @@ export class GameFieldController {
     }
 
     private getEndFields(fields: IMoveDestinationField[]): IEndField[] {
-        var result: IEndField[] = [];
-        for (var field of fields) {
+        const result: IEndField[] = [];
+        for (let field of fields) {
             if (field.FieldType.localeCompare("dog2go.Backend.Model.EndField") === 0) {
                 this.endFiedls.push(field);
                 result.push(field);

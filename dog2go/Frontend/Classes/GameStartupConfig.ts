@@ -5,6 +5,7 @@ new Area.GameArea();*/
 import gm = require("./Controllers/GameMaster");
 
 require(["signalr.hubs", "jquery-ui-touch"], () => {
-    new gm.GameMaster();
+    var id = $("#gameIdentifier").val();
+    new gm.GameMaster(id);
 });
 

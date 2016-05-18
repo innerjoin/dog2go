@@ -48,9 +48,9 @@ describe("GameFieldService - ", () => {
     it("Server: getGameFieldData", () => {
         
         var gameFieldService = GameFieldService.getInstance();
-        gameFieldService.createGameTableCB = callbacks.createGametable;
+        gameFieldService.createGameTableCb = callbacks.createGametable;
 
-        gameFieldService.getGameFieldData();
+        gameFieldService.getGameFieldData(1);
 
         // uppon calling server Methods: Allways check if Hub has been started correctly
         expect($.connection.hub.start).toHaveBeenCalled();
@@ -61,8 +61,8 @@ describe("GameFieldService - ", () => {
 
     it("Client: backToGame", () => {
         var gameFieldService = GameFieldService.getInstance();
-        gameFieldService.createGameTableCB = callbacks.createGametable;
-        gameFieldService.assignHandCardsCB = callbacks.assignHandCards;
+        gameFieldService.createGameTableCb = callbacks.createGametable;
+        gameFieldService.assignHandCardsCb = callbacks.assignHandCards;
 
         callbacks.createGametable.calls.reset();
         callbacks.assignHandCards.calls.reset();
