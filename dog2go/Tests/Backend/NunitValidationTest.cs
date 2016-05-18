@@ -613,7 +613,7 @@ namespace dog2go.Tests.Backend
             StandardField standardField =
                 (StandardField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[3];
             standardField.CurrentMeeple = meeple;
-            Assert.AreEqual(true, Validation.CanMoveToEndFields(standardField, 3));
+            Assert.AreEqual(true, Validation.CanMoveToEndFields(standardField, 3, meeple.ColorCode));
         }
 
         [Test]
@@ -627,7 +627,7 @@ namespace dog2go.Tests.Backend
             StandardField standardField =
                 (StandardField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[3];
             standardField.CurrentMeeple = meeple;
-            Assert.AreEqual(false, Validation.CanMoveToEndFields(standardField, 7));
+            Assert.AreEqual(false, Validation.CanMoveToEndFields(standardField, 7, meeple.ColorCode));
         }
 
         [Test]
@@ -641,7 +641,7 @@ namespace dog2go.Tests.Backend
             StandardField standardField =
                 (StandardField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[7];
             standardField.CurrentMeeple = meeple;
-            Assert.AreEqual(false, Validation.CanMoveToEndFields(standardField, 8));
+            Assert.AreEqual(false, Validation.CanMoveToEndFields(standardField, 8, meeple.ColorCode));
         }
         #endregion
 
