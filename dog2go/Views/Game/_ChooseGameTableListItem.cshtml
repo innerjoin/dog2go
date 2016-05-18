@@ -1,20 +1,16 @@
 ﻿@model dog2go.Models.TableViewModel
 
-@using (Html.BeginForm("ChooseGameTable", $"Game", FormMethod.Post)) {
+@using (Html.BeginForm("ChooseGameTable", $"Game", FormMethod.Post))
+{
     @Html.AntiForgeryToken()
-    <div class="form-horizontal" id="gameTableItem">
-        <div class="form-group">
-            @Html.HiddenFor(x => x.Identifier)
-            @Html.HiddenFor(x => x.Name)
-            <p id="gameTableName">@(Model.Name) - @(Model.Identifier)</p>
-            @if(Model.Participants != null ) {
-                <p>Participants: @(string.Join(" | ", Model.Participants))</p>
-            }
-        </div>
-        <div class="form-group" id="joinTablebtn">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Join" class="btn btn-default" />
-            </div>
-        </div>
+    <div class="gameTableItem form-horizontal">
+        @Html.HiddenFor(x => x.Identifier)
+        @Html.HiddenFor(x => x.Name)
+        <p class="gameTableName">@(Model.Name) - @(Model.Identifier)</p>
+        @if (Model.Participants != null)
+        {
+            <p>Participants: @(string.Join(" | ", Model.Participants))</p>
+        }
     </div>
+    <input type="submit" value="Join" class="joinTablebtn btn btn-default" />
 }
