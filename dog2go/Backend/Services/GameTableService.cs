@@ -113,14 +113,16 @@ namespace dog2go.Backend.Services
             }
 
             if (moveDestinationMeeple == null) return;
-            if (moveDestinationMeeple.CurrentPosition == null)
+            if (!isChangePlace)
             {
                 foreach (PlayerFieldArea area in gameTable.PlayerFieldAreas)
                 {
-                    moveDestinationMeeple.CurrentFieldId =
-                                area.KennelFields.Find(field => field.CurrentMeeple == null && area.ColorCode == moveDestinationMeeple.ColorCode).Identifier;
-                    moveDestinationMeeple.CurrentPosition =
-                        area.KennelFields.Find(field => field.CurrentMeeple == null && area.ColorCode == moveDestinationMeeple.ColorCode);
+                    KennelField kennelField =
+                        area.KennelFields.Find(
+                            field => field.CurrentMeeple == null && area.ColorCode == moveDestinationMeeple.ColorCode);
+                    if (kennelField == null) continue;
+                    moveDestinationMeeple.CurrentFieldId = kennelField.Identifier;
+                    moveDestinationMeeple.CurrentPosition = kennelField;
                 }
             }
             
