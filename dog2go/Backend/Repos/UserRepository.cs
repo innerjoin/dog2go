@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Concurrent;
 using System.Threading;
-using System.Threading.Tasks;
 using dog2go.Backend.Model;
 using dog2go.Backend.Interfaces;
 
@@ -13,7 +8,7 @@ namespace dog2go.Backend.Repos
     public class UserRepository : IUserRepository
     {
         private readonly ConcurrentDictionary<string, User> _users;
-        private static readonly Object LockObj = new Object();
+        private static readonly object LockObj = new object();
         private static UserRepository _instance;
         private UserRepository()
         {

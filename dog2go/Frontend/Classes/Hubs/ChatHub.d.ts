@@ -1,15 +1,14 @@
 ﻿interface IChatHub extends HubProxy {
     client: IChatHubClient;
     server: IChatHubServer;
+    qs: string;
 }
 
-
 interface IChatHubClient {
-    broadcastMessage(name: string, message: string);
-    broadcastSystemMessage(message: string);
-    doSomeShit();
+    broadcastMessage(name: string, message: string, tableId: number);
+    broadcastSystemMessage(message: string, tableId: number);
 }
 
 interface IChatHubServer {
-    sendMessage(message: string): void;
+    sendMessage(message: string, tableId: number): void;
 }

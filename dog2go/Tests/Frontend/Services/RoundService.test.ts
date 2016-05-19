@@ -4,7 +4,7 @@ import rs = require("../../../Frontend/Classes/Services/RoundService");
 import RoundService = rs.RoundService;
 
 describe("RoundService - ", () => {
-
+    var tableId = 0;
     var callbacks, callbackDone;
     beforeAll(() => {
         
@@ -31,20 +31,20 @@ describe("RoundService - ", () => {
     });
 
     it("get Instance", () => {
-        var roundService = RoundService.getInstance();
+        var roundService = RoundService.getInstance(tableId);
 
-        expect(roundService).toBe(RoundService.getInstance());
+        expect(roundService).toBe(RoundService.getInstance(tableId));
     });
 
     it("Client: assignHandCards", () => {
-        var roundService = RoundService.getInstance();
-        roundService.assignHandCardsCB = callbacks.assignHandCards;
+        var roundService = RoundService.getInstance(tableId);
+        roundService.assignHandCardsCb = callbacks.assignHandCards;
 
         callbacks.assignHandCards.calls.reset();
 
         var cards: ICard[] = [<any>{ testData: 48476 }];
         
-        $.connection.gameHub.client.assignHandCards(cards);
+        $.connection.gameHub.client.assignHandCards(cards, tableId);
 
         expect(callbacks.assignHandCards).toHaveBeenCalled();
         expect(callbacks.assignHandCards).toHaveBeenCalledWith(cards);

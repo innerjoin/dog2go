@@ -20,15 +20,18 @@ export class MeepleController {
 
     private scaleFactor: number;
 
-    constructor(game: Phaser.Game, gameFieldController: GameFieldController, scaleFactor: number) {
+    private tableId: number;
+
+    constructor(tableId: number, game: Phaser.Game, gameFieldController: GameFieldController, scaleFactor: number) {
         this.scaleFactor = scaleFactor;
         this.gameFieldController = gameFieldController;
         this.game = game;
+        this.tableId = tableId;
 
-        this.turnService = TurnService.getInstance();
-        this.turnService.notifyActualPlayerCB = this.notifyActualPlayer.bind(this);
-        this.turnService.sendMeeplePositionsCB = this.repositionMeeples.bind(this);
-        this.turnService.returnMoveCB = this.returnMove.bind(this);
+        this.turnService = TurnService.getInstance(tableId);
+        this.turnService.notifyActualPlayerCb = this.notifyActualPlayer.bind(this);
+        this.turnService.sendMeeplePositionsCb = this.repositionMeeples.bind(this);
+        this.turnService.returnMoveCb = this.returnMove.bind(this);
 
         this.allMeeples = [];
     }
@@ -43,15 +46,19 @@ export class MeepleController {
         console.log("Return move");
         if (this.turnMeepleMove != null) {
             this.positionMeeple(this.turnMeepleMove.Meeple);
+            this.turnMeepleMove = null;
         }
     }
 
     public repositionMeeples(meeples: IMeeple[]) {
+        this.turnCardMove = null;
+        this.turnMeepleMove = null;
         for (let meeple of this.allMeeples) {
             for (let newMeeple of meeples) {
                 if (newMeeple.Identifier === meeple.Identifier) {
                     meeple.CurrentPosition = newMeeple.CurrentPosition;
-                    this.positionMeeple(meeple);
+                    this.disableAllMeeplesDraggable();
+                    this.positionMeeple(meeple);    
                     break;
                 }
             }
@@ -76,7 +83,7 @@ export class MeepleController {
                 //var meepleSprite: Phaser.Sprite = this.game.add.sprite(coordinates.x, coordinates.y, spriteName);
                 const meepleSprite: Phaser.Sprite = this.game.add.sprite(this.game.width / 2, this.game.height / 2, spriteName);
                 meepleSprite.anchor.setTo(0.5, 0.5);
-                meepleSprite.scale.setTo(this.scaleFactor * 0.13, this.scaleFactor * 0.13);
+                meepleSprite.scale.setTo(this.scaleFactor * 0.21, this.scaleFactor * 0.17);
                 meepleSprite.inputEnabled = true;
 
                 meeple.spriteRepresentation = meepleSprite;
@@ -93,7 +100,20 @@ export class MeepleController {
         this.turnCardMove = turnCardMove;
         const meeples: IMeeple[] = this.getMeeplesByColor(this.playerMeepleColor);
         for (let meeple of meeples) {
-            // TODO: add distinction for blocked meeples
+            this.setMeepleDraggable(meeple, true);
+        }
+    }
+
+    public disableAllMeeplesDraggable() {
+        for (let meeple of this.allMeeples) {
+            this.setMeepleDraggable(meeple, false);
+        }
+    }
+
+    public setMeepleDraggable(meeple: IMeeple, setDraggable: boolean) {
+        if (!setDraggable) {
+            meeple.spriteRepresentation.input.disableDrag();
+        } else {
             meeple.spriteRepresentation.input.enableDrag();
             meeple.spriteRepresentation.input.enableSnap(this.scaleFactor * 40, this.scaleFactor * 40, false, true);
             meeple.spriteRepresentation.events.onDragStop.add(this.dropLimiter, this, 0, meeple);
@@ -143,7 +163,7 @@ export class MeepleController {
             item.y = nearest.viewRepresentation.y;
             if (meeple.CurrentPosition.Identifier !== nearest.Identifier) {
                 this.turnMeepleMove = { Meeple: meeple, MoveDestination: nearest, DestinationFieldId: nearest.Identifier };
-                this.turnService.validateMove(this.turnMeepleMove, this.turnCardMove);
+                this.turnService.validateMove(this.turnMeepleMove, this.turnCardMove, this.tableId);
             }
         } else {
             const currentField = this.gameFieldController.getFieldByIdOfAll(meeple.CurrentPosition.Identifier);

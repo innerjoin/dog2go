@@ -12,6 +12,8 @@ namespace dog2go.Backend.Model
         public int Identifier { get; private set; }
 
         public int TableSize { get; private set; }
+
+        public bool IsInitialized { get; set; } = false;
         public DateTime Start { get; set; }
         public DateTime Stop { get; set; }
         public List<PlayerFieldArea> PlayerFieldAreas;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web.Mvc;
 using dog2go.Backend.Constants;
@@ -24,7 +25,7 @@ namespace dog2go.Controllers
             {
                 TableIdentifier = id,
                 DisplayUser = user,
-                ColorMeeplePath = GetUserMeeplePath()
+                ColorMeeplePath = GetUserMeeplePath(id)
             };
             return View(model);
         }
@@ -89,18 +90,20 @@ namespace dog2go.Controllers
             return ParticipationService.AddParticipation(gameTable, User.Identity.Name);
         }
 
-        private static string GetUserMeeplePath()
+        private string GetUserMeeplePath(int tableId)
         {
-            ConcurrentDictionary<string, User> users = UserRepository.Instance.Get();
-            switch (users.Count%GlobalDefinitions.NofParticipantsPerTable)
+            GameTable gameTable = GameRepository.Instance.Get()?.Find(table => table.Identifier.Equals(tableId));
+            PlayerFieldArea playerFieldArea = gameTable?.PlayerFieldAreas?.FirstOrDefault(x => x.Participation.Participant.Nickname == User.Identity.Name);
+            if (playerFieldArea == null) return "not defined";
+            switch (playerFieldArea.ColorCode)
             {
-                case 0:
+                case ColorCode.Yellow:
                     return "meeple_yellow.png";
-                case 1:
+                case ColorCode.Blue:
                     return "meeple_blue.png";
-                case 2:
+                case ColorCode.Red:
                     return "meeple_red.png";
-                case 3:
+                case ColorCode.Green:
                     return "meeple_green.png";
                 default:
                     return "not defined";

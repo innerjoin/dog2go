@@ -13,12 +13,13 @@ namespace dog2go.Tests.Backend
     {
         private CardServices cs;
         private readonly GameHub _hub = new GameHub(GameRepository.Instance);
+        private const int TableId = 0;
 
         private GameTable MakeInitialGameTable
         {
             get
             {
-                GameTable gameTable = _hub.GetGeneratedGameTable();
+                GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
                 List<Participation> participationsList = new List<Participation>();
                 User user1 = new User("user1", "1");
                 User user2 = new User("user2", "2");

@@ -214,8 +214,6 @@
     <Compile Include="Backend\Services\GameFactory.cs" />
     <Compile Include="Backend\Hubs\GenericHub.cs" />
     <Compile Include="Backend\Hubs\GameHub.cs" />
-    <Compile Include="Backend\Interfaces\IChatRepository.cs" />
-    <Compile Include="Backend\Interfaces\IConnectionRepository.cs" />
     <Compile Include="Backend\Interfaces\IGameRepository.cs" />
     <Compile Include="Backend\Interfaces\IUserRepository.cs" />
     <Compile Include="Backend\Model\Card.cs" />
@@ -235,8 +233,6 @@
     <Compile Include="Backend\Model\StandardField.cs" />
     <Compile Include="Backend\Model\StartField.cs" />
     <Compile Include="Backend\Model\User.cs" />
-    <Compile Include="Backend\Repos\ChatMessageRepository.cs" />
-    <Compile Include="Backend\Repos\ConnectionRepository.cs" />
     <Compile Include="Backend\Repos\GameRepository.cs" />
     <Compile Include="Backend\Repos\UserRepository.cs" />
     <Compile Include="Backend\Constants\ServerMessages.cs" />
@@ -371,7 +367,6 @@
     <TypeScriptCompile Include="Frontend\Classes\Hubs\ChatHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\GameHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Hubs\Hub.d.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Hubs\SessionHub.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Model\ChatModel.d.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Model\ChatModel.ts" />
     <TypeScriptCompile Include="Frontend\Classes\Model\GameModel.ts" />

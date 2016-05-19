@@ -9,7 +9,6 @@ namespace dog2go.Backend.Model
         public User() { }
         public string Identifier { get; set; }
         public string Nickname { get; set; }
-        public string GroupName { get; set; }
         public HashSet<string> ConnectionIds { get; set; }
 
         public User(string name)

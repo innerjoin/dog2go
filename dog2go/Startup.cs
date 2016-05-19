@@ -12,7 +12,7 @@ namespace dog2go
     {
         public void Configuration(IAppBuilder app)
         {
-            GlobalHost.DependencyResolver.Register(typeof(ChatHub), () => new ChatHub(ChatMessageRepository.Instance));
+            GlobalHost.DependencyResolver.Register(typeof(ChatHub), () => new ChatHub());
             GlobalHost.DependencyResolver.Register(typeof(GameHub), () => new GameHub(GameRepository.Instance));
 #if DEBUG
             Console.WriteLine("Hello this is Debug Mode!");
