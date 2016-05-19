@@ -74,6 +74,7 @@ namespace dog2go.Backend.Services
             if (gameTable == null || meepleMove == null)
                 return;
             MoveDestinationField saveField = null;
+            Meeple moveDestinationMeeple = null;
             foreach (PlayerFieldArea area in gameTable.PlayerFieldAreas)
             {
                 MoveDestinationField oldDestinationField = area.Fields.Find(field => field.Identifier == meepleMove.Meeple.CurrentFieldId) ??
@@ -87,21 +88,23 @@ namespace dog2go.Backend.Services
                 saveField = updateField;
                 if (isChangePlace)
                 {
-                    Meeple moveDestinationMeeple = updateField.CurrentMeeple;
-                    if(moveDestinationMeeple != null)
+                    if (updateField.CurrentMeeple != null)
+                    {
+                        moveDestinationMeeple = updateField.CurrentMeeple;
+                        moveDestinationMeeple.CurrentFieldId = meepleMove.Meeple.CurrentPosition.Identifier;
                         moveDestinationMeeple.CurrentPosition = meepleMove.Meeple.CurrentPosition;
+                    }
                 }
 
                 else
                 {
-                    Meeple removeDestinationMeeple = updateField.CurrentMeeple;
-                    if (removeDestinationMeeple != null)
-                        removeDestinationMeeple.CurrentPosition =
-                            area.KennelFields.Find(field => field.CurrentMeeple == null);
+                    if (updateField.CurrentMeeple != null)
+                    {
+                        moveDestinationMeeple = updateField.CurrentMeeple;
+                    }
                 }
                 updateField.CurrentMeeple = meepleMove.Meeple;
             }
-
             foreach (Meeple actualMeeple in gameTable.PlayerFieldAreas.Select(area => 
                                                                         area.Meeples.Find(meeple => meeple.CurrentPosition.Identifier == meepleMove.Meeple.CurrentFieldId)).
                                                                         Where(actualMeeple => actualMeeple != null))
@@ -110,6 +113,26 @@ namespace dog2go.Backend.Services
                     actualMeeple.IsStartFieldBlocked = false;
                 actualMeeple.CurrentPosition = saveField;
                 actualMeeple.CurrentFieldId = saveField?.Identifier ?? -1 ;
+            }
+
+            if (moveDestinationMeeple == null) return;
+            if (moveDestinationMeeple.CurrentPosition == null)
+            {
+                foreach (PlayerFieldArea area in gameTable.PlayerFieldAreas)
+                {
+                    moveDestinationMeeple.CurrentFieldId =
+                                area.KennelFields.Find(field => field.CurrentMeeple == null && area.ColorCode == moveDestinationMeeple.ColorCode).Identifier;
+                    moveDestinationMeeple.CurrentPosition =
+                        area.KennelFields.Find(field => field.CurrentMeeple == null && area.ColorCode == moveDestinationMeeple.ColorCode);
+                }
+            }
+            
+            foreach (Meeple actualMeeple in gameTable.PlayerFieldAreas.Select(area =>
+                                                                        area.Meeples.Find(meeple => meeple.CurrentPosition.Identifier == saveField.Identifier && meeple.ColorCode == moveDestinationMeeple.ColorCode)).
+                                                                        Where(actualMeeple => actualMeeple != null))
+            {
+                actualMeeple.CurrentPosition = moveDestinationMeeple.CurrentPosition;
+                actualMeeple.CurrentFieldId = moveDestinationMeeple.CurrentFieldId;
             }
         }
 

@@ -79,6 +79,30 @@ namespace dog2go.Backend.Services
             return kennelField != null || endField != null;
         }
 
+        private static bool IsPartnerColorCode(ColorCode myColor, ColorCode partnerColor)
+        {
+            if ((myColor == ColorCode.Red && partnerColor == ColorCode.Yellow) ||
+                (myColor == ColorCode.Yellow && partnerColor == ColorCode.Red))
+                return true;
+            return (myColor == ColorCode.Blue && partnerColor == ColorCode.Green) ||
+                   (myColor == ColorCode.Green && partnerColor == ColorCode.Blue);
+        }
+
+        private static int GetDifferenceBetweenTwoFields(MoveDestinationField startField, MoveDestinationField endField)
+        {
+            int counter = 0;
+            MoveDestinationField tempField = startField.Next;
+            while (tempField != null)
+            {
+                if(!tempField.FieldType.Contains("EndField"))
+                    counter++;
+                if (tempField.Identifier == endField.Identifier)
+                    return counter;
+                tempField = tempField.Next;
+            }
+            return -1;
+        }
+
         public static MoveDestinationField GetFieldById(GameTable actualTable, int fieldId)
         {
             MoveDestinationField moveDestinationField = null;
@@ -103,11 +127,12 @@ namespace dog2go.Backend.Services
             }
             return moveDestinationField;
         }
+
         public static bool ValidateMove(MeepleMove meepleMove, CardMove cardMove)
         {
             Meeple movedMeeple = meepleMove.Meeple;
             MoveDestinationField destinationField = meepleMove.MoveDestination;
-            var test = 0;
+            int test = 0;
 
             if (movedMeeple == null || cardMove == null)
                 return false;
@@ -119,7 +144,10 @@ namespace dog2go.Backend.Services
                         if (ProveChangePlace(movedMeeple, destinationField))
                         {
                             test += 1;
-                            cardMove.SelectedAttribute = new CardAttribute(AttributeEnum.ChangePlace);
+                            if((cardMove.Card.Name == "cardJoker" && GetDifferenceBetweenTwoFields(movedMeeple.CurrentPosition, destinationField) > 13)||
+                                (cardMove.Card.Name == "cardJoker" && IsPartnerColorCode(movedMeeple.ColorCode, destinationField.CurrentMeeple.ColorCode) && GetDifferenceBetweenTwoFields(movedMeeple.CurrentPosition, destinationField) <= 13) ||
+                                (cardMove.Card.Name != "cardJoker"))
+                                cardMove.SelectedAttribute = new CardAttribute(AttributeEnum.ChangePlace);
                         }
                         break;
                     case AttributeEnum.LeaveKennel:
