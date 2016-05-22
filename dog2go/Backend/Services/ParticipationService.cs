@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
 
 namespace dog2go.Backend.Services
 {
-    public class ParticipationService
+    public static class ParticipationService
     {
         public static bool AddParticipation(GameTable table, string curUser)
         {
             if (table.IsFull())
                 return false;
             Participation newParticipation;
-            if (table.Participations.Count() % 2 == 1)
+            if (table.Participations.Count % 2 == 1)
             {
                 User actualUser = UserRepository.Instance.Get()
                         .First(user => user.Value.Nickname == curUser).Value;
@@ -29,7 +27,7 @@ namespace dog2go.Backend.Services
             {
                 newParticipation = new Participation(UserRepository.Instance.Get().First(user => user.Value.Nickname == curUser).Value);
             }
-            table.PlayerFieldAreas.Find(area => area.Identifier == table.Participations.Count() + 1).Participation = newParticipation;
+            table.PlayerFieldAreas.Find(area => area.Identifier == table.Participations.Count + 1).Participation = newParticipation;
             table.Participations.Add(newParticipation);
             return true;
         }

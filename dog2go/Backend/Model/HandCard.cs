@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-
-namespace dog2go.Backend.Model
+﻿namespace dog2go.Backend.Model
 {
     public class HandCard : Card
     {
@@ -12,10 +9,5 @@ namespace dog2go.Backend.Model
         {
             IsPlayed = false;
         }
-
-        //public HandCard(string name, int id, List<CardAttribute> attributes) : base(name, id, attributes)
-        //{
-
-        //}
     }
 }

@@ -99,22 +99,22 @@ namespace dog2go.Tests.Backend
                CardAttributeLeaveKennel
             });
 
-        private static readonly CardAttribute CardAttributeOneField = new CardAttribute(AttributeEnum.OneField);
-        private static readonly CardAttribute CardAttributeTwoFields = new CardAttribute(AttributeEnum.TwoFields);
-        private static readonly CardAttribute CardAttributeThreeFields = new CardAttribute(AttributeEnum.ThreeFields);
-        private static readonly CardAttribute CardAttributeFourFields = new CardAttribute(AttributeEnum.FourFields);
-        private static readonly CardAttribute CardAttributeFourFieldsBack = new CardAttribute(AttributeEnum.FourFieldsBack);
-        private static readonly CardAttribute CardAttributeFiveFields = new CardAttribute(AttributeEnum.FiveFields);
-        private static readonly CardAttribute CardAttributeSixFields = new CardAttribute(AttributeEnum.SixFields);
-        private static readonly CardAttribute CardAttributeSevenFields = new CardAttribute(AttributeEnum.SevenFields);
-        private static readonly CardAttribute CardAttributeEightFields = new CardAttribute(AttributeEnum.EightFields);
-        private static readonly CardAttribute CardAttributeNineFields = new CardAttribute(AttributeEnum.NineFields);
-        private static readonly CardAttribute CardAttributeTenFields = new CardAttribute(AttributeEnum.TenFields);
-        private static readonly CardAttribute CardAttributeElevenFields = new CardAttribute(AttributeEnum.ElevenFields);
-        private static readonly CardAttribute CardAttributeTwelveFields = new CardAttribute(AttributeEnum.TwelveFields);
-        private static readonly CardAttribute CardAttributeThirteenFields = new CardAttribute(AttributeEnum.ThirteenFields);
-        private static readonly CardAttribute CardAttributeLeaveKennel = new CardAttribute(AttributeEnum.LeaveKennel);
-        private static readonly CardAttribute CardAttributeChangePlace = new CardAttribute(AttributeEnum.ChangePlace);
+        private static readonly CardAttribute CardAttributeOneField = new CardAttribute(CardFeature.OneField);
+        private static readonly CardAttribute CardAttributeTwoFields = new CardAttribute(CardFeature.TwoFields);
+        private static readonly CardAttribute CardAttributeThreeFields = new CardAttribute(CardFeature.ThreeFields);
+        private static readonly CardAttribute CardAttributeFourFields = new CardAttribute(CardFeature.FourFields);
+        private static readonly CardAttribute CardAttributeFourFieldsBack = new CardAttribute(CardFeature.FourFieldsBack);
+        private static readonly CardAttribute CardAttributeFiveFields = new CardAttribute(CardFeature.FiveFields);
+        private static readonly CardAttribute CardAttributeSixFields = new CardAttribute(CardFeature.SixFields);
+        private static readonly CardAttribute CardAttributeSevenFields = new CardAttribute(CardFeature.SevenFields);
+        private static readonly CardAttribute CardAttributeEightFields = new CardAttribute(CardFeature.EightFields);
+        private static readonly CardAttribute CardAttributeNineFields = new CardAttribute(CardFeature.NineFields);
+        private static readonly CardAttribute CardAttributeTenFields = new CardAttribute(CardFeature.TenFields);
+        private static readonly CardAttribute CardAttributeElevenFields = new CardAttribute(CardFeature.ElevenFields);
+        private static readonly CardAttribute CardAttributeTwelveFields = new CardAttribute(CardFeature.TwelveFields);
+        private static readonly CardAttribute CardAttributeThirteenFields = new CardAttribute(CardFeature.ThirteenFields);
+        private static readonly CardAttribute CardAttributeLeaveKennel = new CardAttribute(CardFeature.LeaveKennel);
+        private static readonly CardAttribute CardAttributeChangePlace = new CardAttribute(CardFeature.ChangePlace);
 
         #region "Testmethods for ValidateMove-Method"​
 

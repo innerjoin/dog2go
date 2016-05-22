@@ -9,7 +9,6 @@
         }
         const chatHub = $.connection.chatHub;
         $.connection.hub.qs = `tableId=${tableId}`;
-        console.log("chatHub: ", $.connection.hub.qs);
         chatHub.client.broadcastMessage = (name: string, message: string, tableId: number) => {
             // will autoconvert string to int
             // ReSharper disable once CoercedEqualsUsing

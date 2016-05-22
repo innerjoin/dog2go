@@ -25,7 +25,7 @@ export class GameArea {
     private gameTableId: number;
 
     constructor(tableId: number, isTesting?: boolean) {
-        console.log(_phaser, _savecpu);
+        console.log(_phaser, _savecpu); // DO NOT remove this statement, as import will not properly work else
         const gameStates = {
             init: this.init.bind(this),
             preload: this.preload.bind(this)
@@ -33,8 +33,7 @@ export class GameArea {
         this.gameTableId = tableId;
         this.game = new Phaser.Game(scaleFactor * 700, scaleFactor * 700, Phaser.AUTO, "gameContent", gameStates, true);
 
-        if (!isTesting) { //TODO: why isTesting????
-            //this.gameFieldService = new GameFieldService(tableId);
+        if (!isTesting) { 
             this.gameFieldService = GameFieldService.getInstance(tableId);
             this.gameFieldService.createGameTableCb = this.buildFields.bind(this);
             this.gameFieldController = new GameFieldController(this.game, scaleFactor);
@@ -44,12 +43,10 @@ export class GameArea {
     }
 
     public init() {
-        console.log("this.game.plugins", this.game.plugins);
-        console.log("Phaser.Plugin", Phaser.Plugin.SaveCPU);
         this.game.plugins.add(Phaser.Plugin.SaveCPU);
     }
 
-    /* load game assets here, but not objects */
+    // load game assets here, but not objects 
     public preload() {
         this.gameFieldService.getGameFieldData(this.gameTableId);
         

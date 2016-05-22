@@ -104,6 +104,7 @@ export class GameFieldController {
                     xx = areaPos.xOffset + areaPos.xAltOffset;
                     yy = areaPos.yOffset + areaPos.yAltOffset;
                     break;
+                default: // do nothing
             }
             kennelField.viewRepresentation = this.addField(kennelX + xx, kennelY + yy, color, kennelField.Identifier);
             this.allFields.push(kennelField);

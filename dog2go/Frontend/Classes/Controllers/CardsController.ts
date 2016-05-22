@@ -31,7 +31,6 @@ export class CardsController {
 
     public showHandCards(cards: ICard[]) {
         this.myCards = cards;
-        console.log("Show HandCards: ", cards);
 
         if (typeof cards !== "undefined" && cards !== null) {
             for (let i = 0; i < cards.length; i++) {
@@ -44,10 +43,9 @@ export class CardsController {
     }
 
     public notifyActualPlayer(possibleCards: IHandCard[], meepleColor: number) {
-        console.log("NotifyActualPlayer", possibleCards, meepleColor);
         this.dropAllCards();
         this.showHandCards(possibleCards);
-        for (var card of possibleCards) {
+        for (let card of possibleCards) {
             if (card.IsValid) {
                 this.enableDrag(card);
             }
@@ -113,7 +111,7 @@ export class CardsController {
     public setDragableOnCard(card: ICard) {
         // HowTo draggable: http://stackoverflow.com/questions/5735270/revert-a-jquery-draggable-object-back-to-its-original-container-on-out-event-of
         $(`.handcards.${card.Name}`).draggable({
-            revert: function (event, ui) {
+            revert: function (event) {
                 $(this).data("ui-draggable").originalPosition = {
                     top: 0,
                     left: 0

@@ -1,7 +1,11 @@
 ﻿export class FieldCoordinates {
     fourPlAyerMode: FieldCoordinatesData;
     constructor(scaleFactor: number) {
-        this.fourPlAyerMode = new FieldCoordinatesData(scaleFactor * 40, [scaleFactor * 510, scaleFactor * 30, scaleFactor * 190, scaleFactor * 670], [scaleFactor * 30, scaleFactor * 190, scaleFactor * 670, scaleFactor * 510]);
+        this.fourPlAyerMode = new FieldCoordinatesData(
+            scaleFactor * 40,
+            [scaleFactor * 510, scaleFactor * 30, scaleFactor * 190, scaleFactor * 670],
+            [scaleFactor * 30, scaleFactor * 190, scaleFactor * 670, scaleFactor * 510]
+        );
     }
 }
 

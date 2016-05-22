@@ -4,9 +4,9 @@ using dog2go.Backend.Model;
 
 namespace dog2go.Backend.Services
 {
-    public class GameFactory
+    public static class GameFactory
     {
-         private static GameTable GenerateNewGameTable(int gameId, string gameName)
+        private static GameTable GenerateNewGameTable(int gameId, string gameName)
         {
             List<PlayerFieldArea> areas = new List<PlayerFieldArea>();
 

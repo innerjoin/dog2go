@@ -10,8 +10,8 @@ namespace dog2go.Backend.Services
     {
         public bool IsGameFinished(GameTable gameTable)
         {
-            if (gameTable == null) throw new ArgumentNullException(nameof(gameTable));
-            List<Participation> participationsList = gameTable.Participations;
+            if (gameTable == null)
+                throw new ArgumentNullException(nameof(gameTable));
             List<PlayerFieldArea> playerFieldAreasList = gameTable.PlayerFieldAreas;
             
             return (from participantFieldArea in playerFieldAreasList

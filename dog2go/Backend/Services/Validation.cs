@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using dog2go.Backend.Model;
+﻿using dog2go.Backend.Model;
 
 namespace dog2go.Backend.Services
 {
-    public class Validation
+    public static class Validation
     {
         public static bool ProveChangePlace(Meeple moveMeeple, MoveDestinationField destinationField)
         {
@@ -108,9 +104,10 @@ namespace dog2go.Backend.Services
             MoveDestinationField moveDestinationField = null;
             PlayerFieldArea playerFieldArea = actualTable.PlayerFieldAreas.Find(area => area.Fields.Find(field =>
             {
-                if (field.Identifier != fieldId) return false;
-                    moveDestinationField = field;
-                    return true;
+                if (field.Identifier != fieldId)
+                    return false;
+                moveDestinationField = field;
+                return true;
             }) != null);
 
             if (moveDestinationField == null)
@@ -140,17 +137,17 @@ namespace dog2go.Backend.Services
             {
                 switch (attribute.Attribute)
                 {
-                    case AttributeEnum.ChangePlace:
+                    case CardFeature.ChangePlace:
                         if (ProveChangePlace(movedMeeple, destinationField))
                         {
                             test += 1;
                             if((cardMove.Card.Name == "cardJoker" && GetDifferenceBetweenTwoFields(movedMeeple.CurrentPosition, destinationField) > 13)||
                                 (cardMove.Card.Name == "cardJoker" && IsPartnerColorCode(movedMeeple.ColorCode, destinationField.CurrentMeeple.ColorCode) && GetDifferenceBetweenTwoFields(movedMeeple.CurrentPosition, destinationField) <= 13) ||
                                 (cardMove.Card.Name != "cardJoker"))
-                                cardMove.SelectedAttribute = new CardAttribute(AttributeEnum.ChangePlace);
+                                cardMove.SelectedAttribute = new CardAttribute(CardFeature.ChangePlace);
                         }
                         break;
-                    case AttributeEnum.LeaveKennel:
+                    case CardFeature.LeaveKennel:
                         if (ProveLeaveKennel(movedMeeple, destinationField))
                             test += 1;
                         break;

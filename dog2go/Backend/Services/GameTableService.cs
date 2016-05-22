@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using dog2go.Backend.Constants;
 using dog2go.Backend.Interfaces;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
 
 namespace dog2go.Backend.Services
 {
-    public class GameTableService
+    public static class GameTableService
     {
         public static ColorCode GetColorCodeForUser(IGameRepository games, string userName, int tableId)
         {
@@ -41,7 +40,7 @@ namespace dog2go.Backend.Services
             if (gameTable == null)
                 return null;
             List<Meeple> otherMeeples = new List<Meeple>();
-            foreach (var playFieldArea in gameTable.PlayerFieldAreas)
+            foreach (PlayerFieldArea playFieldArea in gameTable.PlayerFieldAreas)
             {
                 otherMeeples.AddRange(playFieldArea.Meeples);
             }

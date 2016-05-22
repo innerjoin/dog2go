@@ -6,7 +6,6 @@ export class GameFieldService {
     public tableId: number;
     constructor(tableId: number) {
         this.tableId = tableId;
-        //alert("GameFieldService: " + tableId);
         if (GameFieldService.instance) {
             // ReSharper disable once TsNotResolved
             throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance() instead of new.");
@@ -14,7 +13,6 @@ export class GameFieldService {
         const gameHub = $.connection.gameHub;
         $.connection.hub.qs = `tableId=${tableId}`;
         gameHub.client.createGameTable = (gameTable, _tableId) => {
-            console.log("createGameTable: ", _tableId);
             // will autoconvert string to int
             // ReSharper disable once CoercedEqualsUsing
             if (_tableId == tableId) {
@@ -23,7 +21,6 @@ export class GameFieldService {
         }
 
         gameHub.client.backToGame = (gameTable, cards, _tableId) => {
-            console.log("backToGame: ", _tableId);
             // will autoconvert string to int
             // ReSharper disable once CoercedEqualsUsing
             if (_tableId == tableId) {

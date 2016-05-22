@@ -5,8 +5,6 @@
     Cookie: string;
     Stop: Date;
     PlayerFieldAreas: IPlayerFieldArea[];
-    /*        public List < PlayerFieldArea > PlayerFieldAreas;
-        public List < Participation > Participations; */
 }
 
 interface IPlayerFieldArea {
@@ -22,7 +20,6 @@ interface IPlayerFieldArea {
     EndFields: IEndField[];
     StartField: IStartField;
     Meeples: IMeeple[];
-    //   public Participation Participation { get; set; } 
 }
 
 interface IMeeple {
@@ -65,11 +62,3 @@ interface IEndField extends IMoveDestinationField {
 interface IStartField extends IMoveDestinationField {
     EndFieldEntry: IEndField;
 }
-
-
-/*interface IAreaColor {
-    Red;// = 0xff0000;
-    Blue;// = 0x0000ff;
-    Green;// = 0x00ff00;
-    Yellow;// = 0xedc613;
-}*/

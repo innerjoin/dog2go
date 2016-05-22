@@ -12,7 +12,7 @@ describe("GameFieldController - ", () => {
         timerCallback = jasmine.createSpy("timerCallback");
         jasmine.clock().install();
 
-        console.log(_phaser);
+        console.log(_phaser); //dont remove it to make import work
         game = new Phaser.Game();
     });
 
@@ -38,7 +38,6 @@ describe("GameFieldController - ", () => {
         var pos1 = data[1].viewRepresentation.position;
         var pos2 = data[2].viewRepresentation.position;
         var pos3 = data[3].viewRepresentation.position;
-        console.log(pos0, pos1, pos2, pos3);
         expect(pos0.x).toEqual(50);
         expect(pos0.y).toEqual(20);
         expect(pos1.x).toEqual(20);

@@ -67,7 +67,6 @@ export class TurnService {
         mMoveReady.DestinationFieldId = meepleMove.MoveDestination.Identifier;
         delete mMoveReady.MoveDestination;
         
-        console.log("Validating, Going to Send out: ", mMoveReady, cardMove);
         var gameHub = $.connection.gameHub;
         $.connection.hub.start().done(() => {
             gameHub.server.validateMove(mMoveReady, cardMove, tableId);

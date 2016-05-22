@@ -4,15 +4,15 @@
     {
         public CardAttribute() { }
         public string Name { get; set; }
-        public AttributeEnum Attribute { get; set; }
+        public CardFeature Attribute { get; set; }
 
-        public CardAttribute(AttributeEnum attributeEnum)
+        public CardAttribute(CardFeature cardFeature)
         {
-            this.Attribute = attributeEnum;
+            this.Attribute = cardFeature;
         }
     }
 
-    public enum AttributeEnum
+    public enum CardFeature
     {
         OneField = 1,
         TwoFields = 2,

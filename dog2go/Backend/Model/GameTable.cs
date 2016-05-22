@@ -32,9 +32,6 @@ namespace dog2go.Backend.Model
 
         public void RegisterCardService(CardServices service)
         {
-            /*if(cardServiceData != null)
-                throw new Exception("already registered");
-            cardServiceData = service;*/
             if (CardServiceData == null)
                 CardServiceData = service;
         }

@@ -1,9 +1,6 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using dog2go.Backend.Constants;
 using dog2go.Backend.Model;
 using dog2go.Backend.Repos;
 using dog2go.Backend.Services;
@@ -19,7 +16,6 @@ namespace dog2go.Controllers
         {
             if (id < 0 || !GameRepository.Instance.Exists(id) || !GameRepository.Instance.IsParticipant(id, User.Identity.Name)) 
                 return RedirectToAction($"ChooseGameTable", $"Game");
-            // TODO: pass id from view to signalR
             User user = UserRepository.Instance.Get().FirstOrDefault(x => x.Value.Identifier == User.Identity.Name).Value;
             DisplayNameModel model = new DisplayNameModel
             {

@@ -2,6 +2,6 @@
     public Identifier: string;
 
     public Nickname: string;
-        public GroupName: string;
-        public Cookie: string;
+    public GroupName: string;
+    public Cookie: string;
 }

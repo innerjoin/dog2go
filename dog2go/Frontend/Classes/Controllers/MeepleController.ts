@@ -37,13 +37,10 @@ export class MeepleController {
     }
 
     public notifyActualPlayer(possibleCards: ICard[], meepleColor: number) {
-        console.log("notifyActualPlayer(), poss Cards: ", possibleCards, meepleColor);
         this.playerMeepleColor = meepleColor;
-
     }
 
     public returnMove() {
-        console.log("Return move");
         if (this.turnMeepleMove != null) {
             this.positionMeeple(this.turnMeepleMove.Meeple);
             this.turnMeepleMove = null;
@@ -63,7 +60,6 @@ export class MeepleController {
                 }
             }
         }
-        console.log("sendMeeplesPositions(), meeples: ", meeples);
     }
 
     public positionMeeple(meeple: IMeeple) {
@@ -74,13 +70,11 @@ export class MeepleController {
     }
 
     public initializeMeeples(gameTable: IGameTable) {
-        console.log("Initializing Meeples", gameTable);
         this.allMeeples = [];
         for (let player of gameTable.PlayerFieldAreas) {
             for (let meeple of player.Meeples) {
                 const spriteName: string = this.getSpriteNameForColorCode(meeple.ColorCode);
 
-                //var meepleSprite: Phaser.Sprite = this.game.add.sprite(coordinates.x, coordinates.y, spriteName);
                 const meepleSprite: Phaser.Sprite = this.game.add.sprite(this.game.width / 2, this.game.height / 2, spriteName);
                 meepleSprite.anchor.setTo(0.5, 0.5);
                 meepleSprite.scale.setTo(this.scaleFactor * 0.21, this.scaleFactor * 0.17);
@@ -141,7 +135,7 @@ export class MeepleController {
             case AreaColor.Yellow:
                 return "meeple_yellow";
             default:
-                throw new Error("Color not found for Code: " + colorCode);
+                throw new Error(`Color not found for Code: ${colorCode}`);
         }
     }
 
