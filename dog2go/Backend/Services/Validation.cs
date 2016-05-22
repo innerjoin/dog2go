@@ -162,26 +162,29 @@ namespace dog2go.Backend.Services
             return test > 0;
         }
 
-        public static bool CanMoveToEndFields(MoveDestinationField startCountField, int fieldCount, ColorCode meepleColorCode)
+        public static bool CanMoveToEndFields(MoveDestinationField startCountField, int fieldDistanceCount, ColorCode meepleColorCode)
         {
-            if (HasBlockedField(startCountField, fieldCount)) return false;
-                for (var i = 0; i <= fieldCount; i++)
+            if (HasBlockedField(startCountField, fieldDistanceCount))
+                return false;
+            int fieldCount = fieldDistanceCount;
+            for (int i = 0; i <= fieldDistanceCount; i++) {
+                if (startCountField == null)
+                    return false;
+                startCountField = startCountField.Next;
+                fieldCount--;
+                StartField startField = startCountField as StartField;
+                if (startField == null)
+                    continue;
+                EndField endField = startField.EndFieldEntry;
+                fieldCount--;
+                for (int j = fieldCount - i; j >= 0; j--)
                 {
-                    if (startCountField == null) return false;
-                    startCountField = startCountField.Next;
-                    fieldCount--;
-                    StartField startField = startCountField as StartField;
-                if (startField == null) continue;
-                        EndField endField = startField.EndFieldEntry;
-                        fieldCount--;
-                        for (var j = fieldCount - i; j >= 0; j--)
-                        {
-                            endField = (EndField)endField.Next;
-                            if (endField == null)
-                                return false;
-                        }
-                        return startField.ColorCode == meepleColorCode;
-                    }
+                    endField = (EndField)endField.Next;
+                    if (endField == null)
+                        return false;
+                }
+                return startField.ColorCode == meepleColorCode;
+            }
             return false;
         }
 

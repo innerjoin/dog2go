@@ -632,6 +632,16 @@ namespace dog2go.Tests.Backend
         }
 
         [Test]
+        public void TestCanMoveToEndFieldsBug340()
+        {
+            GameTable table = MakeInitialGameTable;
+            Meeple meeple = new Meeple(new KennelField(77), ColorCode.Yellow) { IsStartFieldBlocked = false };
+            StandardField standardField = (StandardField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Yellow).Fields[0];
+            standardField.CurrentMeeple = meeple;
+            Assert.AreEqual(true, Validation.CanMoveToEndFields(standardField, 5, meeple.ColorCode));
+        }
+
+        [Test]
         public void TestCanNotMoveToEndFields()
         {
             GameTable table = MakeInitialGameTable;
