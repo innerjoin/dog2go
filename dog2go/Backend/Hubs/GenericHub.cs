@@ -42,7 +42,7 @@ namespace dog2go.Backend.Hubs
                         Task test = context.Groups.Add(Context.ConnectionId, tableId);
                         test.Wait();
                         context.Clients.Group(tableId)
-                            .broadcastSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name));
+                            .broadcastSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name), tableId);
                     }
                 }
             }

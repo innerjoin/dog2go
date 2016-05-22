@@ -2,8 +2,10 @@
 export class RoundService {
     private static instance: RoundService = null;
     public assignHandCardsCb: (cards: ICard[]) => any;
-    
+    private tableId;
+
     constructor(gameTableId: number) {
+        this.tableId = gameTableId;
         if (RoundService.instance) {
             // ReSharper disable once TsNotResolved
             throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance(_tableId) instead of new.");
@@ -22,7 +24,7 @@ export class RoundService {
 
     public static getInstance(tableId: number) {
         // Create new instance if callback is given
-        if (RoundService.instance === null) {
+        if (RoundService.instance === null || tableId !== RoundService.instance.tableId) {
             RoundService.instance = new RoundService(tableId);
         }
         return RoundService.instance;

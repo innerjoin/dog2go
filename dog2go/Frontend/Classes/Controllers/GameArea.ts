@@ -33,7 +33,8 @@ export class GameArea {
         this.gameTableId = tableId;
         this.game = new Phaser.Game(scaleFactor * 700, scaleFactor * 700, Phaser.AUTO, "gameContent", gameStates, true);
 
-        if (!isTesting) {
+        if (!isTesting) { //TODO: why isTesting????
+            //this.gameFieldService = new GameFieldService(tableId);
             this.gameFieldService = GameFieldService.getInstance(tableId);
             this.gameFieldService.createGameTableCb = this.buildFields.bind(this);
             this.gameFieldController = new GameFieldController(this.game, scaleFactor);

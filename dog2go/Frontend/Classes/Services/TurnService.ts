@@ -6,8 +6,10 @@ export class TurnService {
     public dropCardsCb: () => any;
     public sendMeeplePositionsCb: (meeples: IMeeple[]) => any;
     public returnMoveCb: () => any;
+    private tableId; 
 
     constructor(gameTableId: number) {
+        this.tableId = gameTableId;
         if (TurnService.instance) {
             // ReSharper disable once TsNotResolved
             throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance(_tableId) instead of new.");
@@ -49,7 +51,7 @@ export class TurnService {
 
     public static getInstance(tableId: number) {
         // Create new instance if callback is given
-        if (TurnService.instance === null) {
+        if (TurnService.instance === null || tableId !== TurnService.instance.tableId) {
             TurnService.instance = new TurnService(tableId);
         }
         return TurnService.instance;

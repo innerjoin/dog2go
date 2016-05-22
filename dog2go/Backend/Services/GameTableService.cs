@@ -9,20 +9,12 @@ namespace dog2go.Backend.Services
 {
     public class GameTableService
     {
-        public static ColorCode GetColorCodeForUser(string userName, object locker, IGameRepository games)
+        public static ColorCode GetColorCodeForUser(IGameRepository games, string userName, int tableId)
         {
-            GameTable actualGameTable = GetActualGameTable(locker, games, userName);
+            GameTable actualGameTable = GetTable(games, tableId);
             return
                 actualGameTable.PlayerFieldAreas.Find(area => area.Participation.Participant.Nickname == userName)
                     .ColorCode;
-        }
-
-        public static GameTable GetActualGameTable(object locker, IGameRepository games, string userName)
-        {
-            lock (locker)
-            {
-                return games.Get().Find(table => table.Participations.Find(participation => participation.Participant.Nickname == userName) != null);
-            }
         }
 
         public static GameTable GetTable(IGameRepository games, int gameId)

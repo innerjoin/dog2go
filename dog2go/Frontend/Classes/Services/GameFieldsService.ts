@@ -3,9 +3,10 @@ export class GameFieldService {
     private static instance: GameFieldService = null;
     public assignHandCardsCb: (cards: ICard[]) => any;
     public createGameTableCb: (gameTable: IGameTable) => any;
-
+    public tableId: number;
     constructor(tableId: number) {
-        console.log("GameFieldService: ", tableId);
+        this.tableId = tableId;
+        //alert("GameFieldService: " + tableId);
         if (GameFieldService.instance) {
             // ReSharper disable once TsNotResolved
             throw new Error("Error: GameFieldService instantiation failed. Singleton module! Use .getInstance() instead of new.");
@@ -26,6 +27,7 @@ export class GameFieldService {
             // will autoconvert string to int
             // ReSharper disable once CoercedEqualsUsing
             if (_tableId == tableId) {
+                console.log("our this context: ", this);
                 this.createGameTableCb(gameTable);
                 this.assignHandCardsCb(cards);
             }
@@ -35,7 +37,7 @@ export class GameFieldService {
 
     public static getInstance(tableId: number) {
         // Create new instance if callback is given
-        if (GameFieldService.instance === null) {
+        if (GameFieldService.instance === null || GameFieldService.instance.tableId !== tableId) {
             new GameFieldService(tableId);
         }
         return GameFieldService.instance;
