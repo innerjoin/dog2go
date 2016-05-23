@@ -10,6 +10,7 @@ namespace dog2go.Backend.Model
     public class PlayerFieldArea
     {
         private const int NumberOfMeeple = 4;
+        private const int NumberOfEndFields = 4;
         private const int NumberOfFieldsBeforeStart = 4;
         private const int NumberOfFieldsAfterStart = 11;
 
@@ -83,7 +84,7 @@ namespace dog2go.Backend.Model
             List<MoveDestinationField> fields = new List<MoveDestinationField>();
             StandardField standardField = new StandardField(++fieldId) { Previous = null };
 
-            for (var count = 1; count < NumberOfFieldsBeforeStart; count++)
+            for (int count = 1; count < NumberOfFieldsBeforeStart; count++)
             {
                 StandardField tempField = new StandardField(++fieldId) { Previous = standardField };
                 standardField.Next = tempField;
@@ -91,7 +92,7 @@ namespace dog2go.Backend.Model
                 standardField = tempField;
             }
 
-            StartField startField = new StartField(++fieldId, this.ColorCode);
+            StartField startField = new StartField(++fieldId, ColorCode);
             standardField.Next = startField;
             startField.Previous = standardField;
 
@@ -99,20 +100,19 @@ namespace dog2go.Backend.Model
 
             EndField endField = new EndField(fieldId + NumberOfFieldsAfterStart + 1) { Previous = startField };
             startField.EndFieldEntry = endField;
-            
 
-            StandardField standardFieldAfter = new StandardField(fieldId) { Previous = startField };
+            StandardField standardFieldAfter = new StandardField(++fieldId) { Previous = startField };
             startField.Next = standardFieldAfter;
             fields.Add(startField);
             StartField = startField;
 
-            for (int count = 1; count <= NumberOfFieldsAfterStart; count++)
+            for (int count = 1; count < NumberOfFieldsAfterStart; count++)
             {
                 StandardField tempField = new StandardField(++fieldId) { Previous = standardFieldAfter };
-                if (count == 1)
-                {
-                    StartField.Next = tempField;
-                }
+                //if (count == 1)
+                //{
+                //    StartField.Next = tempField;
+                //}
                 standardFieldAfter.Next = tempField;
                 fields.Add(standardFieldAfter);
                 standardFieldAfter = tempField;
@@ -121,7 +121,7 @@ namespace dog2go.Backend.Model
             fields.Add(standardFieldAfter);
 
             ++fieldId;
-            for (int count = 1; count < NumberOfFieldsBeforeStart; count++)
+            for (int count = 1; count < NumberOfEndFields; count++)
             {
                 EndField tempEndField = new EndField(++fieldId) { Previous = endField };
                 endField.Next = tempEndField;
