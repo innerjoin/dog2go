@@ -87,9 +87,9 @@ namespace dog2go.Backend.Services
                                                     !Validation.CanMoveToEndFields(meeple.CurrentPosition, value, meeple.ColorCode))));
         }
 
-        private void SetCardValid(List<HandCard> cards, bool valid)
+        private static void SetCardValid(List<HandCard> cards, bool valid)
         {
-            foreach (var card in cards)
+            foreach (HandCard card in cards)
             {
                 card.IsValid = valid;
             }

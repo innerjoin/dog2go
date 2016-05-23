@@ -36,6 +36,7 @@ namespace dog2go.Backend.Services
         public static bool ProveValueCard(Meeple moveMeeple, MoveDestinationField destinationField, int value)
         {
             MoveDestinationField currentPos = moveMeeple.CurrentPosition;
+            if (destinationField == null) return false;
             if (HasBlockedField(currentPos, value))
                 return false;
             if (destinationField.FieldType.Contains("EndField"))
@@ -112,14 +113,11 @@ namespace dog2go.Backend.Services
 
             if (moveDestinationField == null)
             {
-                var playerFieldAreaKennel = actualTable.PlayerFieldAreas.Find(area => area.KennelFields.Find(field =>
+                PlayerFieldArea playerFieldAreaKennel = actualTable.PlayerFieldAreas.Find(area => area.KennelFields.Find(field =>
                 {
-                    if (field.Identifier == fieldId)
-                    {
-                        moveDestinationField = field;
-                        return true;
-                    }
-                    return false;
+                    if (field.Identifier != fieldId) return false;
+                    moveDestinationField = field;
+                    return true;
                 }) != null);
             }
             return moveDestinationField;
@@ -133,7 +131,7 @@ namespace dog2go.Backend.Services
 
             if (movedMeeple == null || cardMove == null)
                 return false;
-            foreach (var attribute in cardMove.Card.Attributes)
+            foreach (CardAttribute attribute in cardMove.Card.Attributes)
             {
                 switch (attribute.Attribute)
                 {
@@ -164,24 +162,52 @@ namespace dog2go.Backend.Services
             if (HasBlockedField(startCountField, fieldDistanceCount))
                 return false;
             int fieldCount = fieldDistanceCount;
-            for (int i = 0; i <= fieldDistanceCount; i++) {
-                if (startCountField == null)
-                    return false;
-                startCountField = startCountField.Next;
-                fieldCount--;
-                StartField startField = startCountField as StartField;
-                if (startField == null)
-                    continue;
-                EndField endField = startField.EndFieldEntry;
-                fieldCount--;
-                for (int j = fieldCount - i; j >= 0; j--)
+            if (fieldDistanceCount > 0)
+            {
+                for (int i = 0; i <= fieldDistanceCount; i++)
                 {
-                    endField = (EndField)endField.Next;
-                    if (endField == null)
+                    if (startCountField == null)
                         return false;
+                    startCountField = startCountField.Next;
+                    fieldCount--;
+                    StartField startField = startCountField as StartField;
+                    if (startField == null)
+                        continue;
+                    EndField endField = startField.EndFieldEntry;
+                    fieldCount--;
+                    for (int j = fieldCount; j >= 0; j--)
+                    {
+                        endField = (EndField)endField.Next;
+                        if (endField == null)
+                            return false;
+                    }
+                    return startField.ColorCode == meepleColorCode;
                 }
-                return startField.ColorCode == meepleColorCode;
             }
+
+            else
+            {
+                for (int i = 0; i > fieldDistanceCount; i--)
+                {
+                    if (startCountField == null)
+                        return false;
+                    startCountField = startCountField.Previous;
+                    fieldCount++;
+                    StartField startField = startCountField as StartField;
+                    if (startField == null)
+                        continue;
+                    EndField endField = startField.EndFieldEntry;
+                    fieldCount++;
+                    for (int j = fieldCount; j < 0; j++)
+                    {
+                        endField = (EndField)endField.Next;
+                        if (endField == null)
+                            return false;
+                    }
+                    return startField.ColorCode == meepleColorCode;
+                }
+            }
+            
             return false;
         }
 
@@ -194,7 +220,7 @@ namespace dog2go.Backend.Services
                     startCountField = startCountField.Previous;
                     fieldCount++;
                 }
-                for (var i = 0; i > fieldCount; i--)
+                for (int i = 0; i > fieldCount; i--)
                 {
                     if (startCountField == null)
                         return false;
@@ -224,7 +250,7 @@ namespace dog2go.Backend.Services
                     fieldCount--;
                 }
                 
-                for (var i = 0; i <= fieldCount; i++)
+                for (int i = 0; i <= fieldCount; i++)
                 {
                     if (startCountField == null)
                         return false;
