@@ -97,11 +97,11 @@ namespace dog2go.Backend.Model
 
             fields.Add(standardField);
 
-            EndField endField = new EndField(fieldId + NumberOfFieldsAfterStart + 1) { Previous = startField };
+            EndField endField = new EndField(fieldId + NumberOfFieldsAfterStart + 2) { Previous = startField };
             startField.EndFieldEntry = endField;
             
 
-            StandardField standardFieldAfter = new StandardField(fieldId) { Previous = startField };
+            StandardField standardFieldAfter = new StandardField(++fieldId) { Previous = startField };
             startField.Next = standardFieldAfter;
             fields.Add(startField);
             StartField = startField;

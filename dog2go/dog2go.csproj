@@ -256,7 +256,6 @@
     <Compile Include="Tests\Backend\NunitGameServicesTest.cs" />
     <Compile Include="Tests\Backend\NunitValidationTest.cs" />
     <Compile Include="Views\Extensions\RequireJsHelpers.cs" />
-    <Compile Include="Tests\Backend\NunitGameHubTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backend\Constants\GlobalDefinitions.cs" />

@@ -191,7 +191,7 @@ namespace dog2go.Tests.Backend
             PlayerFieldArea startArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             PlayerFieldArea targeArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Yellow);
             StandardField startField = startArea.Fields[8] as StandardField;
-            StandardField endField = targeArea.Fields[5] as StandardField;
+            StartField endField = targeArea.Fields[4] as StartField;
             Meeple meeple = startArea.Meeples[0];
             meeple.CurrentPosition = startField;
             MeepleMove meepleMove = new MeepleMove()
@@ -568,7 +568,7 @@ namespace dog2go.Tests.Backend
             startField.CurrentMeeple = meeple2;
             StandardField standardField = (StandardField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields.Find(field => field.FieldType.Contains("StandardField"));
             standardField.CurrentMeeple = meeple;
-            Assert.AreEqual(true, Validation.ProveValueCard(meeple, (StandardField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[5], 4));
+            Assert.AreEqual(true, Validation.ProveValueCard(meeple, (StartField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[4], 4));
         }
 
         [Test]
