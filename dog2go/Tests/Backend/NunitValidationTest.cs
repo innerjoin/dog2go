@@ -582,7 +582,7 @@ namespace dog2go.Tests.Backend
             StandardField standardField =
                 (StandardField) table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[2];
             standardField.CurrentMeeple = meeple;
-            Assert.AreEqual(true, Validation.ProveValueCard(meeple, (EndField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields.Find(field => field.FieldType.Contains("EndField")), 3));
+            Assert.AreEqual(true, Validation.ProveValueCard(meeple, (EndField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields.Find(field => field.FieldType.Contains("EndField")), 4));
         }
 
         [Test]

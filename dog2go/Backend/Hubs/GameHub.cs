@@ -93,9 +93,11 @@ namespace dog2go.Backend.Hubs
                 {
                     Task task =  context.Clients.Client(cId).broadcastSystemMessage(ServerMessages.NofityActualPlayer, actualGameTable.Identifier);
                     task.Wait();
-                    Clients.Client(cId).notifyActualPlayer(validCards, GameTableService.GetColorCodeForUser(Games, user.Nickname, tableId), tableId);
+                    ColorCode colorCode = GameTableService.GetColorCodeForUser(Games, GameTableService.AreAllEndFieldsUsedForColorCode(actualGameTable,
+                        GameTableService.GetColorCodeForUser(Games, user.Nickname, tableId)) ? 
+                        ParticipationService.GetPartner(user, actualGameTable.Participations).Nickname : user.Nickname, tableId);
+                    Clients.Client(cId).notifyActualPlayer(validCards,colorCode , tableId);
                 });
-
             }
             else
             {
@@ -153,6 +155,7 @@ namespace dog2go.Backend.Hubs
             if (Validation.ValidateMove(meepleMove, cardMove))
             {
                 GameTableService.UpdateMeeplePosition(meepleMove, actualGameTable, cardMove.SelectedAttribute != null);
+                Thread.Sleep(200);
                 List<Meeple> allMeeples = new List<Meeple>();
                 foreach (PlayerFieldArea area in actualGameTable.PlayerFieldAreas)
                 {
@@ -196,7 +199,10 @@ namespace dog2go.Backend.Hubs
                 {
                     Task chatTask =  context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer, actualGameTable.Identifier);
                     chatTask.Wait();
-                    Clients.Client(id).notifyActualPlayer(validHandCards, GameTableService.GetColorCodeForUser(Games, nextUser.Nickname, actualGameTable.Identifier), actualGameTable.Identifier);
+                    ColorCode colorCode = GameTableService.GetColorCodeForUser(Games, GameTableService.AreAllEndFieldsUsedForColorCode(actualGameTable,
+                        GameTableService.GetColorCodeForUser(Games, nextUser.Nickname, actualGameTable.Identifier)) ?
+                        ParticipationService.GetPartner(nextUser, actualGameTable.Participations).Nickname : nextUser.Nickname, actualGameTable.Identifier);
+                    Clients.Client(id).notifyActualPlayer(validHandCards, colorCode, actualGameTable.Identifier);
                 }    
                 else
                 {
