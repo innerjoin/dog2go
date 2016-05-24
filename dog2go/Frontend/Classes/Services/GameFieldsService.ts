@@ -3,6 +3,7 @@ export class GameFieldService {
     private static instance: GameFieldService = null;
     public assignHandCardsCb: (cards: ICard[]) => any;
     public createGameTableCb: (gameTable: IGameTable) => any;
+    public notifyAllGameIsFinishedCb: (text: string) => any;
     public tableId: number;
     constructor(tableId: number) {
         this.tableId = tableId;
@@ -27,6 +28,16 @@ export class GameFieldService {
                 console.log("our this context: ", this);
                 this.createGameTableCb(gameTable);
                 this.assignHandCardsCb(cards);
+            }
+        }
+
+        gameHub.client.notifyAllGameIsFinished = (text, _tableId) =>{
+            console.log("prove game is finished! ", this);
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (_tableId == tableId) {
+                console.log("game is finished! ", this);
+                this.notifyAllGameIsFinishedCb(text);
             }
         }
         GameFieldService.instance = this;

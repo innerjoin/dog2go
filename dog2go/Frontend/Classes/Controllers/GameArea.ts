@@ -36,6 +36,7 @@ export class GameArea {
         if (!isTesting) { 
             this.gameFieldService = GameFieldService.getInstance(tableId);
             this.gameFieldService.createGameTableCb = this.buildFields.bind(this);
+            this.gameFieldService.notifyAllGameIsFinishedCb = this.notifyAllGameIsFinished.bind(this);
             this.gameFieldController = new GameFieldController(this.game, scaleFactor);
             this.meepleController = new MeepleController(tableId, this.game, this.gameFieldController, scaleFactor);
             this.cardsController = new CardsController(tableId, this.meepleController);
@@ -72,6 +73,15 @@ export class GameArea {
         $(".pageOverlayContent > .loading").css("display", "none");
         $(".pageOverlayContent > .switchOrientation").css("display", "block");
         return;
+    }
+
+    public notifyAllGameIsFinished(text: string) {
+        var finishedField = $(".pageOverlayContent > .finished");
+        $(".pageOverlayContent > .switchOrientation").css("display", "none");
+        $("#gamePageOverlay").css("display", "block");
+
+        finishedField.css("display", "block");
+        $(".pageOverlayContent > .finished > h1").text(text);
     }
 
     public enterIncorrectOrientation() {

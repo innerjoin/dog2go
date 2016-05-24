@@ -237,6 +237,10 @@ namespace dog2go.Backend.Services
                     fieldCounter--;
                     if (startCountField == null)
                         return fieldCounter == i;
+                    if (startCountField.FieldType.Contains("EndField"))
+                    {
+                        return startCountField.CurrentMeeple != null;
+                    }
                 }
 
                 StartField startField = startCountField as StartField;

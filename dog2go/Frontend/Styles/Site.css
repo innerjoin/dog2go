@@ -46,6 +46,10 @@ html, body {
             display: block;
         }
 
+        #gamePageOverlay > .pageOverlayContent > .finished {
+            display: none;
+        }
+
         #gamePageOverlay > .pageOverlayContent > .switchOrientation {
             display: none;
         }

@@ -114,7 +114,12 @@ namespace dog2go.Backend.Services
                                                                         Where(actualMeeple => actualMeeple != null))
             {
                 if (actualMeeple.CurrentPosition.FieldType.Contains("StartField"))
+                {
                     actualMeeple.IsStartFieldBlocked = false;
+                    if (saveField != null)
+                        saveField.CurrentMeeple.IsStartFieldBlocked = false;
+                }
+                    
                 actualMeeple.CurrentPosition = saveField;
                 actualMeeple.CurrentFieldId = saveField?.Identifier ?? -1;
             }

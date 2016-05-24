@@ -155,7 +155,6 @@ namespace dog2go.Backend.Hubs
             if (Validation.ValidateMove(meepleMove, cardMove))
             {
                 GameTableService.UpdateMeeplePosition(meepleMove, actualGameTable, cardMove.SelectedAttribute != null);
-                Thread.Sleep(200);
                 List<Meeple> allMeeples = new List<Meeple>();
                 foreach (PlayerFieldArea area in actualGameTable.PlayerFieldAreas)
                 {
@@ -164,7 +163,14 @@ namespace dog2go.Backend.Hubs
                 actualGameTable.CardServiceData.RemoveCardFromUserHand(actualGameTable, GameTableService.GetActualUser(Context.User.Identity.Name), cardMove.Card);
                 Task sendPosition = Clients.All.sendMeeplePositions(allMeeples, tableId);
                 sendPosition.Wait();
-                NotifyNextPlayer("", actualGameTable); // TODO why empty?????
+                if (GameServices.IsGameFinished(actualGameTable))
+                {
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                    context.Clients.Group(actualGameTable.Identifier.ToString()).notifyAllGameIsFinished(actualGameTable.Identifier);
+                }
+                    
+                else
+                    NotifyNextPlayer("", actualGameTable); // TODO why empty?????
             }
             else
             {
