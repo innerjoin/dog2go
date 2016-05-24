@@ -76,6 +76,12 @@ namespace dog2go.Backend.Services
             SetSecondMeeplePosition(gameTable, saveField, moveDestinationMeeple);
         }
 
+        public static bool AreAllEndFieldsUsedForColorCode(GameTable actualTable, ColorCode colorCode)
+        {
+            PlayerFieldArea actualArea = actualTable.PlayerFieldAreas.Find(area => area.ColorCode == colorCode);
+            return actualArea.Fields.FindAll(field => field.FieldType.Contains("EndField") && field.CurrentMeeple != null).Count == 4;
+        } 
+
         private static Meeple SetBackToKennelField(GameTable actualGameTable, Meeple moveDestinationMeeple)
         {
             if (moveDestinationMeeple == null) return null;
@@ -84,6 +90,7 @@ namespace dog2go.Backend.Services
             {
                 moveDestinationMeeple.CurrentFieldId = kennelField.Identifier;
                 moveDestinationMeeple.CurrentPosition = kennelField;
+                kennelField.CurrentMeeple = moveDestinationMeeple;
             }
 
             return moveDestinationMeeple;

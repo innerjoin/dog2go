@@ -8,7 +8,7 @@ namespace dog2go.Backend.Services
 {
     public class GameServices
     {
-        public bool IsGameFinished(GameTable gameTable)
+        public static bool IsGameFinished(GameTable gameTable)
         {
             if (gameTable == null)
                 throw new ArgumentNullException(nameof(gameTable));
@@ -19,11 +19,11 @@ namespace dog2go.Backend.Services
                         let partnerFieldArea = playerFieldAreasList.Find(area => area.Participation.Participant.Identifier.Equals(partnerIdentifier))
                         let participantEndFields = participantFieldArea.EndFields.FindAll(field => field.CurrentMeeple != null)
                         let partnerEndFields = partnerFieldArea.EndFields.FindAll(field => field.CurrentMeeple != null)
-                    where IsEndFieldsFull(partnerEndFields) && IsEndFieldsFull(participantEndFields)
+                    where AreEndFieldsFull(partnerEndFields) && AreEndFieldsFull(participantEndFields)
                     select participantEndFields).Any();
         }
 
-        private static bool IsEndFieldsFull(IReadOnlyCollection<EndField> endFieldList)
+        private static bool AreEndFieldsFull(IReadOnlyCollection<EndField> endFieldList)
         {
             return endFieldList.Count == 4;
         }

@@ -81,10 +81,11 @@ namespace dog2go.Backend.Services
             if (myMeeples == null)
                 return false;
             List<Meeple> myMovableMeeples = myMeeples.FindAll(meeple => Validation.IsMovableField(meeple.CurrentPosition));
+
             return myMovableMeeples.Any(meeple => (!Validation.HasBlockedField(meeple.CurrentPosition, value) &&
-                                                    Validation.CanMoveToEndFields(meeple.CurrentPosition, value, meeple.ColorCode)||
+                                                    Validation.CanMoveToEndFields(meeple.CurrentPosition, value, meeple.ColorCode))||
                                                     (!Validation.HasBlockedField(meeple.CurrentPosition, value) &&
-                                                    !Validation.CanMoveToEndFields(meeple.CurrentPosition, value, meeple.ColorCode))));
+                                                    !Validation.CanMoveToEndFields(meeple.CurrentPosition, value, meeple.ColorCode) && !meeple.CurrentPosition.FieldType.Contains("EndField")));
         }
 
         private static void SetCardValid(List<HandCard> cards, bool valid)
