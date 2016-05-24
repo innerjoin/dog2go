@@ -1,8 +1,8 @@
 ﻿import _phaser = require("phaser");
-//import Area = require("../../../Frontend/Classes/Controllers/GameArea");
-import gfc = require("../../../Frontend/Classes/Controllers/GameFieldsController");
+//import Area = require("../../../Frontend/Implementation/Controllers/GameArea");
+import gfc = require("../../../Frontend/Implementation/Controllers/GameFieldsController");
 import GameFieldController = gfc.GameFieldController;
-import Coordinates = require("../../../Frontend/Classes/Controllers/FieldCoordinates");
+import Coordinates = require("../../../Frontend/Implementation/Controllers/FieldCoordinates");
 import FieldCoordinatesData = Coordinates.FieldCoordinatesData;
 
 describe("GameFieldController - ", () => {

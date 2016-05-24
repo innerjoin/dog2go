@@ -26,9 +26,7 @@
         <div id="cardContainer"></div>
         <div id="playerInformation">
             <span id="playerInformationMeepleColor"><img src="~/Frontend/Images/@Model.ColorMeeplePath"/></span>
-            <!--<span id="playerInformationMeepleColor"><img src="~/Frontend/Images/meeple_red.png" /></span>-->
-
-            <span id="playerInformationName">@Model.DisplayUser.Nickname</span>
+            <span id="systemMessage">It's your turn</span>
             @Html.HiddenFor(x => x.TableIdentifier, new {id = "gameIdentifier"})
         </div>
     </div>
@@ -36,5 +34,5 @@
 
 @section scripts
 {
-    @Html.InitPageMainModule("Classes/GameStartupConfig")
+    @Html.InitPageMainModule("Implementation/GameStartupConfig")
 }

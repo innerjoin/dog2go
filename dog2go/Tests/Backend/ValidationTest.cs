@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace dog2go.Tests.Backend
 {
     [TestFixture]
-    public class NunitValidationTest
+    public class ValidationTest
     {
         private readonly GameHub _hub = new GameHub(GameRepository.Instance);
         private const int TableId = 0;
@@ -190,8 +190,8 @@ namespace dog2go.Tests.Backend
             GameTable gameTable = _hub.GetGeneratedGameTable(TableId);
             PlayerFieldArea startArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Green);
             PlayerFieldArea targeArea = gameTable.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Yellow);
-            StandardField startField = startArea.Fields[8] as StandardField;
-            StartField endField = targeArea.Fields[4] as StartField;
+            StandardField startField = startArea.Fields[14] as StandardField;
+            StandardField endField = targeArea.Fields[2] as StandardField;
             Meeple meeple = startArea.Meeples[0];
             meeple.CurrentPosition = startField;
             MeepleMove meepleMove = new MeepleMove()
@@ -201,7 +201,7 @@ namespace dog2go.Tests.Backend
             };
             CardMove cardMove = new CardMove()
             {
-                Card = _card13,
+                Card = _card4,
                 SelectedAttribute = CardAttributeThirteenFields
             };
             Assert.AreEqual(true, Validation.ValidateMove(meepleMove, cardMove));
@@ -540,7 +540,7 @@ namespace dog2go.Tests.Backend
             StartField startField = (StartField)table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields.Find(field => field.FieldType.Contains("StartField"));
             startField.CurrentMeeple = meeple2;
             StandardField standardField =
-                (StandardField) table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[7];
+                (StandardField) table.PlayerFieldAreas.Find(area => area.ColorCode == ColorCode.Blue).Fields[6];
             standardField.CurrentMeeple = meeple;
             Assert.AreEqual(true, Validation.ProveValueCard(meeple2, standardField, 2));
         }

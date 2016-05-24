@@ -1,6 +1,6 @@
 ﻿
 import $ = require("jquery");
-import rs = require("../../../Frontend/Classes/Services/RoundService");
+import rs = require("../../../Frontend/Implementation/Services/RoundService");
 import RoundService = rs.RoundService;
 
 describe("RoundService - ", () => {
