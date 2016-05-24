@@ -1,6 +1,6 @@
 ﻿
 import $ = require("jquery");
-import gfs = require("../../../Frontend/Classes/Services/GameFieldsService");
+import gfs = require("../../../Frontend/Implementation/Services/GameFieldsService");
 import GameFieldService = gfs.GameFieldService;
 
 describe("GameFieldService - ", () => {

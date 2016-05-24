@@ -18,7 +18,7 @@
     { "Path": "Frontend/Library/Phaser/pixi.comments.d.ts", "IncludeInTestHarness": false },
     { "Path": "Frontend/Library/requirejs/require.d.ts", "IncludeInTestHarness": false },
     { "Path": "Frontend/Library/jasmine/jasmine.d.ts", "IncludeInTestHarness": false },
-    { "Path": "Frontend/Classes", "IncludeInTestHarness": false },
+    { "Path": "Frontend/Implementation", "IncludeInTestHarness": false },
     { "Path": "Frontend/Library", "IncludeInTestHarness": false }
   ],
   "Tests": [
