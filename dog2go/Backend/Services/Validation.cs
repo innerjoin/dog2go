@@ -1,4 +1,5 @@
-﻿using dog2go.Backend.Model;
+﻿using System;
+using dog2go.Backend.Model;
 
 namespace dog2go.Backend.Services
 {
@@ -157,143 +158,108 @@ namespace dog2go.Backend.Services
             return test > 0;
         }
 
-        public static bool CanMoveToEndFields(MoveDestinationField startCountField, int fieldDistanceCount, ColorCode meepleColorCode)
+        private static bool HandleEndFieldsFromStartField(StartField startField, int fieldCount)
         {
-            if (HasBlockedField(startCountField, fieldDistanceCount))
+            if (startField == null)
                 return false;
-            int fieldCount = fieldDistanceCount;
-            if (fieldDistanceCount > 0)
+            fieldCount = Math.Abs(fieldCount);
+            EndField endField = startField.EndFieldEntry;
+            fieldCount--;
+            for (int j = fieldCount; j > 0; j--)
             {
-                for (int i = 0; i <= fieldDistanceCount; i++)
-                {
-                    if (startCountField == null)
-                        return false;
-                    startCountField = startCountField.Next;
-                    fieldCount--;
-                    StartField startField = startCountField as StartField;
-                    if (startField == null)
-                        continue;
-                    EndField endField = startField.EndFieldEntry;
-                    fieldCount--;
-                    for (int j = fieldCount; j >= 0; j--)
-                    {
-                        endField = (EndField)endField.Next;
-                        if (endField == null)
-                            return false;
-                    }
-                    return startField.ColorCode == meepleColorCode;
-                }
+                endField = (EndField)endField.Next;
+                if (endField == null)
+                    return false;
             }
 
-            else
+            return true;
+        }
+
+        private static bool HandleEndFieldsFromEndField(EndField endField, int fieldCount)
+        {
+            if (endField == null)
+                return false;
+            fieldCount = Math.Abs(fieldCount);
+            EndField proveEndField = (EndField)endField.Next;
+            fieldCount--;
+
+            for (int j = fieldCount; j > 0; j--)
             {
-                for (int i = 0; i > fieldDistanceCount; i--)
-                {
-                    if (startCountField == null)
-                        return false;
-                    startCountField = startCountField.Previous;
-                    fieldCount++;
-                    StartField startField = startCountField as StartField;
-                    if (startField == null)
-                        continue;
-                    EndField endField = startField.EndFieldEntry;
-                    fieldCount++;
-                    for (int j = fieldCount; j < 0; j++)
-                    {
-                        endField = (EndField)endField.Next;
-                        if (endField == null)
-                            return false;
-                    }
-                    return startField.ColorCode == meepleColorCode;
-                }
+                if (proveEndField == null)
+                    return false;
+                proveEndField = (EndField)proveEndField.Next;
             }
-            
+            return true;
+        }
+
+        public static bool CanMoveToEndFields(MoveDestinationField startCountField, int fieldDistanceCount, ColorCode meepleColorCode)
+        {
+            if (startCountField.FieldType.Contains("EndField"))
+                return HandleEndFieldsFromEndField((EndField)startCountField, fieldDistanceCount);
+            if (HasBlockedField(startCountField, fieldDistanceCount))
+                return false;
+            if (startCountField.FieldType.Contains("StartField") &&
+                   !startCountField.CurrentMeeple.IsStartFieldBlocked)
+                return false;
+            int fieldCount = Math.Abs(fieldDistanceCount);
+
+            for (int i = 0; i < fieldCount; i++)
+            {
+                if (startCountField == null)
+                    return false;
+                startCountField = fieldDistanceCount > 0 ? startCountField.Next : startCountField.Previous;
+
+                StartField startField = startCountField as StartField;
+                if (startField == null)
+                    continue;
+                if(HandleEndFieldsFromStartField(startField, fieldCount - i - 1))
+                    return startField.ColorCode == meepleColorCode;
+                return false;
+            }
             return false;
         }
 
-        public static bool HasBlockedField(MoveDestinationField startCountField, int fieldCount)
+        public static bool HasBlockedField(MoveDestinationField startCountField, int countFields)
         {
-            if (fieldCount < 0)
-            {
-                if (startCountField.FieldType.Contains("StartField"))
-                {
-                    startCountField = startCountField.Previous;
-                    fieldCount++;
-                }
-                for (int i = 0; i > fieldCount; i--)
-                {
-                    if (startCountField == null)
-                        return false;
-                    while (startCountField.FieldType.Contains("EndField"))
-                    {
-                        startCountField = startCountField.Previous;
-                        if (startCountField == null)
-                            return fieldCount == i;
-                    }
-                        
-                    StartField startField = startCountField as StartField;
-                    if (startField != null)
-                    {
-                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
-                    }
-
-                    startCountField = startCountField.Previous;
-                }
+            if (startCountField == null)
+                return true;
+            if (startCountField.FieldType.Contains("StartField"))
                 return false;
-            }
-
-            else
+            int fieldCounter = Math.Abs(countFields);
+            
+            for (int i = 0; i < fieldCounter; i++)
             {
-                if (startCountField.FieldType.Contains("StartField"))
+                if (startCountField == null)
+                    return false;
+                while (startCountField.FieldType.Contains("EndField"))
                 {
-                    startCountField = startCountField.Next;
-                    fieldCount--;
-                }
-                
-                for (int i = 0; i <= fieldCount; i++)
-                {
+                    startCountField = countFields > 0 ? startCountField.Next : startCountField.Previous;
+                    fieldCounter--;
                     if (startCountField == null)
-                        return false;
-
-                    while (startCountField.FieldType.Contains("EndField"))
-                    {
-                        startCountField = startCountField.Next;
-                        if (startCountField == null)
-                            return fieldCount == i;
-                    }
-                        
-                    StartField startField = startCountField as StartField;
-                    if (startField != null)
-                    {
-                        return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
-                    }
-                    startCountField = startCountField.Next;
+                        return fieldCounter == i;
                 }
-                return false;
+
+                StartField startField = startCountField as StartField;
+                if (startField != null)
+                {
+                    return startField.CurrentMeeple != null && startField.CurrentMeeple.IsStartFieldBlocked;
+                }
+
+                startCountField = countFields > 0 ? startCountField.Next : startCountField.Previous;
             }
+            return false;
         }
 
         public static MoveDestinationField GetNextField(MoveDestinationField currentPos, int value)
         {
             if (currentPos.FieldType.Contains("KennelField"))
                 return null;
-            if (value > 0)
+            int fieldCounter = Math.Abs(value);
+            while (fieldCounter > 0)
             {
-                while (value > 0)
-                {
-                    currentPos = currentPos.Next;
-                    if (!IsSimpleInvalidChangeField(currentPos))
-                        --value;
-                }
-            }
-            else
-            {
-                while (value < 0)
-                {
-                    currentPos = currentPos.Previous;
-                    if (!IsSimpleInvalidChangeField(currentPos))
-                        value++;
-                }
+                currentPos = value > 0 ? currentPos.Next : currentPos.Previous;
+                if (!IsSimpleInvalidChangeField(currentPos))
+                    --fieldCounter;
             }
             return currentPos;
         }

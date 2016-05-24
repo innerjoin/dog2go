@@ -74,7 +74,7 @@ namespace dog2go.Tests.Backend
                 }
             }
 
-            Assert.AreEqual(true, _gameServices.IsGameFinished(gameTable));
+            Assert.AreEqual(true, GameServices.IsGameFinished(gameTable));
         }
 
 
@@ -97,7 +97,7 @@ namespace dog2go.Tests.Backend
                     }
                 }
             }
-           Assert.AreEqual(true, _gameServices.IsGameFinished(gameTable));
+           Assert.AreEqual(true, GameServices.IsGameFinished(gameTable));
         }
 
 
@@ -121,14 +121,14 @@ namespace dog2go.Tests.Backend
                     }
                 }
             }
-            Assert.AreEqual(false, _gameServices.IsGameFinished(gameTable));
+            Assert.AreEqual(false, GameServices.IsGameFinished(gameTable));
         }
 
         [Test]
         public void TestIsGameFinishedNegativeNobodyFinished()
         {
             GameTable gameTable = MakeInitialGameTable;
-            Assert.AreEqual(false, _gameServices.IsGameFinished(gameTable));
+            Assert.AreEqual(false, GameServices.IsGameFinished(gameTable));
         }
 
 
