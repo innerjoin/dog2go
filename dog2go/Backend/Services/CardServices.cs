@@ -100,11 +100,14 @@ namespace dog2go.Backend.Services
                 return null;
             PlayerFieldArea actualArea = actualGameTable.PlayerFieldAreas.Find(
                 area => area.Participation.Participant.Identifier == actualUser.Identifier);
-            List<Meeple> myMeeples = actualArea.Meeples;
+            List<Meeple> myMeeples = actualArea.Meeples.Where(x => !x.FinalPositionReached).ToList();
 
             ProveCardsCount++;
 
-            List<HandCard> validCards =  (from card in actualHandCards
+            if (myMeeples.Count == 0)
+                return null;
+
+            List<HandCard> validCards = (from card in actualHandCards
                 let validAttribute = card.Attributes.Find(attribute =>
                 {
                     if (attribute.Attribute == CardFeature.LeaveKennel)

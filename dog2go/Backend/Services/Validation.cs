@@ -1,4 +1,6 @@
-﻿using dog2go.Backend.Model;
+﻿using System.Linq;
+using dog2go.Backend.Model;
+using dog2go.Backend.Repos;
 
 namespace dog2go.Backend.Services
 {
@@ -175,7 +177,7 @@ namespace dog2go.Backend.Services
                         continue;
                     EndField endField = startField.EndFieldEntry;
                     fieldCount--;
-                    for (int j = fieldCount; j >= 0; j--)
+                    for (int j = fieldCount; j > 0; j--)
                     {
                         endField = (EndField)endField.Next;
                         if (endField == null)
@@ -204,11 +206,30 @@ namespace dog2go.Backend.Services
                         if (endField == null)
                             return false;
                     }
+                    
                     return startField.ColorCode == meepleColorCode;
                 }
             }
             
             return false;
+        }
+
+        public static bool IsLastFreeEndField(EndField endField)
+        {
+            bool isLast = true;
+            if (endField == null)
+                return false;
+            EndField next = (EndField)endField.Next;
+            while (next != null)
+            {
+                if (next.CurrentMeeple == null)
+                {
+                    isLast = false;
+                    //lastUnblocked = next;
+                }
+                next = (EndField)next.Next;
+            }
+            return isLast;
         }
 
         public static bool HasBlockedField(MoveDestinationField startCountField, int fieldCount)

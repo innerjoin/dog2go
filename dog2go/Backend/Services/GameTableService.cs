@@ -106,8 +106,14 @@ namespace dog2go.Backend.Services
                                                                         area.Meeples.Find(meeple => meeple.CurrentPosition.Identifier == meepleMove.Meeple.CurrentFieldId)).
                                                                         Where(actualMeeple => actualMeeple != null))
             {
-                if (actualMeeple.CurrentPosition.FieldType.Contains("StartField"))
+                if (actualMeeple.CurrentPosition.FieldType.Contains("StartField")) { 
                     actualMeeple.IsStartFieldBlocked = false;
+                }
+                else if (actualMeeple.CurrentPosition.FieldType.Contains("EndField") &&
+                    Validation.IsLastFreeEndField((EndField)actualMeeple.CurrentPosition))
+                {
+                    actualMeeple.FinalPositionReached = true;
+                }
                 actualMeeple.CurrentPosition = saveField;
                 actualMeeple.CurrentFieldId = saveField?.Identifier ?? -1;
             }
