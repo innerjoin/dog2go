@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace dog2go.Tests.Backend
 {
     [TestFixture]
-    public class NunitValidationTest
+    public class ValidationTest
     {
         private readonly GameHub _hub = new GameHub(GameRepository.Instance);
         private const int TableId = 0;

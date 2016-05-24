@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace dog2go.Tests.Backend
 {
     [TestFixture]
-    public class NunitGameServicesTest
+    public class GameServicesTest
     {
         private readonly GameHub _hub = new GameHub(GameRepository.Instance);
         private readonly GameServices _gameServices = new GameServices();
