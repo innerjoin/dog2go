@@ -357,26 +357,26 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\CardsController.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\GameFieldsController.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\MeepleController.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\GameStartupConfig.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\ChatController.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\FieldCoordinates.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\GameMaster.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Hubs\ChatHub.d.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Hubs\GameHub.d.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Hubs\Hub.d.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Model\ChatModel.d.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Model\ChatModel.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Model\GameModel.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Model\GameModel.d.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Model\TableModel.d.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Services\ChatService.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Controllers\GameArea.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Services\GameFieldsService.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Services\RoundService.ts" />
-    <TypeScriptCompile Include="Frontend\Classes\Services\TurnService.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Controllers\CardsController.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Controllers\GameFieldsController.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Controllers\MeepleController.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\GameStartupConfig.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Controllers\ChatController.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Controllers\FieldCoordinates.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Controllers\GameMaster.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Hubs\ChatHub.d.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Hubs\GameHub.d.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Hubs\Hub.d.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Model\ChatModel.d.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Model\ChatModel.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Model\GameModel.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Model\GameModel.d.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Model\TableModel.d.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Services\ChatService.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Controllers\GameArea.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Services\GameFieldsService.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Services\RoundService.ts" />
+    <TypeScriptCompile Include="Frontend\Implementation\Services\TurnService.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\p2.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\phaser.comments.d.ts" />
     <TypeScriptCompile Include="Frontend\Library\Phaser\pixi.comments.d.ts" />

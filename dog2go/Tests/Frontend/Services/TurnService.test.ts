@@ -1,6 +1,6 @@
 ﻿
 import $ = require("jquery");
-import ts = require("../../../Frontend/Classes/Services/TurnService");
+import ts = require("../../../Frontend/Implementation/Services/TurnService");
 import TurnService = ts.TurnService;
 
 describe("TurnService - ", () => {
