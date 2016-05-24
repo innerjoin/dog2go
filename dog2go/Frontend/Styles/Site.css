@@ -85,6 +85,9 @@ html, body {
     width: 100%;
     height: 9%;
     padding: 1vw;
+    border: 0.2vw solid gray;
+    background: slategray;
+    background: rgba(00, 00, 00, .7);
 }
 
 #playerInformationMeepleColor {
@@ -95,8 +98,10 @@ html, body {
         height: 100%;
     }
 
-#playerInformationName {
-    font-size: 3vw;
+#systemMessage {
+    font-size: 2vw;
+    color: white;
+    padding-left: 1vw;
 }
 
 #sideContainer > #cardContainer {

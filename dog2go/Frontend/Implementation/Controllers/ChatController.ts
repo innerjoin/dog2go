@@ -25,13 +25,12 @@ export class ChatController {
         const encodedMsg = $("<div />").text(message).html();
         // Add the message to the page. 
         $("#chatBox").append(`<li><strong>${encodedName}</strong>:&nbsp;&nbsp;${encodedMsg}</li>`);
-        $('#chatBox').animate({ scrollTop: $(document).height() }, "slow");     
+        $("#chatBox").animate({ scrollTop: $(document).height() }, "slow");     
     }
 
     public putSystemMessage(message: string) {
         const encodedMsg = $("<div />").text(message).html();
         // Add the message to the page. 
-        $("#chatBox").append(`<li><strong>${encodedMsg}</strong></li>`);
-        $('#chatBox').animate({ scrollTop: $(document).height() }, "slow");     
+        $("#systemMessage").text(encodedMsg);
     }
 }
