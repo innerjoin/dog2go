@@ -252,9 +252,10 @@
     <Compile Include="Models\ChooseTableViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tests\Backend\PlayerFieldAreaTest.cs" />
     <Compile Include="Tests\Backend\CardServicesTest.cs" />
-    <Compile Include="Tests\Backend\NunitGameServicesTest.cs" />
-    <Compile Include="Tests\Backend\NunitValidationTest.cs" />
+    <Compile Include="Tests\Backend\GameServicesTest.cs" />
+    <Compile Include="Tests\Backend\ValidationTest.cs" />
     <Compile Include="Views\Extensions\RequireJsHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
