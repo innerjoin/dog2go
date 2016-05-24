@@ -13,12 +13,10 @@
         public int CurrentFieldId;
 
         public bool IsStartFieldBlocked { get; set; }
-        public bool FinalPositionReached { get; set; }
 
         public Meeple(KennelField kennelField)
         {
             CurrentPosition = kennelField;
-            FinalPositionReached = false;
         }
         public Meeple(KennelField kennelField, ColorCode colorCode) : this(kennelField)
         {

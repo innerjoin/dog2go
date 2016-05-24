@@ -707,44 +707,7 @@ namespace dog2go.Tests.Backend
             startField.CurrentMeeple = meeple2;
             Assert.AreEqual(false, Validation.HasBlockedField(startField, -4));
         }
-        #endregion
-
-        [Test]
-        public void TestIsLastFreeEndField()
-        {
-            Meeple meeple = new Meeple(new KennelField(0));
-
-            EndField ef1 = new EndField(1);
-            EndField ef2 = new EndField(2);
-            EndField ef3 = new EndField(3);
-            EndField ef4 = new EndField(4);
-            ef1.Next = ef2;
-            ef2.Previous = ef1;
-            ef2.Next = ef3;
-            ef3.Previous = ef2;
-            ef3.Next = ef4;
-            ef4.Previous = ef3;
-            
-            // test for first meeple on end fields
-            Assert.AreEqual(false, Validation.IsLastFreeEndField(ef1));
-            Assert.AreEqual(false, Validation.IsLastFreeEndField(ef2));
-            Assert.AreEqual(false, Validation.IsLastFreeEndField(ef3));
-            Assert.AreEqual(true, Validation.IsLastFreeEndField(ef4));
-
-            // ef2 is blocked, but 3 and 4 are still free, so we are not finished yet
-            ef2.CurrentMeeple = meeple;
-            Assert.AreEqual(false, Validation.IsLastFreeEndField(ef1));
-
-            // ef3 is blocked, but 4 is still free, so we are not finished yet
-            ef3.CurrentMeeple = meeple;
-            Assert.AreEqual(false, Validation.IsLastFreeEndField(ef1));
-
-            // ef2 up to ef4 are all blocked, so we are finished
-            ef4.CurrentMeeple = meeple;
-            Assert.AreEqual(true, Validation.IsLastFreeEndField(ef1));
-
-            // null is a problem
-            Assert.AreEqual(false, Validation.IsLastFreeEndField(null));
-        }
+        #endregion 
+        
     }
 }
