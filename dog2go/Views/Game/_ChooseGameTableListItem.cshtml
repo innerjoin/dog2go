@@ -6,11 +6,13 @@
     <div class="gameTableItem form-horizontal">
         @Html.HiddenFor(x => x.Identifier)
         @Html.HiddenFor(x => x.Name)
-        <p class="gameTableName">@(Model.Name) - @(Model.Identifier)</p>
-        @if (Model.Participants != null)
-        {
-            <p>Participants: @(string.Join(" | ", Model.Participants))</p>
-        }
+        <div class="userInfo">
+            <p class="gameTableName">@(Model.Name) - @(Model.Identifier)</p>
+            @if (Model.Participants != null)
+            {
+                <p>Participants: @(string.Join(" | ", Model.Participants))</p>
+            }
+        </div>
+        <input type="submit" value="Join" class="joinTablebtn btn btn-default" />
     </div>
-    <input type="submit" value="Join" class="joinTablebtn btn btn-default" />
 }
