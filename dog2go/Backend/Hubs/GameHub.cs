@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -85,13 +86,13 @@ namespace dog2go.Backend.Hubs
             {
                 if (user.ConnectionIds.Count == 1)
                 {
-                    Task task = context.Clients.Group(tableId.ToString(), ParticipationService.GetSingleConnectionId(user.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", user.Nickname), tableId);
+                    Task task = context.Clients.Group(tableId.ToString(), ParticipationService.GetSingleConnectionId(user.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", user.Nickname), tableId, DateTime.Now.Ticks);
                     task.Wait();
                 }
                 actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, user.Nickname);
                 user.ConnectionIds.ForEach(cId =>
                 {
-                    Task task =  context.Clients.Client(cId).broadcastSystemMessage(ServerMessages.NofityActualPlayer, actualGameTable.Identifier);
+                    Task task =  context.Clients.Client(cId).broadcastSystemMessage(ServerMessages.NofityActualPlayer, actualGameTable.Identifier, DateTime.Now.Ticks);
                     task.Wait();
                     ColorCode colorCode = GameTableService.GetColorCodeForUser(Games, GameTableService.AreAllEndFieldsUsedForColorCode(actualGameTable,
                         GameTableService.GetColorCodeForUser(Games, user.Nickname, tableId)) ? 
@@ -101,7 +102,7 @@ namespace dog2go.Backend.Hubs
             }
             else
             {
-                NotifyNextPlayer("", actualGameTable);  // TODO why empty?????
+                NotifyNextPlayer("", actualGameTable);
             }
         }
 
@@ -170,7 +171,7 @@ namespace dog2go.Backend.Hubs
                 }
                     
                 else
-                    NotifyNextPlayer("", actualGameTable); // TODO why empty?????
+                    NotifyNextPlayer("", actualGameTable);
             }
             else
             {
@@ -196,14 +197,14 @@ namespace dog2go.Backend.Hubs
             actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, nextUser.Nickname);
             if (nextUser.ConnectionIds.Count == 1)
             {
-                Task task = context.Clients.Group(actualGameTable.Identifier.ToString(), ParticipationService.GetSingleConnectionId(nextUser.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname), actualGameTable.Identifier);
+                Task task = context.Clients.Group(actualGameTable.Identifier.ToString(), ParticipationService.GetSingleConnectionId(nextUser.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname), actualGameTable.Identifier, DateTime.Now.Ticks);
                 task.Wait();
             }
             nextUser.ConnectionIds.ForEach(id =>  
             {
                 if (validHandCards.Find(card => card.IsValid) != null)
                 {
-                    Task chatTask =  context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer, actualGameTable.Identifier);
+                    Task chatTask =  context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer, actualGameTable.Identifier, DateTime.Now.Ticks);
                     chatTask.Wait();
                     ColorCode colorCode = GameTableService.GetColorCodeForUser(Games, GameTableService.AreAllEndFieldsUsedForColorCode(actualGameTable,
                         GameTableService.GetColorCodeForUser(Games, nextUser.Nickname, actualGameTable.Identifier)) ?
@@ -215,7 +216,7 @@ namespace dog2go.Backend.Hubs
                     actualGameTable.CardServiceData.RemoveAllCardsFromUser(actualGameTable,nextUser );
                     Clients.Client(id).dropCards(actualGameTable.Identifier);
 
-                    Task chatTask = context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NoValidCardAvailable, actualGameTable.Identifier);
+                    Task chatTask = context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NoValidCardAvailable, actualGameTable.Identifier, DateTime.Now.Ticks);
                     chatTask.Wait();
                     if (actualGameTable.CardServiceData.ProveCardsCount%GlobalDefinitions.NofParticipantsPerTable != 0)
                     {
