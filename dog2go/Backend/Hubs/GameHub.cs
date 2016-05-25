@@ -84,11 +84,8 @@ namespace dog2go.Backend.Hubs
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             if (validCards.Find(card => card.IsValid) != null)
             {
-                if (user.ConnectionIds.Count == 1)
-                {
-                    Task task = context.Clients.Group(tableId.ToString(), ParticipationService.GetSingleConnectionId(user.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", user.Nickname), tableId, DateTime.Now.Ticks);
-                    task.Wait();
-                }
+                Task firstTask = context.Clients.Group(tableId.ToString(), user.ConnectionIds.ToArray()).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", user.Nickname), tableId, DateTime.Now.Ticks);
+                firstTask.Wait();
                 actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, user.Nickname);
                 user.ConnectionIds.ForEach(cId =>
                 {
@@ -195,11 +192,8 @@ namespace dog2go.Backend.Hubs
             List<HandCard> validHandCards = actualGameTable.CardServiceData.ProveCards(cards, actualGameTable, nextUser);
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, nextUser.Nickname);
-            if (nextUser.ConnectionIds.Count == 1)
-            {
-                Task task = context.Clients.Group(actualGameTable.Identifier.ToString(), ParticipationService.GetSingleConnectionId(nextUser.ConnectionIds)).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname), actualGameTable.Identifier, DateTime.Now.Ticks);
-                task.Wait();
-            }
+            Task task = context.Clients.Group(actualGameTable.Identifier.ToString(), nextUser.ConnectionIds.ToArray()).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname), actualGameTable.Identifier, DateTime.Now.Ticks);
+            task.Wait();
             nextUser.ConnectionIds.ForEach(id =>  
             {
                 if (validHandCards.Find(card => card.IsValid) != null)
