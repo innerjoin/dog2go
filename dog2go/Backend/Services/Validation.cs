@@ -170,6 +170,8 @@ namespace dog2go.Backend.Services
                 endField = (EndField)endField.Next;
                 if (endField == null)
                     return false;
+                if (endField.CurrentMeeple != null)
+                    return false;
             }
 
             return true;
@@ -186,6 +188,8 @@ namespace dog2go.Backend.Services
             for (int j = fieldCount; j > 0; j--)
             {
                 if (proveEndField == null)
+                    return false;
+                if (proveEndField.CurrentMeeple != null)
                     return false;
                 proveEndField = (EndField)proveEndField.Next;
             }
