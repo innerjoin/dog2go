@@ -22,12 +22,12 @@ namespace dog2go.Backend.Services
                     select participantEndFields).Any();
         }
 
-        public static string GetWinners(GameTable gameTable)
+        public static IEnumerable<string> GetWinners(GameTable gameTable)
         {
             if (gameTable == null)
                 throw new ArgumentNullException(nameof(gameTable));
             if (!IsGameFinished(gameTable))
-                return "FAILED!!";
+                return null;
 
             IEnumerable<string> names = (from participantFieldArea in gameTable.PlayerFieldAreas
                         let partnerIdentifier = participantFieldArea.Participation.Partner.Identifier
@@ -36,14 +36,7 @@ namespace dog2go.Backend.Services
                         let partnerEndFields = partnerFieldArea.Fields.FindAll(field => field.CurrentMeeple != null && field.FieldType.Contains("EndField"))
                     where AreEndFieldsFull(partnerEndFields) && AreEndFieldsFull(participantEndFields)
                     select participantFieldArea.Participation.Participant.Nickname);
-            string result = "FINISH!!\nPlayer: {0} and \nPlayer: {1} win!";
-            int count = 0;
-            foreach (string name in names)
-            {
-                result = result.Replace("{"+count+"}", name);
-                count++;
-            }
-            return result;
+            return names;
         }
 
         private static bool AreEndFieldsFull(IReadOnlyCollection<MoveDestinationField> endFieldList)
