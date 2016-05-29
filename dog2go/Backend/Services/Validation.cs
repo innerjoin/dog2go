@@ -183,7 +183,7 @@ namespace dog2go.Backend.Services
                 return false;
             fieldCount = Math.Abs(fieldCount);
             EndField proveEndField = (EndField)endField.Next;
-            fieldCount--;
+            //fieldCount--;
 
             for (int j = fieldCount; j > 0; j--)
             {
