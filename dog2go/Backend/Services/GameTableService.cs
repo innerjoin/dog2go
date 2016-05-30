@@ -70,7 +70,7 @@ namespace dog2go.Backend.Services
             if (moveDestinationMeeple == null) return;
             if (!isChangePlace)
             {
-                moveDestinationMeeple = SetBackToKennelField(gameTable,moveDestinationMeeple );   
+                moveDestinationMeeple = SetBackToKennelField(gameTable, moveDestinationMeeple);
             }
 
             SetSecondMeeplePosition(gameTable, saveField, moveDestinationMeeple);

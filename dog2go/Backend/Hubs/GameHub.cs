@@ -200,11 +200,12 @@ namespace dog2go.Backend.Hubs
             actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, nextUser.Nickname);
             Task task = context.Clients.Group(actualGameTable.Identifier.ToString(), nextUser.ConnectionIds.ToArray()).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname), actualGameTable.Identifier, DateTime.Now.Ticks + GetMessageCounter());
             task.Wait();
-            if (validHandCards.Find(card => card.IsValid) == null)
+            if (validHandCards.Count > 0 && validHandCards.Find(card => card.IsValid) == null)
             {
                 if (!nextUser.CardDropped)
                 {
                     context.Clients.Group(actualGameTable.Identifier.ToString(), nextUser.ConnectionIds.ToArray()).broadcastStateMessage(ServerMessages.NoValidCardAvailable.Replace("{0}", nextUser.Nickname), actualGameTable.Identifier, DateTime.Now.Ticks + GetMessageCounter());
+                    nextUser.ConnectionIds.ForEach(id => context.Clients.Client(id).broadcastStateMessage(ServerMessages.YourCardsHaveBeenDropped, actualGameTable.Identifier, DateTime.Now.Ticks + GetMessageCounter()));
                 } 
             }
                 
