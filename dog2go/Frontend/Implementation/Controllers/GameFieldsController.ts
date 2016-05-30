@@ -118,9 +118,6 @@ export class GameFieldController {
         graphics.lineStyle(this.scaleFactor * 2, 0x222222, 1);
         graphics.drawCircle(0, 0, this.scaleFactor * 30); //draw a circle relative to it's parent (in this case, the graphics object)
         graphics.endFill();
-        const style = { font: "20px Arial", fill: "#000000", align: "center" };
-        const text = this.game.make.text(2, 2, id + "", style);
-        graphics.addChild(text);
         return graphics;
     }
 

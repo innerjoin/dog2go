@@ -42,5 +42,10 @@ namespace dog2go.Backend.Model
                 throw new Exception("should not happen: table has more participants than playerfieldareas!!");
             return Participations.Count == TableSize;
         }
+
+        public bool IsParticipant(string name)
+        {
+            return Participations.Exists(x => x.Participant.Nickname == name);
+        }
     }
 }

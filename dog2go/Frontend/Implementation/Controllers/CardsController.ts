@@ -98,14 +98,17 @@ export class CardsController {
 
     public disableAllDrag() {
         $(`.handcards`).draggable("disable");
+        $(`.handcards`).css("opacity", "0.5");
     }
 
     public disableDrag(card: ICard) {
         $(`.handcards.${card.Name}`).draggable("disable");
+        $(`.handcards.${card.Name}`).css("opacity", "0.5");
     }
 
     public enableDrag(card: ICard) {
         $(`.handcards.${card.Name}`).draggable("enable");
+        $(`.handcards.${card.Name}`).css("opacity", "1");
     }
 
     public setDragableOnCard(card: ICard) {

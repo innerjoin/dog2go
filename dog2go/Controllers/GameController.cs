@@ -56,7 +56,7 @@ namespace dog2go.Controllers
             List<GameTable> gameTableList = GameRepository.Instance.Get();
             gameTableList?.ForEach(table =>
             {
-                if (table.IsFull()) return;
+                if (table.IsFull() && !table.IsParticipant(User.Identity.Name)) return;
                 List<string> participants = new List<string>();
                 table.Participations?.ForEach(part => { participants.Add(part.Participant.Nickname); });
                 model.GameTableList.Add(new TableViewModel(table.Identifier, table.Name, participants));

@@ -170,12 +170,14 @@ namespace dog2go.Backend.Hubs
                 sendPosition.Wait();
                 if (GameServices.IsGameFinished(actualGameTable))
                 {
-                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-                    context.Clients.Group(actualGameTable.Identifier.ToString()).notifyAllGameIsFinished(actualGameTable.Identifier);
+                    IEnumerable<string> winners = GameServices.GetWinners(actualGameTable);
+                    string winMsg = ServerMessages.GameFinished.Replace("{0}", string.Join(" & ", winners));
+                    Clients.All.notifyAllGameIsFinished(winMsg, actualGameTable.Identifier);
                 }
-                    
                 else
+                {
                     NotifyNextPlayer("", actualGameTable);
+                }
             }
             else
             {
