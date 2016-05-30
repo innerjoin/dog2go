@@ -66,7 +66,7 @@ namespace dog2go.Backend.Services
         {
             StartField startField = field as StartField;
             if(startField?.CurrentMeeple != null)
-                return !startField.CurrentMeeple.IsStartFieldBlocked || startField.ColorCode != startField.CurrentMeeple.ColorCode;
+                return !startField.CurrentMeeple.IsStartFieldBlocked;
             return startField != null && startField.CurrentMeeple == null;
         }
         private static bool IsSimpleInvalidChangeField(MoveDestinationField field)
