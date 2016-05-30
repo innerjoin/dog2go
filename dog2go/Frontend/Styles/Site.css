@@ -349,3 +349,7 @@ html, body, p {
     font-weight: bold;
     margin-bottom: 0;
 }
+
+.stateMessage {
+    color: yellow;
+}

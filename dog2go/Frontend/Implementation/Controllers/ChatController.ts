@@ -37,7 +37,7 @@ export class ChatController {
     public putStateMessage(message: string) {
         const encodedMsg = $("<div />").text(message).html();
         // Add the message to the page. 
-        $("#chatBox").append(`<li><strong>${encodedMsg}</strong></li>`);
+        $("#chatBox").append(`<li class="stateMessage"><strong>${encodedMsg}</strong></li>`);
         $("#chatBox").animate({ scrollTop: $(document).height() }, "slow");     
     }
 }
