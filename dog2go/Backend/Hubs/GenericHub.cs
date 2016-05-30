@@ -44,7 +44,6 @@ namespace dog2go.Backend.Hubs
                         test.Wait();
                         context.Clients.Group(tableId)
                             .broadcastSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name), tableId, DateTime.Now.Ticks + GetMessageCounter());
-                        IncrementMessageCounter();
                     }
                 }
             }
@@ -60,9 +59,8 @@ namespace dog2go.Backend.Hubs
             return base.OnDisconnected(stopCalled);
         }
 
-        protected void IncrementMessageCounter()
+        public int GetMessageCounter()
         {
-            Thread.Sleep(50);
             if (_messageCounter >= 99)
             {
                 _messageCounter = 0;
@@ -71,10 +69,6 @@ namespace dog2go.Backend.Hubs
             {
                 _messageCounter++;
             }
-        }
-
-        public int GetMessageCounter()
-        {
             return _messageCounter;
         }
     }

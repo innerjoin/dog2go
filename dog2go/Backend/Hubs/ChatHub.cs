@@ -19,7 +19,6 @@ namespace dog2go.Backend.Hubs
         {
             if (message.IsNullOrWhiteSpace()) return;
             Clients.Group(tableId.ToString()).broadcastSystemMessage(message, tableId, DateTime.Now.Ticks + GetMessageCounter());
-            IncrementMessageCounter();
         }
     }
 }

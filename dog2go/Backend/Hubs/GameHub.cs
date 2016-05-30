@@ -86,13 +86,11 @@ namespace dog2go.Backend.Hubs
             if (validCards.Find(card => card.IsValid) != null)
             {
                 Task firstTask = context.Clients.Group(tableId.ToString(), user.ConnectionIds.ToArray()).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", user.Nickname), tableId, DateTime.Now.Ticks + GetMessageCounter());
-                IncrementMessageCounter();
                 firstTask.Wait();
                 actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, user.Nickname);
                 user.ConnectionIds.ForEach(cId =>
                 {
                     Task task =  context.Clients.Client(cId).broadcastSystemMessage(ServerMessages.NofityActualPlayer, actualGameTable.Identifier, DateTime.Now.Ticks + GetMessageCounter());
-                    IncrementMessageCounter();
                     task.Wait();
                     ColorCode colorCode = GameTableService.GetColorCodeForUser(Games, GameTableService.AreAllEndFieldsUsedForColorCode(actualGameTable,
                         GameTableService.GetColorCodeForUser(Games, user.Nickname, tableId)) ? 
@@ -117,7 +115,6 @@ namespace dog2go.Backend.Hubs
         {
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             context.Clients.Group(table.Identifier.ToString()).broadcastStateMessage(ServerMessages.NewRoundStart, table.Identifier, DateTime.Now.Ticks + GetMessageCounter());
-            IncrementMessageCounter();
             GameTableService.UpdateActualRoundCards(table);
             foreach (var participation in table.Participations)
             {
@@ -202,14 +199,12 @@ namespace dog2go.Backend.Hubs
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             actualGameTable.ActualParticipation = ParticipationService.GetParticipation(actualGameTable, nextUser.Nickname);
             Task task = context.Clients.Group(actualGameTable.Identifier.ToString(), nextUser.ConnectionIds.ToArray()).broadcastSystemMessage(ServerMessages.InformOtherPlayer.Replace("{0}", nextUser.Nickname), actualGameTable.Identifier, DateTime.Now.Ticks + GetMessageCounter());
-            IncrementMessageCounter();
             task.Wait();
             if (validHandCards.Find(card => card.IsValid) == null)
             {
                 if (!nextUser.CardDropped)
                 {
                     context.Clients.Group(actualGameTable.Identifier.ToString(), nextUser.ConnectionIds.ToArray()).broadcastStateMessage(ServerMessages.NoValidCardAvailable.Replace("{0}", nextUser.Nickname), actualGameTable.Identifier, DateTime.Now.Ticks + GetMessageCounter());
-                    IncrementMessageCounter();
                 } 
             }
                 
@@ -218,7 +213,6 @@ namespace dog2go.Backend.Hubs
                 if (validHandCards.Find(card => card.IsValid) != null)
                 {
                     Task chatTask =  context.Clients.Client(id).broadcastSystemMessage(ServerMessages.NofityActualPlayer, actualGameTable.Identifier, DateTime.Now.Ticks + GetMessageCounter());
-                    IncrementMessageCounter();
                     chatTask.Wait();
                     ColorCode colorCode = GameTableService.GetColorCodeForUser(Games, GameTableService.AreAllEndFieldsUsedForColorCode(actualGameTable,
                         GameTableService.GetColorCodeForUser(Games, nextUser.Nickname, actualGameTable.Identifier)) ?
