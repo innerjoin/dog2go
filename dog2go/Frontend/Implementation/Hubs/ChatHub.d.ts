@@ -6,6 +6,7 @@
 
 interface IChatHubClient {
     broadcastMessage(name: string, message: string, tableId: number);
+    broadcastStateMessage(message: string, tableId: number);
     broadcastSystemMessage(message: string, tableId: number, timeStamp: number);
 }
 

@@ -4,7 +4,7 @@ import ChatService = Service.ChatService;
 export class ChatController {
     private chatService: ChatService;
     constructor(tableId: number) {
-        this.chatService = ChatService.getInstance(tableId, this.putMessage.bind(this), this.putSystemMessage.bind(this));
+        this.chatService = ChatService.getInstance(tableId, this.putMessage.bind(this), this.putSystemMessage.bind(this),this.putStateMessage.bind(this));
         $("#message").keypress((e) => {
             if (e.which === 13) this.sendChat(tableId);
         });
@@ -32,5 +32,12 @@ export class ChatController {
         const encodedMsg = $("<div />").text(message).html();
         // Add the message to the page. 
         $("#systemMessage").text(encodedMsg);
+    }
+
+    public putStateMessage(message: string) {
+        const encodedMsg = $("<div />").text(message).html();
+        // Add the message to the page. 
+        $("#chatBox").append(`<li><strong>${encodedMsg}</strong></li>`);
+        $("#chatBox").animate({ scrollTop: $(document).height() }, "slow");     
     }
 }

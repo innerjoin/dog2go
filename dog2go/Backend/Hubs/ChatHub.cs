@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -17,7 +18,8 @@ namespace dog2go.Backend.Hubs
         public void SendSystemMessage(string message, int tableId)
         {
             if (message.IsNullOrWhiteSpace()) return;
-            Clients.Group(tableId.ToString()).broadcastSystemMessage(message, tableId, DateTime.Now.Ticks);
+            Clients.Group(tableId.ToString()).broadcastSystemMessage(message, tableId, DateTime.Now.Ticks + GetMessageCounter());
+            IncrementMessageCounter();
         }
     }
 }

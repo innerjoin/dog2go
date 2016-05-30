@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using dog2go.Backend.Constants;
 using dog2go.Backend.Interfaces;
@@ -12,7 +13,7 @@ namespace dog2go.Backend.Hubs
     public abstract class GenericHub : Hub
     {
         private static readonly object Locker = new object();
-
+        private static int _messageCounter = 0;
         protected readonly IGameRepository Games;
 
         protected GenericHub(IGameRepository repos)
@@ -42,7 +43,8 @@ namespace dog2go.Backend.Hubs
                         Task test = context.Groups.Add(Context.ConnectionId, tableId);
                         test.Wait();
                         context.Clients.Group(tableId)
-                            .broadcastSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name), tableId, DateTime.Now.Ticks);
+                            .broadcastSystemMessage(ServerMessages.JoinedGame.Replace("{0}", Context.User.Identity.Name), tableId, DateTime.Now.Ticks + GetMessageCounter());
+                        IncrementMessageCounter();
                     }
                 }
             }
@@ -56,6 +58,24 @@ namespace dog2go.Backend.Hubs
                 : $"Client {Context.ConnectionId} timed out .");
 
             return base.OnDisconnected(stopCalled);
+        }
+
+        protected void IncrementMessageCounter()
+        {
+            Thread.Sleep(50);
+            if (_messageCounter >= 99)
+            {
+                _messageCounter = 0;
+            }
+            else
+            {
+                _messageCounter++;
+            }
+        }
+
+        public int GetMessageCounter()
+        {
+            return _messageCounter;
         }
     }
 }

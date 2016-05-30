@@ -7,7 +7,7 @@ export class ChatService {
     private tableId: number;
     private systemMessages: IChatMessage = {};
     constructor(tableId: number, callback: (name: string, message: string) => any,
-                systemCallback: (message: string) => any) {
+                systemCallback: (message: string) => any, stateCallback:(message:string)=> any) {
         this.tableId = tableId;
         if (ChatService.instance) {
             throw new Error("Error: ChatService instantiation failed. Singleton module! Use .getInstance() instead of new.");
@@ -33,6 +33,14 @@ export class ChatService {
                 }
             }
         };
+
+        chatHub.client.broadcastStateMessage = (message: string, tableId: number) => {
+            // will autoconvert string to int
+            // ReSharper disable once CoercedEqualsUsing
+            if (tableId == this.tableId) {
+                    stateCallback(message);
+            }
+        };
         
         ChatService.instance = this;
     }
@@ -53,10 +61,10 @@ export class ChatService {
         }
     }
 
-    public static getInstance(tableId: number, callback: (name: string, message: string) => any, systemCallback: (message: string) => any) {
+    public static getInstance(tableId: number, callback: (name: string, message: string) => any, systemCallback: (message: string) => any, stateCallback: (message: string) => any ) {
         // Create new instance if callback is given
         if (ChatService.instance === null && callback !== null || tableId !== ChatService.instance.tableId) {
-            ChatService.instance = new ChatService(tableId, callback, systemCallback);
+            ChatService.instance = new ChatService(tableId, callback, systemCallback, stateCallback);
         } else if (ChatService.instance === null) {
             throw new Error("Error: First call needs a callback!");
         }

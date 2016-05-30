@@ -10,7 +10,7 @@ namespace dog2go.Backend.Model
         public string Identifier { get; set; }
         public string Nickname { get; set; }
         public HashSet<string> ConnectionIds { get; set; }
-
+        public bool CardDropped;
         public User(string name)
         {
             Nickname = name;
@@ -19,6 +19,7 @@ namespace dog2go.Backend.Model
         {
             Nickname = name;
             Identifier = connectionId;
+            CardDropped = false;
         }
     }
 }
