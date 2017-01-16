@@ -31,7 +31,7 @@ We currently do not provide an online version of the game anymore, as we do not 
 ![Mobile Friendly Side Menu](/assets/GameTableMenu.PNG)
 
 ## About the Authors
-+ Lukas Steiger (@innerjoin)
-+ Janick Engeler (@jengi77)
-+ Yanick Gubler (@ygubler)
++ Lukas Steiger ([@innerjoin](https://github.com/innerjoin))
++ Janick Engeler ([@jengi77](https://github.com/jengi77))
++ Yanick Gubler ([@ygubler](https://github.com/ygubler))
 + Alexis Suter
