@@ -17,6 +17,9 @@ The following requirements have been defined in advance:
 + The visualization of card, board and meeples should be as similar as possible to the board game
 + It should be possible to play the game on smartphones, tablets and desktop PC's
 
+## Build & CI
+We do not provide a Github integrated Build and CI infrastructure. Altough by following [Lukas Steiger's blog post](http://www.lukassteiger.ch/tech/2017/01/14/vsts-for-ci-with-aspnetmvc.html), you should be able to make use of the configured MSBuild by yourself.
+
 ## Result
 Altough we couldn't implement everything we wanted to do, the game is working really well with only minor drawbacks.
 
