@@ -34,7 +34,8 @@ We currently do not provide an online version of the game anymore, as we do not 
 ![Mobile Friendly Side Menu](/assets/GameTableMenu.PNG)
 
 ## About the Authors
+This project was created as part of the 'Software Engineering Project' module at Unversity of Applied Sciences Rapperswil. The authors are:
 + Lukas Steiger ([@innerjoin](https://github.com/innerjoin))
 + Janick Engeler ([@jengi77](https://github.com/jengi77))
-+ Yanick Gubler ([@ygubler](https://github.com/ygubler))
-+ Alexis Suter
++ Yanick Gubler ([@YGubler](https://github.com/ygubler))
++ Alexis Suter ([@EaseRider](https://github.com/EaseRider))
